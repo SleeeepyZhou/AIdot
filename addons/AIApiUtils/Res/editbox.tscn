@@ -1,0 +1,111 @@
+[gd_scene load_steps=2 format=3 uid="uid://s4fd6nm2g7ag"]
+
+[ext_resource type="Script" path="res://addons/AIApiUtils/Res/Editbox.gd" id="1_3an1j"]
+
+[node name="SchemaEdit" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_3an1j")
+
+[node name="Warning" type="Label" parent="."]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "You haven't entered any content yet."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ButtonBox" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="Format" type="OptionButton" parent="Box/ButtonBox"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Del" type="Button" parent="Box/ButtonBox"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Delete"
+
+[node name="New" type="Button" parent="Box/ButtonBox"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "New"
+
+[node name="Read" type="Button" parent="Box/ButtonBox"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Pull"
+
+[node name="Save" type="Button" parent="Box/ButtonBox"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Save"
+
+[node name="Share" type="Button" parent="Box/ButtonBox"]
+visible = false
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Share"
+
+[node name="Namebox" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Box/Namebox"]
+layout_mode = 2
+text = "Json schema name: "
+
+[node name="Name" type="LineEdit" parent="Box/Namebox"]
+custom_minimum_size = Vector2(300, 35)
+layout_mode = 2
+placeholder_text = "Tap your schema name"
+
+[node name="Label" type="Label" parent="Box/Namebox/Name"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+text = "Only a-z,A-Z,0-9,-,_"
+
+[node name="Add" type="Button" parent="Box/Namebox"]
+layout_mode = 2
+text = "Add Unit"
+
+[node name="Note" type="LineEdit" parent="Box/Namebox"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "Note"
+
+[node name="Box" type="ScrollContainer" parent="Box"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 2
+
+[node name="Unitbox" type="VBoxContainer" parent="Box/Box"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="Box/ButtonBox/Del" to="." method="_on_del_pressed"]
+[connection signal="pressed" from="Box/ButtonBox/New" to="." method="newformat"]
+[connection signal="pressed" from="Box/ButtonBox/Read" to="." method="readformat"]
+[connection signal="pressed" from="Box/ButtonBox/Save" to="." method="_on_save_pressed"]
+[connection signal="text_changed" from="Box/Namebox/Name" to="." method="_on_name_text_changed"]
+[connection signal="pressed" from="Box/Namebox/Add" to="." method="_on_add_pressed"]

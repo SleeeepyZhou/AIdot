@@ -1,0 +1,83 @@
+[gd_scene load_steps=2 format=3 uid="uid://bifpjanr3m4xp"]
+
+[ext_resource type="Script" path="res://addons/AIApiUtils/Res/schema_unit.gd" id="1_v5a87"]
+
+[node name="SchemaUnit" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+script = ExtResource("1_v5a87")
+
+[node name="Delete" type="Button" parent="."]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "-"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Keyword"
+
+[node name="Keyword" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+placeholder_text = "Your keyword"
+expand_to_text_length = true
+
+[node name="Label" type="Label" parent="Keyword"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+text = "Only a-z,A-Z,0-9,-,_"
+
+[node name="Description" type="TextEdit" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+placeholder_text = "Description"
+wrap_mode = 1
+scroll_fit_content_height = true
+
+[node name="Note" type="LinkButton" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+text = "Note"
+
+[node name="Note" type="TextEdit" parent="Note"]
+visible = false
+z_index = 1
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+offset_left = 1.0
+offset_top = 25.0
+offset_right = 201.0
+offset_bottom = 225.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "Notes"
+wrap_mode = 1
+
+[node name="Combination" type="CheckBox" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Combination"
+
+[node name="Add" type="Button" parent="."]
+visible = false
+layout_mode = 2
+text = "Add"
+
+[node name="Unitbox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[connection signal="button_up" from="Delete" to="." method="_on_delete_button_up"]
+[connection signal="text_changed" from="Keyword" to="." method="_on_keyword_text_changed"]
+[connection signal="text_changed" from="Description" to="." method="_on_description_text_changed"]
+[connection signal="pressed" from="Note" to="." method="_on_note_pressed"]
+[connection signal="toggled" from="Combination" to="." method="_on_combination_toggled"]
+[connection signal="pressed" from="Add" to="." method="_on_add_pressed"]

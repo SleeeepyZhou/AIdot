@@ -1,0 +1,69 @@
+[gd_scene load_steps=3 format=3 uid="uid://bixnwx806b58r"]
+
+[ext_resource type="Script" path="res://addons/AIApiUtils/Res/config.gd" id="1_r4q3m"]
+[ext_resource type="PackedScene" uid="uid://s4fd6nm2g7ag" path="res://addons/AIApiUtils/Res/editbox.tscn" id="2_ew32v"]
+
+[node name="Config" type="ScrollContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="ApiConfig" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_r4q3m")
+
+[node name="Label" type="Label" parent="ApiConfig"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "This is API setting for Debug and will not be exported with the app. (A user file will be created)"
+autowrap_mode = 2
+
+[node name="Box" type="GridContainer" parent="ApiConfig"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="ApiConfig/Box"]
+layout_mode = 2
+text = "API_Url"
+
+[node name="APIurl" type="LineEdit" parent="ApiConfig/Box"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "https://aigptx.top/v1/chat/completions"
+placeholder_text = "Enter your API url."
+
+[node name="Label2" type="Label" parent="ApiConfig/Box"]
+layout_mode = 2
+text = "API_Key"
+
+[node name="APIkey" type="LineEdit" parent="ApiConfig/Box"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter your API key."
+secret = true
+secret_character = "*"
+
+[node name="ButtonBox" type="HBoxContainer" parent="ApiConfig"]
+layout_mode = 2
+alignment = 1
+
+[node name="Confirm" type="Button" parent="ApiConfig/ButtonBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Save"
+
+[node name="UseFormat" type="CheckButton" parent="ApiConfig/ButtonBox"]
+layout_mode = 2
+text = "UseFormat"
+
+[node name="Editbox" parent="ApiConfig" instance=ExtResource("2_ew32v")]
+visible = false
+layout_mode = 2
+
+[connection signal="pressed" from="ApiConfig/ButtonBox/Confirm" to="ApiConfig" method="_on_confirm_pressed"]
+[connection signal="toggled" from="ApiConfig/ButtonBox/UseFormat" to="ApiConfig" method="_on_use_format_toggled"]
