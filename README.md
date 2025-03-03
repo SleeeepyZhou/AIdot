@@ -13,6 +13,12 @@
 
 ## <center>Multi-Agent framework for Godot</center>
 
+<div style="text-align: right;">
+
+  by [SleeeepyZhou](https://github.com/SleeeepyZhou)
+
+</div>
+
 ### Framework
 
 ```mermaid
