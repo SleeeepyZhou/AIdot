@@ -13,7 +13,7 @@
 
 ## <center>Multi-Agent framework for Godot</center>
 
-<div style="text-align: right;">
+<div align="right">
 
   by [SleeeepyZhou](https://github.com/SleeeepyZhou)
 
