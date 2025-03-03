@@ -5,6 +5,12 @@
   </a>
 </p>
 
+<div align="center">
+
+[![Moe Counter](https://count.getloli.com/@AIdot?name=AIdot&theme=moebooru)](https://github.com/SleeeepyZhou/AIdot)
+
+</div>
+
 ## <center>Multi-Agent framework for Godot</center>
 
 ### Framework
