@@ -14,4 +14,4 @@ config/name="AIdot"
 config/description="Multi-Agent framework for Godot"
 config/version="0.0.1"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://addons/AIdot/Res/icon.png"
+config/icon="res://addons/AIdot/Res/Asset/icon.png"
