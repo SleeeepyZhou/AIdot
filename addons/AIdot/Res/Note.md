@@ -58,57 +58,116 @@ AIdot/
 
 
 ```mermaid
-flowchart LR
-	subgraph Model
-		M[Model]
-		L1[API] --> M
-		L2[Pool] --> L1
-	end
-	subgraph Toolbox
-		T0[Tools]
-		T1[Search]
-		T2[Move]
-		T3[...]
-		T1 --> T0
-		T2 --> T0
-		T3 --> T0
-		T4[...] --> t
-	end
-	subgraph Agent
-		A[Agent1]
-		T[Action]
-		t[Interpreter]
-		T <--> T0
-		T0 <--> t
-		t --> T4
-		subgraph Perception
-			P[Perception]
-			P1[Perception2D] --> P
-			P2[AudioSensor2D] --> P
-			P3[...] --> P
-		end
-		subgraph Memory
-			M1[Short] --> M2[Long]
-		end
-		subgraph Planning
-			S[TaskSystem]
-			S1[State] <--> S
-			S2[Scheduler] <--> S
-			S3[...] <--> S
-		end
-		A <==> T
-		P ==> A
-		M1 <==> A
-		M2 --> A
-		S <==> A
-	end
+flowchart TB
+    classDef model fill:#E3F2FD,stroke:#BBDEFB;
+    classDef env fill:#F8BBD0,stroke:#F48FB1;
 
+    subgraph ENV[Environment]
+        direction TB
+        PHYS[Physics] -->|Data| SENSOR[Sensor System]
+        UI[Game UI] -->|Player Input| EVENT[Event Bus]
+    end
+    ENV[Game World] ==> Perception
+    T ==> ENV
+	subgraph M[Model Layer]
+        direction TB
+        MADAPTER[API Adapter] --> MAPI1[...]
+        MADAPTER --> MAPI2[Gemini]
+        MADAPTER --> MAPI3[HuggingFace]
+        MTHREAD[Thread Pool] -->|Async Call| MADAPTER
+    end
+
+    subgraph Toolbox[Toolbox System]
+        direction TB
+        subgraph Interface[API]
+            API[Toolbox API Gateway]
+        end
+        subgraph Core
+            Loader[Mod Loader]
+            Registry[Tool Registry]
+            Pool[Tool Pool]
+            Interpreter[Code Interpreter]
+        end
+        subgraph Mod
+            direction TB
+            T1[Search] --> Pool
+            T2[Move] --> Pool
+            T3[...] --> Pool
+        end
+        subgraph Security
+            Sandbox[Execution Sandbox]
+            Auth[Permission Validator]
+        end
+        subgraph Storage
+            Cache[Response Cache]
+            Hotfix[Hot Reload Watchdog]
+        end
+
+        API --> Loader
+        API --> Registry
+        API --> Pool
+        API --> Interpreter
+        Loader -->|Loading| Registry
+        Registry -->|Metadata| Pool
+        Interpreter -->|Safety| Sandbox
+        Sandbox --> Auth
+        Pool <-->|Reuse| Interpreter
+        Hotfix -->|File monitor| Loader
+        Cache <-->|Cache| API
+        Security -->|Cache| API
+    end
+        classDef core fill:#F5F5F5,stroke:#BDBDBD;
+        classDef security fill:#FFEBEE,stroke:#FFCDD2;
+        classDef storage fill:#E3F2FD,stroke:#BBDEFB;
+        classDef interface fill:#F0F4C3,stroke:#DCE775;
+        class Interface interface
+        class Core core
+        class Security security
+        class Storage storage
+
+    subgraph MultiAgent
+        subgraph Agent
+            direction TB
+            T[Action]
+            A[Agent1]
+            T <--> API
+            subgraph Perception
+                P[Perception]
+                P1[Perception2D] --> P
+                P2[AudioSensor2D] --> P
+                P3[...] --> P
+            end
+            subgraph MEM[Memory]
+                M1[Short] --> M2[Long]
+            end
+            subgraph Planning
+                S[TaskSystem]
+                S1[State] <--> S
+                S2[Scheduler] <--> S
+                S3[...] <--> S
+            end
+            A <==> T
+            P ==>|Feedback| A
+            M1 <==> A
+            M2 --> A
+            S <==> A
+        end
+        A1[Agent2]
+        A2[Agent3]
+        A3[...]
+    end
 	subgraph Coordination
 		C[AgentCoordinator]
+        A1 <--> C
+        A2 <--> C
+        A3 <--> C
 	end
 	M --> A
+    M --> A1
+    M --> A2
+    M --> A3
 	A <--> C
-	A1[Agent2] <--> C
-	A2[Agent3] <--> C
-	A3[...] <--> C
+
+    class ENV env
+    class MEM,M model
 ```

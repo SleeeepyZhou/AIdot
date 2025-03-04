@@ -23,63 +23,66 @@
 
 ```mermaid
 flowchart LR
-	subgraph Model
-		M[Model]
-		L1[API] --> M
-		L2[Pool] --> L1
-	end
-	subgraph Toolbox
-		T0[Tools]
-		T1[Search]
-		T2[Move]
-		T3[...]
-		T1 --> T0
-		T2 --> T0
-		T3 --> T0
-		T4[...] --> t
-	end
-	subgraph Agent
-		A[Agent1]
-		T[Action]
-		t[Interpreter]
-		T <--> T0
-		T0 <--> t
-		t --> T4
-		subgraph Perception
-			P[Perception]
-			P1[Perception2D] --> P
-			P2[AudioSensor2D] --> P
-			P3[...] --> P
-		end
-		subgraph Memory
-			M1[Short] --> M2[Long]
-		end
-		subgraph Planning
-			S[TaskSystem]
-			S1[State] <--> S
-			S2[Scheduler] <--> S
-			S3[...] <--> S
-		end
-		A <==> T
-		P ==> A
-		M1 <==> A
-		M2 --> A
-		S <==> A
-	end
-
-	subgraph Coordination
+    subgraph Coordination
 		C[AgentCoordinator]
 	end
+    subgraph MultiAgent System
+        subgraph Agent
+            A[Agent1]
+            subgraph Action
+                T[Action]
+                AgentTools --> T
+            end
+            subgraph Perception
+                P[Perception]
+                P3[...] --> P
+            end
+            subgraph Memory
+                M1[Short] --> M2[Long]
+            end
+            subgraph Planning
+                S[TaskSystem]
+                S3[...] <--> S
+            end
+            A <==> T
+            P ==> A
+            M1 <==> A
+            M2 --> A
+            S <==> A
+        end
+        A <--> C
+        A1[Agent2] <--> C
+        A2[Agent3] <--> C
+        A3[...] <--> C
+    end
+    subgraph Model
+		M[Model]
+		Pool --> M
+	end
 	M --> A
-	A <--> C
-	A1[Agent2] <--> C
-	A2[Agent3] <--> C
-	A3[...] <--> C
+    subgraph Toolbox
+        direction LR
+		T0[Tools] --> AgentTools
+		t[Interpreter]
+		T4[...] --> t
+		T0 <--> t
+		t --> T4
+	end
+    subgraph ENV[Environment]
+        direction TB
+        PHYS[Physics]
+        UI[Game UI]
+    end
+    ENV --> Perception
+    Action --> ENV
+	
 ```
 
 ### Dependent
 [Godot-AIUtils](https://github.com/SleeeepyZhou/Godot-AIUtils) by SleeeepyZhou Apache-2.0
 
 ### Thanks
-This project learns from the renowned Multi-Agent framework [Camel](https://github.com/camel-ai/camel), 
+This project learns from the renowned Multi-Agent framework [Camel](https://www.camel-ai.org), 
 and thanks to [Guohao Li](https://github.com/lightaime) and [Camel-AI](https://github.com/camel-ai) team.
+
+[LLM Powered Autonomous Agents](https://lilianweng.github.io/posts/2023-06-23-agent/) from [Lilian Weng](https://github.com/lilianweng)
