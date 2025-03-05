@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bifpjanr3m4xp"]
 
-[ext_resource type="Script" path="res://addons/AIApiUtils/Res/schema_unit.gd" id="1_v5a87"]
+[ext_resource type="Script" uid="uid://v6ack0ubo7mk" path="res://addons/AIApiUtils/Res/schema_unit.gd" id="1_v5a87"]
 
 [node name="SchemaUnit" type="HBoxContainer"]
 anchors_preset = 15

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://s4fd6nm2g7ag"]
 
-[ext_resource type="Script" path="res://addons/AIApiUtils/Res/Editbox.gd" id="1_3an1j"]
+[ext_resource type="Script" uid="uid://dr0x01b007uko" path="res://addons/AIApiUtils/Res/Editbox.gd" id="1_3an1j"]
 
 [node name="SchemaEdit" type="MarginContainer"]
 anchors_preset = 15

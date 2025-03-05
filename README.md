@@ -23,58 +23,58 @@
 
 ```mermaid
 flowchart LR
-    subgraph Coordination
+	subgraph Coordination
 		C[AgentCoordinator]
 	end
-    subgraph MultiAgent System
-        subgraph Agent
-            A[Agent1]
-            subgraph Action
-                T[Action]
-                AgentTools --> T
-            end
-            subgraph Perception
-                P[Perception]
-                P3[...] --> P
-            end
-            subgraph Memory
-                M1[Short] --> M2[Long]
-            end
-            subgraph Planning
-                S[TaskSystem]
-                S3[...] <--> S
-            end
-            A <==> T
-            P ==> A
-            M1 <==> A
-            M2 --> A
-            S <==> A
-        end
-        A <--> C
-        A1[Agent2] <--> C
-        A2[Agent3] <--> C
-        A3[...] <--> C
-    end
-    subgraph Model
+	subgraph MultiAgent System
+		subgraph Agent
+			A[Agent1]
+			subgraph Action
+				T[Action]
+				AgentTools --> T
+			end
+			subgraph Perception
+				P[Perception]
+				P3[...] --> P
+			end
+			subgraph Memory
+				M1[Short] --> M2[Long]
+			end
+			subgraph Planning
+				S[TaskSystem]
+				S3[...] <--> S
+			end
+			A <==> T
+			P ==> A
+			M1 <==> A
+			M2 --> A
+			S <==> A
+		end
+		A <--> C
+		A1[Agent2] <--> C
+		A2[Agent3] <--> C
+		A3[...] <--> C
+	end
+	subgraph Model
 		M[Model]
 		Pool --> M
 	end
 	M --> A
-    subgraph Toolbox
-        direction LR
+	subgraph Toolbox
+		direction LR
 		T0[Tools] --> AgentTools
 		t[Interpreter]
 		T4[...] --> t
 		T0 <--> t
 		t --> T4
 	end
-    subgraph ENV[Environment]
-        direction TB
-        PHYS[Physics]
-        UI[Game UI]
-    end
-    ENV --> Perception
-    Action --> ENV
+	subgraph ENV[Environment]
+		direction TB
+		PHYS[Physics]
+		UI[Game UI]
+	end
+	ENV --> Perception
+	Action --> ENV
 	
 ```
 

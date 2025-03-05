@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bixnwx806b58r"]
 
-[ext_resource type="Script" path="res://addons/AIApiUtils/Res/config.gd" id="1_r4q3m"]
+[ext_resource type="Script" uid="uid://brqxbtsicips7" path="res://addons/AIApiUtils/Res/config.gd" id="1_r4q3m"]
 [ext_resource type="PackedScene" uid="uid://s4fd6nm2g7ag" path="res://addons/AIApiUtils/Res/editbox.tscn" id="2_ew32v"]
 
 [node name="Config" type="ScrollContainer"]

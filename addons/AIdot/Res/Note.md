@@ -34,6 +34,9 @@ AIdot/
 │           ├── WebSearch/
 │           │   ├── modinf.json         # 工具信息
 │           │   └── WebSearch.gd
+│           ├── Paint/
+│           │   ├── modinf.json         # 工具信息
+│           │   └── StableDiffusion.gd
 │           └── GameAPI/
 │               ├── modinf.json
 │               └── Key.gd
@@ -59,115 +62,116 @@ AIdot/
 
 ```mermaid
 flowchart TB
-    classDef model fill:#E3F2FD,stroke:#BBDEFB;
-    classDef env fill:#F8BBD0,stroke:#F48FB1;
+	classDef model fill:#E3F2FD,stroke:#BBDEFB;
+	classDef env fill:#F8BBD0,stroke:#F48FB1;
 
-    subgraph ENV[Environment]
-        direction TB
-        PHYS[Physics] -->|Data| SENSOR[Sensor System]
-        UI[Game UI] -->|Player Input| EVENT[Event Bus]
-    end
-    ENV[Game World] ==> Perception
-    T ==> ENV
+	subgraph ENV[Environment]
+		direction TB
+		PHYS[Physics] -->|Data| SENSOR[Sensor System]
+		UI[Game UI] -->|Player Input| EVENT[Event Bus]
+	end
+	ENV[Game World] ==> Perception
+	T ==> ENV
 	subgraph M[Model Layer]
-        direction TB
-        MADAPTER[API Adapter] --> MAPI1[...]
-        MADAPTER --> MAPI2[Gemini]
-        MADAPTER --> MAPI3[HuggingFace]
-        MTHREAD[Thread Pool] -->|Async Call| MADAPTER
-    end
+		direction TB
+		MADAPTER[API Adapter] --> MAPI1[...]
+		MADAPTER --> MAPI2[Gemini]
+		MADAPTER --> MAPI3[HuggingFace]
+		MTHREAD[Thread Pool] -->|Async Call| MADAPTER
+	end
 
-    subgraph Toolbox[Toolbox System]
-        direction TB
-        subgraph Interface[API]
-            API[Toolbox API Gateway]
-        end
-        subgraph Core
-            Loader[Mod Loader]
-            Registry[Tool Registry]
-            Pool[Tool Pool]
-            Interpreter[Code Interpreter]
-        end
-        subgraph Mod
-            direction TB
-            T1[Search] --> Pool
-            T2[Move] --> Pool
-            T3[...] --> Pool
-        end
-        subgraph Security
-            Sandbox[Execution Sandbox]
-            Auth[Permission Validator]
-        end
-        subgraph Storage
-            Cache[Response Cache]
-            Hotfix[Hot Reload Watchdog]
-        end
+	subgraph Toolbox[Toolbox System]
+		direction TB
+		subgraph Interface[API]
+			API[Toolbox API Gateway]
+		end
+		subgraph Core
+			Loader[Mod Loader]
+			Registry[Tool Registry]
+			Pool[Tool Pool]
+			Interpreter[Code Interpreter]
+		end
+		subgraph Mod
+			direction TB
+			T1[Search] --> Pool
+			T2[Move] --> Pool
+			T3[Paint] --> Pool
+			T4[...] --> Pool
+		end
+		subgraph Security
+			Sandbox[Execution Sandbox]
+			Auth[Permission Validator]
+		end
+		subgraph Storage
+			Cache[Response Cache]
+			Hotfix[Hot Reload Watchdog]
+		end
 
-        API --> Loader
-        API --> Registry
-        API --> Pool
-        API --> Interpreter
-        Loader -->|Loading| Registry
-        Registry -->|Metadata| Pool
-        Interpreter -->|Safety| Sandbox
-        Sandbox --> Auth
-        Pool <-->|Reuse| Interpreter
-        Hotfix -->|File monitor| Loader
-        Cache <-->|Cache| API
-        Security -->|Cache| API
-    end
-        classDef core fill:#F5F5F5,stroke:#BDBDBD;
-        classDef security fill:#FFEBEE,stroke:#FFCDD2;
-        classDef storage fill:#E3F2FD,stroke:#BBDEFB;
-        classDef interface fill:#F0F4C3,stroke:#DCE775;
-        class Interface interface
-        class Core core
-        class Security security
-        class Storage storage
+		API --> Loader
+		API --> Registry
+		API --> Pool
+		API --> Interpreter
+		Loader -->|Loading| Registry
+		Registry -->|Metadata| Pool
+		Interpreter -->|Safety| Sandbox
+		Sandbox --> Auth
+		Pool <-->|Reuse| Interpreter
+		Hotfix -->|File monitor| Loader
+		Cache <-->|Cache| API
+		Security -->|Cache| API
+	end
+		classDef core fill:#F5F5F5,stroke:#BDBDBD;
+		classDef security fill:#FFEBEE,stroke:#FFCDD2;
+		classDef storage fill:#E3F2FD,stroke:#BBDEFB;
+		classDef interface fill:#F0F4C3,stroke:#DCE775;
+		class Interface interface
+		class Core core
+		class Security security
+		class Storage storage
 
-    subgraph MultiAgent
-        subgraph Agent
-            direction TB
-            T[Action]
-            A[Agent1]
-            T <--> API
-            subgraph Perception
-                P[Perception]
-                P1[Perception2D] --> P
-                P2[AudioSensor2D] --> P
-                P3[...] --> P
-            end
-            subgraph MEM[Memory]
-                M1[Short] --> M2[Long]
-            end
-            subgraph Planning
-                S[TaskSystem]
-                S1[State] <--> S
-                S2[Scheduler] <--> S
-                S3[...] <--> S
-            end
-            A <==> T
-            P ==>|Feedback| A
-            M1 <==> A
-            M2 --> A
-            S <==> A
-        end
-        A1[Agent2]
-        A2[Agent3]
-        A3[...]
-    end
+	subgraph MultiAgent
+		subgraph Agent
+			direction TB
+			T[Action]
+			A[Agent1]
+			T <--> API
+			subgraph Perception
+				P[Perception]
+				P1[Perception2D] --> P
+				P2[AudioSensor2D] --> P
+				P3[...] --> P
+			end
+			subgraph MEM[Memory]
+				M1[Short] --> M2[Long]
+			end
+			subgraph Planning
+				S[TaskSystem]
+				S1[State] <--> S
+				S2[Scheduler] <--> S
+				S3[...] <--> S
+			end
+			A <==> T
+			P ==>|Feedback| A
+			M1 <==> A
+			M2 --> A
+			S <==> A
+		end
+		A1[Agent2]
+		A2[Agent3]
+		A3[...]
+	end
 	subgraph Coordination
 		C[AgentCoordinator]
-        A1 <--> C
-        A2 <--> C
-        A3 <--> C
+		A1 <--> C
+		A2 <--> C
+		A3 <--> C
 	end
 	M --> A
-    M --> A1
-    M --> A2
-    M --> A3
+	M --> A1
+	M --> A2
+	M --> A3
 	A <--> C
 
-    class ENV env
-    class MEM,M model
+	class ENV env
+	class MEM,M model
 ```
