@@ -1,9 +1,9 @@
-extends GDScript
+@tool
+class_name ImageProcessor
 
 # 图片压缩及转码
 const IMAGE_TYPE = ["JPG", "PNG", "BMP", "GIF", "TIF", "TIFF", "JPEG", "WEBP"]
-func zip_image(path : String, quality : String = "auto") -> Image:
-	var image = Image.load_from_file(path)
+func zip_image(image : Image, quality : String = "auto") -> Image:
 	var width = image.get_size().x
 	var height = image.get_size().y
 	
@@ -31,5 +31,11 @@ func zip_image(path : String, quality : String = "auto") -> Image:
 func image_to_base64(path : String, quality : String = "auto") -> String:
 	if !IMAGE_TYPE.has(path.get_extension().to_upper()):
 		return ""
-	var image = zip_image(path, quality)
-	return Marshalls.raw_to_base64(image.save_jpg_to_buffer(0.90))
+	var image = Image.load_from_file(path)
+	var zimage = zip_image(image, quality)
+	return Marshalls.raw_to_base64(zimage.save_jpg_to_buffer(0.90))
+
+func texture_to_base64(texture : Texture2D, quality : String = "auto"):
+	var image = texture.get_image()
+	var zimage = zip_image(image, quality)
+	return Marshalls.raw_to_base64(zimage.save_jpg_to_buffer(0.90))

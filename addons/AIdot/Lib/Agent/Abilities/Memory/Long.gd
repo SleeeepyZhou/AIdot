@@ -1,1 +1,2 @@
-extends Resource
+class_name LongMemory
+extends AgentMemory

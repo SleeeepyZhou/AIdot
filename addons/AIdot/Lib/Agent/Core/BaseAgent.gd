@@ -1,5 +1,8 @@
+class_name BaseAgent
 extends Node
 
+var model : BaseModel
+var api : AIAPI
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

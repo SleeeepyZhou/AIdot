@@ -1,3 +1,15 @@
+```mermaid
+flowchart TD
+    A[需要参与场景树?]
+    A -->|Yes| B[需要图形/物理表现?]
+    A -->|No| C[需要持久化存储?]
+    B -->|Yes| D[Node2D/Sprite2D]
+    B -->|No| E[Node]
+    C -->|Yes| F[Resource]
+    C -->|No| G[需要跨帧存活?]
+    G -->|Yes| H[RefCounted]
+    G -->|No| I[Object]
+```
 
 ```diff
 AIdot/
@@ -72,13 +84,21 @@ flowchart TB
 	end
 	ENV[Game World] ==> Perception
 	T ==> ENV
+
+
 	subgraph M[Model Layer]
 		direction TB
-		MADAPTER[API Adapter] --> MAPI1[...]
-		MADAPTER --> MAPI2[Gemini]
-		MADAPTER --> MAPI3[HuggingFace]
-		MTHREAD[Thread Pool] -->|Async Call| MADAPTER
+		MADAPTER[API Adapter]
+        subgraph Model[Model Resource]
+            BaseModel
+            MAPI1[OpenAI] --> BaseModel
+            MAPI2[Gemini] --> BaseModel
+            MAPI3[HuggingFace] --> BaseModel
+            MAPI4[...] --> BaseModel
+        end
+		Model <--> MADAPTER
 	end
+
 
 	subgraph Toolbox[Toolbox System]
 		direction TB
@@ -120,6 +140,7 @@ flowchart TB
 		Cache <-->|Cache| API
 		Security -->|Cache| API
 	end
+
 		classDef core fill:#F5F5F5,stroke:#BDBDBD;
 		classDef security fill:#FFEBEE,stroke:#FFCDD2;
 		classDef storage fill:#E3F2FD,stroke:#BBDEFB;
@@ -128,6 +149,7 @@ flowchart TB
 		class Core core
 		class Security security
 		class Storage storage
+
 
 	subgraph MultiAgent
 		subgraph Agent
@@ -160,17 +182,21 @@ flowchart TB
 		A2[Agent3]
 		A3[...]
 	end
+
 	subgraph Coordination
 		C[AgentCoordinator]
 		A1 <--> C
 		A2 <--> C
 		A3 <--> C
 	end
-	M --> A
-	M --> A1
-	M --> A2
-	M --> A3
+
+
+	MADAPTER <--> A
+	MADAPTER <--> A1
+	MADAPTER <--> A2
+	MADAPTER <--> A3
 	A <--> C
+
 
 	class ENV env
 	class MEM,M model
