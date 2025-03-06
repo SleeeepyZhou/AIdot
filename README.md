@@ -5,11 +5,11 @@
   </a>
 </p>
 
-<div align="center">
+<!-- <div align="center">
 
 [![Moe Counter](https://count.getloli.com/@AIdot?name=AIdot&theme=moebooru)](https://github.com/SleeeepyZhou/AIdot)
 
-</div>
+</div> -->
 
 ## <center>Multi-Agent framework for Godot</center>
 
@@ -80,6 +80,7 @@ flowchart LR
 
 ### Dependent
 [Godot-AIUtils](https://github.com/SleeeepyZhou/Godot-AIUtils) by SleeeepyZhou Apache-2.0
+[MatrixCalc](https://github.com/SleeeepyZhou/MatrixCalc) by SleeeepyZhou MIT
 
 ### Thanks
 This project learns from the renowned Multi-Agent framework [Camel](https://www.camel-ai.org), 
