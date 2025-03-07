@@ -2,6 +2,16 @@
 class_name OpenAIModel
 extends BaseModel
 
+func _init(mod_type, url : String = "", key : String = "", config : Dictionary = {}):
+	model_type = mod_type
+	api_url = url
+	if api_url.is_empty():
+		pass
+	api_key = key
+	if api_key.is_empty():
+		pass
+	model_config_dict = config
+
 func _generator_request(prompt : String, history : Array = []):
 	var current = [{
 		"role": "user",
@@ -30,7 +40,7 @@ func _generator_request(prompt : String, history : Array = []):
 	var requset_data = {
 		"head" : headers,
 		"body" : data,
-		"url" : api_url
+		"url" : api_url + "/chat/completions"
 	}
 	return requset_data
 

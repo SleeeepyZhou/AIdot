@@ -1,0 +1,10 @@
+{
+	"url":{
+		"OPENAI" : "https://api.openai.com/v1", 
+		"QWEN" : "https://dashscope.aliyuncs.com/compatible-mode/v1"
+	},
+	"key":{
+		"OPENAI" : "", 
+		"QWEN" : ""
+	}
+}

@@ -1,7 +1,8 @@
 @icon("res://addons/AIdot/Res/UI/key_icon.png")
 class_name AIAPI
 extends HTTPRequest
-## AIAPI abstract base class, containing commonly used API methods.
+## AIAPI abstract base class, used to encapsulate Godot's HTTP interface, containing commonly 
+## used API methods.
 
 ## The model used by the API.
 @export var model : BaseModel
@@ -32,7 +33,7 @@ func _get_result(head : PackedStringArray, data : String, url : String = "") -> 
 ## Max retry. 
 var RETRY_ATTEMPTS = 5
 var _retry_times : int = 0
-## The state of attempting to retry. [429, 500, 502, 503, 504]
+## The state of attempting to retry. Default is [429, 500, 502, 503, 504]
 var status_list = [429, 500, 502, 503, 504]
 func _request_retry(head : PackedStringArray, data : String, url : String) -> String:
 	# 建立请求

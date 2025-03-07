@@ -13,9 +13,9 @@ var model_config_dict : Dictionary = {}
 @export var api_key : String = ""
 
 func _init(mod_type, url : String = "", key : String = "", config : Dictionary = {}):
+	model_type = mod_type
 	api_url = url
 	api_key = key
-	model_type = mod_type
 	model_config_dict = config
 
 func _parse_memory(agent_memory : Array):
@@ -32,7 +32,7 @@ func _generator_request(prompt : String, history):
 	}
 	return requset_data
 ## Format the request data into the request data dictionary required by the model.
-func create_request(prompt : String, history : Array = []):
+func prepare_request(prompt : String, history : Array = []):
 	var mod_memory = format_memory(history)
 	var requset_data = _generator_request(prompt,mod_memory)
 	return requset_data
