@@ -6,6 +6,7 @@ export.cfg
 export_presets.cfg
 
 .note/
+Test/
 
 # Imported translations (automatically generated from CSV files)
 *.translation

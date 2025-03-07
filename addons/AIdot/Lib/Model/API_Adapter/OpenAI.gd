@@ -1,7 +1,8 @@
+@tool
 class_name OpenAIModel
 extends BaseModel
 
-func create_request(prompt : String, history : Array = []):
+func _generator_request(prompt : String, history : Array = []):
 	var current = [{
 		"role": "user",
 		"content":

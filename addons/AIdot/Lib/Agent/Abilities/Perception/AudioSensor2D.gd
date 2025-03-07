@@ -1,3 +1,4 @@
+class_name AudioSensor2D
 extends AudioListener2D
 
 

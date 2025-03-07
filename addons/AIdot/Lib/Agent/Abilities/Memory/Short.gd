@@ -4,3 +4,9 @@ extends AgentMemory
 var history : Array = [
 	
 ]
+
+func _get_memory():
+	pass
+
+func _set_memory():
+	pass
