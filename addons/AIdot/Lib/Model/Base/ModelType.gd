@@ -1,5 +1,15 @@
 class_name ModelType
 
+static func model_type(model : BaseModel):
+	if model is OpenAIModel:
+		return "OPENAI"
+	elif model is QwenModel:
+		return "QWEN"
+	
+	
+	else:
+		return DEFAULT
+
 const DEFAULT = ""
 
 # GPT models

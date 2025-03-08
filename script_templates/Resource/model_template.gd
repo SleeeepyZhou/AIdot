@@ -5,21 +5,6 @@
 #class_name NameModel
 extends BaseModel
 
-
-func _init(mod_type, url : String = "", key : String = "", config : Dictionary = {}):
-	model_type = mod_type
-	if url.is_empty() or key.is_empty():
-		var _json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
-		var dafult = _json_tool.read_json("res://addons/AIdot/Res/Data/base_url.json")
-	api_url = url
-	if api_url.is_empty():
-		var temp_url
-		pass
-	api_key = key
-	if api_key.is_empty():
-		pass
-	model_config_dict = config
-
 # Format the historical records into the historical record format used by the model.
 func _parse_memory(agent_memory : Array):
 	var history

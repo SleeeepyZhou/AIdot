@@ -1,7 +1,7 @@
 # <center>AIdot</center>
 <p align="center">
   <a href="https://github.com/SleeeepyZhou/AIdot">
-	<img src="./addons/AIdot/Res/Asset/icon.png" width="150" alt="AIdot logo">
+	<img src="./addons/AIdot/Res/UI/icon.png" width="150" alt="AIdot logo">
   </a>
 </p>
 

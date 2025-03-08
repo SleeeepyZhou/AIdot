@@ -14,6 +14,9 @@ var model_config_dict : Dictionary = {}
 
 func _init(mod_type, url : String = "", key : String = "", config : Dictionary = {}):
 	model_type = mod_type
+	if api_url.is_empty():
+		
+		pass
 	api_url = url
 	api_key = key
 	model_config_dict = config
@@ -55,3 +58,17 @@ func save_model(path : String):
 		print(model_name, get_rid(), " saved successfully.")
 	else:
 		print(model_name, get_rid(), " save failed.")
+
+func _model_env():
+	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
+	var env_path
+	if Engine.is_editor_hint():
+		env_path = "res://.env"
+	else:
+		env_path = "user://.env"
+	var file = FileAccess.open(env_path, FileAccess.READ)
+	
+	var env_data
+	if file:
+		env_data = json_tool.read_json(env_path)
+	var mod_type = ModelType.model_type(self)
