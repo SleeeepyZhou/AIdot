@@ -14,12 +14,12 @@ var model_config_dict : Dictionary = {}
 
 func _init(mod_type, url : String = "", key : String = "", config : Dictionary = {}):
 	model_type = mod_type
+	model_config_dict = config
+	api_url = url
+	api_key = key
 	if api_url.is_empty():
 		
 		pass
-	api_url = url
-	api_key = key
-	model_config_dict = config
 
 func _parse_memory(agent_memory : Array):
 	return agent_memory
