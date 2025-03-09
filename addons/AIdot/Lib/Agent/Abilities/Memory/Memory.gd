@@ -10,3 +10,8 @@ func _set_memory():
 	pass
 func write_memory():
 	pass
+
+func _add():
+	pass
+func add_memory():
+	pass

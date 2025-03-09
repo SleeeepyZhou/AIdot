@@ -3,10 +3,9 @@ extends EditorPlugin
 
 
 func _enter_tree() -> void:
-	# Initialization of the plugin goes here.
-	pass
+	add_autoload_singleton("ModelLayer", "res://addons/AIdot/Lib/Model/ModelLayer.gd")
 
 
 func _exit_tree() -> void:
-	# Clean-up of the plugin goes here.
-	pass
+	remove_autoload_singleton("ModelLayer")
+	
