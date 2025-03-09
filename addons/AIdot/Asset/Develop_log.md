@@ -1,3 +1,7 @@
+Future solutions:   
+- [ ] 流式传输支持  
+- [ ] RAG原生支持  
+
 ```mermaid
 ---
 displayMode: compact

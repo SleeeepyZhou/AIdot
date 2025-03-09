@@ -5,8 +5,8 @@ static func model_type(model : BaseModel):
 		return "OPENAI"
 	elif model is QwenModel:
 		return "QWEN"
-	#elif model is DeepSeekModel:
-		#return "DEEPSEEK"
+	elif model is DeepSeekModel:
+		return "DEEPSEEK"
 	
 	else:
 		return DEFAULT

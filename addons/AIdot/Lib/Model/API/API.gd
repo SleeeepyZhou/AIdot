@@ -7,11 +7,9 @@ extends HTTPRequest
 ## The model used by the API.
 @export var model : BaseModel
 
-func _init(mod : BaseModel):
+func _init(mod : BaseModel, time_out : int = 5):
 	model = mod
-
-func _ready() -> void:
-	timeout = 5
+	timeout = time_out
 
 # 标准化收发
 var _running : bool = false

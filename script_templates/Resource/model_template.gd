@@ -30,5 +30,18 @@ func _generator_request(prompt : String, history, role : String = "user",
 
 # Parse response data.
 func _parse_response(data : Dictionary):
-	var answer : String = ""
+	var answer : Dictionary = {
+		"debug":{
+			"model": "",
+			"id": "response id",
+			"finish_reason": "", # [stop, length, content_filter, insufficient_system_resource]
+			"time": Time.get_unix_time_from_system(),
+			"total_tokens": 0
+			},
+		"reasoning_content": "",
+		"message":{
+			"role": "assistant",
+			"content": JSON.stringify(data)
+			},
+	}
 	return answer

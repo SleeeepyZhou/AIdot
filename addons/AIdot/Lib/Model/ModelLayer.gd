@@ -15,4 +15,5 @@ func _get_env_example(mod_type : String) -> Array:
 ## This is an example method that can directly override and modify the API key reading behavior 
 ## after exporting application.
 func get_user_env(mod_type : String) -> Array:
-	return _get_env_example(mod_type) # url, key
+	var env_set = _get_env_example(mod_type)
+	return env_set # url, key

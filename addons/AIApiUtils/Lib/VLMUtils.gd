@@ -35,18 +35,6 @@ var api_url : String
 var api_key : String
 var time_out : int = 10
 
-const QUALITY = ["high", "low", "auto"]
-const API_TYPE = ["gpt-4o-2024-08-06", "gpt-4o-mini", "qwen-vl-plus", \
-				"qwen-vl-max", "claude", "gemini-1.5-pro-exp-0801", "local"]
-
-var API_FUNC : Array[Callable] = [Callable(self,"openai_api"), 
-								Callable(self,"openai_api"),
-								Callable(self,"qwen_api"), 
-								Callable(self,"qwen_api"), 
-								Callable(self,"claude_api"),
-								Callable(self,"gemini_api"),
-								Callable(self,"openai_api")]
-
 
 ## 各家API模块
 
@@ -215,46 +203,3 @@ func claude_api(input) -> String:
 		return answer
 	else:
 		return result[1]
-
-
-func qwen_api(input) -> String:
-	var inputprompt : String = input[0]
-	var base64image : String = input[1]
-	var mod : String = input[2]
-	
-	var tempdata = {
-		"model": mod,
-		"input": {
-			"messages": [
-				{"role": "system",
-				"content": [{"text": "You are a helpful assistant."}]},
-				{"role": "user",
-				"content": [{"text": inputprompt}]}
-						]
-				}
-					}
-	if !base64image.is_empty():
-		tempdata["input"]["messages"][1]["content"].push_front({"image": "data:image/jpeg;base64," + base64image})
-	var data = JSON.stringify(tempdata)
-	var headers : PackedStringArray = ["Authorization: Bearer " + api_key,
-										"Content-Type: application/json"]
-	
-	var result = await get_result(headers, data)
-	var answer = ""
-	if result[0]:
-		var json_result = result[1]
-		if json_result != null:
-			# 安全地尝试
-			if json_result.has("output") and\
-				json_result["output"].has("choices") and\
-				json_result["output"]["choices"].size() > 0 and\
-				json_result["output"]["choices"][0].has("message") and\
-				json_result["output"]["choices"][0]["message"].has("content") and\
-				json_result["output"]["choices"][0]["message"]["content"].size() > 0 and\
-				json_result["output"]["choices"][0]["message"]["content"][0].has("text"):
-				answer = json_result["output"]["choices"][0]["message"]["content"][0]["text"]
-			else:
-				answer = str(json_result)
-	elif !result[0]:
-		answer = result[1]
-	return answer

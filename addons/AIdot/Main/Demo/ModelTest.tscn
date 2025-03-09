@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqptt5qmlmftv"]
+
+[ext_resource type="Script" uid="uid://cdxe3bo18gfew" path="res://addons/AIdot/Main/Demo/ModelTest.gd" id="1_an4xe"]
+
+[node name="Test" type="Node2D"]
+script = ExtResource("1_an4xe")
