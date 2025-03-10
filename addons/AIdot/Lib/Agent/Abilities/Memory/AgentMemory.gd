@@ -21,3 +21,16 @@ func add_memory():
 
 func save():
 	pass
+
+## Used to generate template memory blocks. 
+static func template_memory(content : String, role : String, char_name : String = ""):
+	if char_name.is_empty():
+		return {
+			"role": role,
+			"content": content
+		}
+	return {
+		"role": role,
+		"name": char_name,
+		"content": content
+	}

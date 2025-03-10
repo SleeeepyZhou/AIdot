@@ -5,8 +5,8 @@ extends Resource
 
 @export_group("Model informationf")
 @export var model_name : String = "BaseModel"
-## In [ModelType] ["res://addons/AIdot/Lib/Model/Base/ModelType.gd"]
-@export var model_type : String = ModelType.DEFAULT
+## In [ModelLayer]
+@export var model_type : String = ModelLayer.DEFAULT
 @export var model_config_dict : Dictionary = {}
 
 @export_group("API information")
@@ -16,7 +16,7 @@ extends Resource
 func _get_env() -> Array:
 	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
 	var env_data
-	var type = ModelType.get_type(model_type)
+	var type = ModelLayer.get_type(model_type)
 	if !OS.is_debug_build():
 		return ModelLayer.get_user_env(type)
 	else:
@@ -30,7 +30,7 @@ func _get_env() -> Array:
 		env_data = json_tool.read_json(env_path)
 	var env_set = [env_data["url"].get(type,""),env_data["key"].get(type,"")]
 	return env_set
-func _init(mod_type : String = ModelType.DEFAULT, 
+func _init(mod_type : String = ModelLayer.DEFAULT, 
 			url : String = "", key : String = "", config : Dictionary = {}):
 	model_type = mod_type
 	model_config_dict = config
@@ -109,7 +109,7 @@ func _parse_response(data : Dictionary):
 					"role": json_result["choices"][0]["message"]["role"],
 					"content": json_result["choices"][0]["message"]["content"]
 					},
-			}
+				}
 		else:
 			answer = str(json_result)
 	return answer
@@ -135,19 +135,6 @@ func get_response(response : Array) -> Array:
 		answer = "<think>" + parse["reasoning_content"] + "</think>"
 	answer += parse["message"]["content"]
 	return [answer, parse]
-
-## Used to generate template memory blocks. 
-static func template_memory(content : String, role : String, char_name : String = ""):
-	if char_name.is_empty():
-		return {
-			"role": role,
-			"content": content
-		}
-	return {
-		"role": role,
-		"name": char_name,
-		"content": content
-	}
 
 func save_model(path : String):
 	var saved = ResourceSaver.save(self,path)

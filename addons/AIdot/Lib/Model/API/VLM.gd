@@ -5,7 +5,7 @@ extends AIAPI
 func _request(prompt : String, image : Texture2D = null, history : Array = [], 
 			role : String = "user", char_name : String = ""):
 	var base64 := ["",""]
-	if !ModelType.VLM_MODEL.has(model.model_type):
+	if !ModelLayer.VLM_MODEL.has(model.model_type):
 		image = null
 		push_error("This model is not a VLM! Ignore multimodal inputs.")
 	if image:

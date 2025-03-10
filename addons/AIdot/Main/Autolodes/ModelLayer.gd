@@ -1,19 +1,23 @@
-class_name ModelType
+extends Node
 
-const VLM_MODEL = [ModelType.OPENAI.GPT_4O, ModelType.OPENAI.GPT_4O_MINI, ModelType.OPENAI.O3_MINI,
-	ModelType.OPENAI.O1, ModelType.OPENAI.O1_MINI, ModelType.OPENAI.O1_PREVIEW, 
-	ModelType.QWEN.QWEN_2_5_VL_72B, ModelType.QWEN.QWEN_VL_MAX, ModelType.QWEN.QWEN_VL_PLUS]
+func _get_env_example(mod_type : String) -> Array:
+	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
+	var env_path = "user://.env"
+	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
+	var file = FileAccess.open(env_path, FileAccess.READ)
+	if !file:
+		var dir := DirAccess.open("user://")
+		if dir.copy(EXAMPLE_PATH, env_path) != OK:
+			push_error("Unable to create 'res://.env' file, please copy the ENV_example.")
+	var env_data = json_tool.read_json(env_path)
+	return [env_data["url"].get(mod_type,""),env_data["key"].get(mod_type,"")] # url, key
 
-static func get_type(model_type : String):
-	if _oai.has(model_type):
-		return "OPENAI"
-	elif _qw.has(model_type):
-		return "QWEN"
-	elif _ds.has(model_type):
-		return "DEEPSEEK"
-	
-	else:
-		return DEFAULT
+## This is an example method that can directly override and modify the API key reading behavior 
+## after exporting application.
+func get_user_env(mod_type : String) -> Array:
+	var env_set = _get_env_example(mod_type)
+	return env_set # url, key
+
 
 func creat_model(mod_type : String, url : String = "", key : String = "", config : Dictionary = {}):
 	var type = get_type(mod_type)
@@ -26,6 +30,22 @@ func creat_model(mod_type : String, url : String = "", key : String = "", config
 	
 	else:
 		return BaseModel.new(mod_type, url, key, config)
+
+
+const VLM_MODEL = [OPENAI.GPT_4O, OPENAI.GPT_4O_MINI, OPENAI.O3_MINI,
+	OPENAI.O1, OPENAI.O1_MINI, OPENAI.O1_PREVIEW, 
+	QWEN.QWEN_2_5_VL_72B, QWEN.QWEN_VL_MAX, QWEN.QWEN_VL_PLUS]
+
+static func get_type(model_type : String):
+	if _oai.has(model_type):
+		return "OPENAI"
+	elif _qw.has(model_type):
+		return "QWEN"
+	elif _ds.has(model_type):
+		return "DEEPSEEK"
+	
+	else:
+		return DEFAULT
 
 const DEFAULT = "basemodel"
 

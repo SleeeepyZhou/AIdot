@@ -1,1 +1,1 @@
-extends Resource
+extends Node
