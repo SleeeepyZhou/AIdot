@@ -1,19 +1,38 @@
 class_name ModelType
 
-static func model_type(model : BaseModel):
-	if model is OpenAIModel:
+const VLM_MODEL = [ModelType.OPENAI.GPT_4O, ModelType.OPENAI.GPT_4O_MINI, ModelType.OPENAI.O3_MINI,
+	ModelType.OPENAI.O1, ModelType.OPENAI.O1_MINI, ModelType.OPENAI.O1_PREVIEW, 
+	ModelType.QWEN.QWEN_2_5_VL_72B, ModelType.QWEN.QWEN_VL_MAX, ModelType.QWEN.QWEN_VL_PLUS]
+
+static func get_type(model_type : String):
+	if _oai.has(model_type):
 		return "OPENAI"
-	elif model is QwenModel:
+	elif _qw.has(model_type):
 		return "QWEN"
-	elif model is DeepSeekModel:
+	elif _ds.has(model_type):
 		return "DEEPSEEK"
 	
 	else:
 		return DEFAULT
 
-const DEFAULT = ""
+func creat_model(mod_type : String, url : String = "", key : String = "", config : Dictionary = {}):
+	var type = get_type(mod_type)
+	if type == "OPENAI":
+		return OpenAIModel.new(mod_type, url, key, config)
+	elif type == "QWEN":
+		return QwenModel.new(mod_type, url, key, config)
+	elif type == "DEEPSEEK":
+		return DeepSeekModel.new(mod_type, url, key, config)
+	
+	else:
+		return BaseModel.new(mod_type, url, key, config)
+
+const DEFAULT = "basemodel"
 
 # GPT models
+const _oai = [OPENAI.GPT_3_5_TURBO, OPENAI.GPT_4, OPENAI.GPT_4_TURBO, OPENAI.GPT_4O, 
+			OPENAI.GPT_4O_MINI, OPENAI.GPT_4_5_PREVIEW, OPENAI.O1, OPENAI.O1_PREVIEW,
+			OPENAI.O1_MINI, OPENAI.O3_MINI]
 class OPENAI:
 	const GPT_3_5_TURBO = "gpt-3.5-turbo"
 	const GPT_4 = "gpt-4"
@@ -27,11 +46,16 @@ class OPENAI:
 	const O3_MINI = "o3-mini"
 
 # DeepSeek models
+const _ds = [DEEPSEEK.DEEPSEEK_CHAT, DEEPSEEK.DEEPSEEK_REASONER]
 class DEEPSEEK:
 	const DEEPSEEK_CHAT = "deepseek-chat"
 	const DEEPSEEK_REASONER = "deepseek-reasoner"
 
 # Qwen models (Aliyun)
+const _qw = [QWEN.QWEN_MAX, QWEN.QWEN_PLUS, QWEN.QWEN_TURBO, QWEN.QWEN_LONG, QWEN.QWEN_VL_MAX,
+			QWEN.QWEN_VL_PLUS, QWEN.QWEN_MATH_PLUS, QWEN.QWEN_MATH_TURBO, QWEN.QWEN_CODER_TURBO,
+			QWEN.QWEN_2_5_CODER_32B, QWEN.QWEN_2_5_VL_72B, QWEN.QWEN_2_5_72B, QWEN.QWEN_2_5_32B,
+			QWEN.QWEN_2_5_14B, QWEN.QWEN_QWQ_32B, QWEN.QWEN_QVQ_72B]
 class QWEN:
 	const QWEN_MAX = "qwen-max"
 	const QWEN_PLUS = "qwen-plus"

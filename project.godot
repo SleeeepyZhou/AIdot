@@ -19,3 +19,7 @@ config/icon="res://addons/AIdot/Res/UI/icon.png"
 [autoload]
 
 ModelLayer="*res://addons/AIdot/Lib/Model/ModelLayer.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/AIdot/plugin.cfg")

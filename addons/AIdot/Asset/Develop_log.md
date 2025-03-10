@@ -1,5 +1,11 @@
-Future solutions:   
+## Future solutions:   
+
+### ModelLayer
+- [ ] 每个Model的UI图标  
+- [ ] ModelLayer性能优化  
 - [ ] 流式传输支持  
+
+### 
 - [ ] RAG原生支持  
 
 ```mermaid

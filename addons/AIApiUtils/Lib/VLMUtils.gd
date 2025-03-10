@@ -1,26 +1,7 @@
 extends Node
 
-## 用户数据
-const SAVEPATH = "user://data.api"
-func reset():
-	var access = DirAccess.open(SAVEPATH.get_base_dir())
-	access.remove(SAVEPATH)
-func api_save(data : Array = ["https://api.openai.com/v1/chat/completions", ""]):
-	var save_data = FileAccess.open(SAVEPATH, FileAccess.WRITE)
-	save_data.store_var(data)
-	save_data.close()
 func readsave():
 	var save_data : Array = ["https://api.openai.com/v1/chat/completions", ""]
-	if FileAccess.file_exists(SAVEPATH):
-		var data = FileAccess.open(SAVEPATH, FileAccess.READ).get_var()
-		if not data:
-			data = save_data
-		save_data = data
-	else:
-		api_save()
-		save_data = readsave()
-	api_url = save_data[0]
-	api_key = save_data[1]
 	return save_data
 
 
@@ -63,54 +44,6 @@ func get_result(headers, data, sss=""):
 
 # 结构化输出
 var format : Dictionary = {}
-
-func openai_api(input : Array) -> String:
-	# 取参
-	var inputprompt : String = input[0]
-	var base64image : String = input[1]
-	var mod : String = input[2]
-	
-	# 构造
-	var temp_data = {
-		"model": mod,
-		"messages": [
-				{
-				"role": "user",
-				"content":
-						[{"type": "text", "text": inputprompt}]
-				}
-					],
-		"max_tokens": 300
-		}
-	var headers : PackedStringArray = ["Content-Type: application/json", 
-										"Authorization: Bearer " + api_key]
-	if !format.is_empty() and !is_run:
-		temp_data["response_format"] = format
-	if !base64image.is_empty():
-		temp_data["messages"][0]["content"].push_front(
-							{"type": "image_url", 
-							"image_url":
-								{"url": "data:image/jpeg;base64," + base64image,
-								"detail": input[3]}})
-	var data = JSON.stringify(temp_data)
-	is_run = true
-	
-	# 结果
-	var result = await get_result(headers, data)
-	if result[0]:
-		var answer : String = ""
-		var json_result = result[1]
-		if json_result != null:
-			# 安全地尝试
-			if json_result.has("choices") and json_result["choices"].size() > 0 and\
-					json_result["choices"][0].has("message") and\
-					json_result["choices"][0]["message"].has("content"):
-				answer = json_result["choices"][0]["message"]["content"]
-			else:
-				answer = str(json_result)
-		return answer
-	else:
-		return result[1]
 
 # 词，图，模，质
 func gemini_api(input) -> String:

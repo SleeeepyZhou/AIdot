@@ -3,19 +3,20 @@
 class_name BaseModel
 extends Resource
 
-@export_group("Model inf")
+@export_group("Model informationf")
 @export var model_name : String = "BaseModel"
+## In [ModelType] ["res://addons/AIdot/Lib/Model/Base/ModelType.gd"]
 @export var model_type : String = ModelType.DEFAULT
 @export var model_config_dict : Dictionary = {}
 
-@export_group("API inf")
+@export_group("API information")
 @export var api_url : String = ""
 @export var api_key : String = ""
 
 func _get_env() -> Array:
 	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
 	var env_data
-	var type = ModelType.model_type(self)
+	var type = ModelType.get_type(model_type)
 	if !OS.is_debug_build():
 		return ModelLayer.get_user_env(type)
 	else:
@@ -29,7 +30,8 @@ func _get_env() -> Array:
 		env_data = json_tool.read_json(env_path)
 	var env_set = [env_data["url"].get(type,""),env_data["key"].get(type,"")]
 	return env_set
-func _init(mod_type, url : String = "", key : String = "", config : Dictionary = {}):
+func _init(mod_type : String = ModelType.DEFAULT, 
+			url : String = "", key : String = "", config : Dictionary = {}):
 	model_type = mod_type
 	model_config_dict = config
 	api_url = url
@@ -76,7 +78,6 @@ func _generator_request(prompt : String, history, role : String = "user",
 		"url" : api_url + "/chat/completions"
 	}
 	return requset_data
-
 ## Format the request data into the request data dictionary required by the model.
 func prepare_request(prompt : String, memory : Array = [], role : String = "user",
 					char_name : String = "", base64url : Array = ["",""]):
@@ -128,7 +129,7 @@ func _get_debug_response(response : Array) -> Dictionary:
 func get_response(response : Array) -> Array:
 	var parse = _get_debug_response(response)
 	if parse.get("error"):
-		return [parse["error"], parse]
+		return ["Error: " + parse["error"], parse]
 	var answer = ""
 	if parse.get("reasoning_content") and !parse["reasoning_content"].is_empty():
 		answer = "<think>" + parse["reasoning_content"] + "</think>"

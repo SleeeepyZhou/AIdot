@@ -5,15 +5,17 @@ extends HTTPRequest
 ## used API methods.
 
 ## The model used by the API.
-@export var model : BaseModel
+@export var model : BaseModel = null
 
-func _init(mod : BaseModel, time_out : int = 5):
+func _init(mod : BaseModel = null, time_out : int = 8):
 	model = mod
 	timeout = time_out
 
 # 标准化收发
 var _running : bool = false
 func _get_result(head : PackedStringArray, data : String, url : String = "") -> Array:
+	if !model:
+		push_error("API Node has no model")
 	if _running:
 		return [false, "API Node is busy."]
 	_running = true
