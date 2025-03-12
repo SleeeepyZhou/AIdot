@@ -1,4 +1,7 @@
-class_name BaseAgent
+@tool
 extends Node
+class_name BaseAgent
 
-@export_enum("user","system","assistant","tool") var role : String = "assistant"
+@export var agent_name : String = ""
+
+@export_enum("user","assistant","tool") var role : String = "assistant"

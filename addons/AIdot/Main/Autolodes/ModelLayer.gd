@@ -1,3 +1,4 @@
+@tool
 extends Node
 
 func _get_env_example(mod_type : String) -> Array:

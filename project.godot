@@ -18,8 +18,9 @@ config/icon="res://addons/AIdot/Res/UI/icon.png"
 
 [autoload]
 
+MatrixLib="*res://addons/matrix_calc/Lib.gd"
 ModelLayer="*res://addons/AIdot/Main/Autolodes/ModelLayer.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AIdot/plugin.cfg")
+enabled=PackedStringArray("res://addons/AIdot/plugin.cfg", "res://addons/matrix_calc/plugin.cfg")

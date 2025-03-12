@@ -1,13 +1,19 @@
+@tool
 @icon("res://addons/AIdot/Res/UI/key_icon.png")
-class_name AIAPI
 extends HTTPRequest
+class_name AIAPI
 ## AIAPI abstract base class, used to encapsulate Godot's HTTP interface, containing commonly 
 ## used API methods.
 
 ## The model used by the API.
 @export var model : BaseModel = null
 
-func _init(mod : BaseModel = null, time_out : int = 8):
+## Reply signal contains a parsed reply string or error message Dictionary for debug. 
+signal response_debug(debug : Dictionary)
+## Reply signal contains a parsed reply string or error String and debug Dictionary.
+signal response(answer : String, debug : Dictionary)
+
+func _init(mod : BaseModel = null, time_out : int = 10):
 	model = mod
 	timeout = time_out
 

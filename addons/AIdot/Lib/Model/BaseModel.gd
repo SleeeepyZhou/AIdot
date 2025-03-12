@@ -1,7 +1,7 @@
 @tool
 @icon("res://addons/AIdot/Res/UI/AIResource.svg")
-class_name BaseModel
 extends Resource
+class_name BaseModel
 
 @export_group("Model informationf")
 @export var model_name : String = "BaseModel"
@@ -48,7 +48,6 @@ func _parse_memory(agent_memory : Array = []):
 func format_memory(agent_memory : Array):
 	return _parse_memory(agent_memory)
 
-const _ROLE = ["user", "system", "assistant", "tool"]
 ## Compatible with OAI
 func _generator_request(prompt : String, history, role : String = "user", 
 				char_name : String = "", base64url : Array = ["",""]):
@@ -79,6 +78,7 @@ func _generator_request(prompt : String, history, role : String = "user",
 	}
 	return requset_data
 ## Format the request data into the request data dictionary required by the model.
+const _ROLE = ["user", "system", "assistant", "tool"]
 func prepare_request(prompt : String, memory : Array = [], role : String = "user",
 					char_name : String = "", base64url : Array = ["",""]):
 	if !_ROLE.has(role):
@@ -86,6 +86,10 @@ func prepare_request(prompt : String, memory : Array = [], role : String = "user
 	var mod_memory = format_memory(memory)
 	var requset_data = _generator_request(prompt, mod_memory, role, char_name, base64url)
 	requset_data.merge(model_config_dict, true)
+	
+	## Currently not supporting stream.
+	requset_data.merge({"stream": false}, true)
+	
 	return requset_data
 
 func _parse_response(data : Dictionary):
