@@ -2,7 +2,7 @@ class_name AIMemory
 extends Resource
 ## Temporarily stored as text, RAG will be supported in the future.
 
-@export var long_memory : bool = false
+@export var rag_memory : bool = false
 
 # Short Memory
 var _history : Array = []
@@ -35,7 +35,7 @@ func read_memory(len : int = 0):
 # Long Memory
 var _long
 func _out_memory():
-	if long_memory:
+	if rag_memory:
 		pass
 	else:
 		pass
