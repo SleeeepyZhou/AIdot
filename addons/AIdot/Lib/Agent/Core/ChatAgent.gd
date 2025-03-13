@@ -1,12 +1,14 @@
 extends BaseAgent
 class_name ChatAgent
 
+
+# Model
 var _api : LLMAPI = null:
 	set(n):
 		_api = n
 		add_child(n)
 	get:
-		assert(_api, "No API Node!!!")
+		assert(_api, "No Model!!!")
 		return _api
 @export var model : BaseModel = null:
 	set(m):
@@ -16,11 +18,25 @@ var _api : LLMAPI = null:
 		else:
 			_api = LLMAPI.new(model)
 
+
+# Memory
 @export var long_memory : bool = false:
 	set(b):
 		long_memory = b
-		memory._long_memory = b
-var memory : AgentMemory = AgentMemory.new()
+		memory.long_memory = b
+@export var auto_save_memory : bool = false
+var memory : AIMemory = AIMemory.new()
+
+
+# Perception
+
+
+# Action
+
+
+# Planning
+
+
 
 func _ready() -> void:
 	

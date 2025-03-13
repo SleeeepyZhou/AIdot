@@ -13,21 +13,38 @@ class_name BaseModel
 @export var api_url : String = ""
 @export var api_key : String = ""
 
+func _update_gitignore():
+	var gitignore_path = "res://.gitignore"
+	var gitignore_content = []
+	if !FileAccess.file_exists(gitignore_path):
+		var file = FileAccess.open(gitignore_path, FileAccess.WRITE)
+		file.store_string(".env\n")
+		file.close()
+	else:
+		var file = FileAccess.open(gitignore_path, FileAccess.READ)
+		gitignore_content = file.get_as_text().split("\n")
+		file.close()
+		if !gitignore_content.has(".env"):
+			var Wfile = FileAccess.open(gitignore_path, FileAccess.WRITE)
+			gitignore_content.append(".env")
+			var ignore = "\n".join(gitignore_content)
+			Wfile.store_string(ignore)
 func _get_env() -> Array:
-	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
-	var env_data
 	var type = ModelLayer.get_type(model_type)
 	if !OS.is_debug_build():
 		return ModelLayer.get_user_env(type)
-	else:
-		var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
-		var env_path = "res://.env"
-		var file = FileAccess.open(env_path, FileAccess.READ)
-		if !file:
-			var dir := DirAccess.open("res://")
-			if dir.copy(EXAMPLE_PATH, env_path) != OK:
-				push_error("Unable to create 'res://.env' file, please copy the ENV_example.")
-		env_data = json_tool.read_json(env_path)
+	
+	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
+	var env_data
+	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
+	var env_path = "res://.env"
+	var file = FileAccess.open(env_path, FileAccess.READ)
+	if !file:
+		var dir := DirAccess.open("res://")
+		_update_gitignore()
+		if dir.copy(EXAMPLE_PATH, env_path) != OK:
+			push_error("Unable to create 'res://.env' file, please copy the ENV_example.")
+	env_data = json_tool.read_json(env_path)
 	var env_set = [env_data["url"].get(type,""),env_data["key"].get(type,"")]
 	return env_set
 func _init(mod_type : String = ModelLayer.DEFAULT, 
