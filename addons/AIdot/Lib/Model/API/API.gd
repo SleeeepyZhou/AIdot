@@ -20,8 +20,7 @@ func _init(mod : BaseModel = null, time_out : int = 10):
 # 标准化收发
 var _running : bool = false
 func _get_result(head : PackedStringArray, data : String, url : String = "") -> Array:
-	if !model:
-		push_error("API Node has no model")
+	assert(model,"API Node has no model!!!")
 	if _running:
 		return [false, "API Node is busy."]
 	_running = true

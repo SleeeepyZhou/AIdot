@@ -21,15 +21,18 @@ var _long_memory : bool = false:
 #func write_memory():
 	#pass
 
-func add_memory():
-	
-	pass
+func add_memory(content : String, role : String, char_name : String = ""):
+	var block = template_memory(content, role, char_name)
+	s_memory.add_block(block)
 
 func save():
 	pass
 
+const _Role = ["user","assistant","tool","system"]
+
 ## Used to generate template memory blocks. 
 static func template_memory(content : String, role : String, char_name : String = ""):
+	assert(_Role.has(role), "Wrong message role " + role +"!!!")
 	if char_name.is_empty():
 		return {
 			"role": role,

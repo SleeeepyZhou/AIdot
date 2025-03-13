@@ -78,6 +78,9 @@ flowchart LR
 	
 ```
 
+### Support
+Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol).  
+
 ### Dependent
 [Godot-AIUtils](https://github.com/SleeeepyZhou/Godot-AIUtils) by SleeeepyZhou Apache-2.0  
 [MatrixCalc](https://github.com/SleeeepyZhou/MatrixCalc) by SleeeepyZhou MIT
