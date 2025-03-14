@@ -70,9 +70,10 @@ func short_memory_len():
 	return length
 func add_memory(content : String, role : String, char_name : String = ""):
 	if memory_mod == MEMORY_MOD.ONE_SHOT:
-		_history.clear()
+		return
 	var block = template_memory(content, role, char_name)
 	_history.append(block)
+	
 	_out_memory_check()
 func read_memory(len : int = 0):
 	var m : Array = []
@@ -89,6 +90,7 @@ func set_memory(memory : Array):
 		assert(block.get("role"), "Incorrect memory format!!! Error: 'role'")
 		assert(block.get("content"), "Incorrect memory format!!! Error: 'content'")
 	_history = memory
+	
 	_out_memory_check()
 func write_memory(idx : int, content : String, role : String, char_name : String = ""):
 	if idx >= len(_history):
@@ -96,6 +98,8 @@ func write_memory(idx : int, content : String, role : String, char_name : String
 		return
 	var block = template_memory(content, role, char_name)
 	_history[idx] = block
+	
+	_out_memory_check()
 
 @export var edit_memory : Array[MemoryBlock] = []
 @export_tool_button("Read Memory") var _editorread = _editor_read
@@ -119,13 +123,15 @@ func _editor_set():
 var _long
 
 func _out_memory_check():
+	if memory_mod == MEMORY_MOD.ONE_SHOT:
+		_history.clear()
+		return
 	if short_memory_len() < max_character:
 		return
 	
 	match memory_mod:
-		MEMORY_MOD.ONE_SHOT:
-			_history.clear()
 		MEMORY_MOD.CHAT:
+			#reverse()
 			pass
 		MEMORY_MOD.AGENT:
 			pass
