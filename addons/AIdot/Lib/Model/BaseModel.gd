@@ -13,50 +13,25 @@ class_name BaseModel
 @export var api_url : String = ""
 @export var api_key : String = ""
 
-func _update_gitignore():
-	var gitignore_path = "res://.gitignore"
-	var gitignore_content = []
-	if !FileAccess.file_exists(gitignore_path):
-		var file = FileAccess.open(gitignore_path, FileAccess.WRITE)
-		file.store_string(".env\n")
-		file.close()
-	else:
-		var file = FileAccess.open(gitignore_path, FileAccess.READ)
-		gitignore_content = file.get_as_text().split("\n")
-		file.close()
-		if !gitignore_content.has(".env"):
-			var Wfile = FileAccess.open(gitignore_path, FileAccess.WRITE)
-			gitignore_content.append(".env")
-			var ignore = "\n".join(gitignore_content)
-			Wfile.store_string(ignore)
-func _get_env() -> Array:
-	var type = ModelLayer.get_type(model_type)
-	if !OS.is_debug_build():
-		return ModelLayer.get_user_env(type)
-	
-	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
-	var env_data
-	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
-	var env_path = "res://.env"
-	var file = FileAccess.open(env_path, FileAccess.READ)
-	if !file:
-		var dir := DirAccess.open("res://")
-		_update_gitignore()
-		if dir.copy(EXAMPLE_PATH, env_path) != OK:
-			push_error("Unable to create 'res://.env' file, please copy the ENV_example.")
-	env_data = json_tool.read_json(env_path)
-	var env_set = [env_data["url"].get(type,""),env_data["key"].get(type,"")]
-	return env_set
-func _init(mod_type : String = ModelLayer.DEFAULT, 
-			url : String = "", key : String = "", config : Dictionary = {}):
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "api_key":
+		property.hint |= PROPERTY_HINT_PASSWORD
+
+func _default_model():
+	model_type = ModelLayer.DEFAULT
+
+func _init(mod_type : String = "", url : String = "", key : String = "", 
+			config : Dictionary = {}):
 	model_type = mod_type
+	if model_type.is_empty():
+		_default_model()
 	model_config_dict = config
 	api_url = url
 	api_key = key
-	if api_url.is_empty():
-		var base_url = _get_env()
+	if url.is_empty():
+		var base_url = ModelLayer._get_env(model_type)
 		api_url = base_url[0]
-		if api_key.is_empty():
+		if key.is_empty():
 			api_key = base_url[1]
 
 func _parse_memory(agent_memory : Array = []):
@@ -65,7 +40,7 @@ func _parse_memory(agent_memory : Array = []):
 func format_memory(agent_memory : Array):
 	return _parse_memory(agent_memory)
 
-## Compatible with OAI
+# Compatible with OAI
 func _generator_request(prompt : String, history, role : String = "user", 
 				char_name : String = "", base64url : Array = ["",""]):
 	var current = [{
@@ -94,7 +69,7 @@ func _generator_request(prompt : String, history, role : String = "user",
 		"url" : api_url + "/chat/completions"
 	}
 	return requset_data
-## Format the request data into the request data dictionary required by the model.
+# Format the request data into the request data dictionary required by the model.
 const _ROLE = ["user", "system", "assistant", "tool"]
 func prepare_request(prompt : String, memory : Array = [], role : String = "user",
 					char_name : String = "", base64url : Array = ["",""]):
@@ -130,6 +105,9 @@ func _parse_response(data : Dictionary):
 					"role": json_result["choices"][0]["message"]["role"],
 					"content": json_result["choices"][0]["message"]["content"]
 					},
+				#"tool":{
+					#
+					#}
 				}
 		else:
 			answer = str(json_result)
@@ -147,6 +125,7 @@ func _get_debug_response(response : Array) -> Dictionary:
 	return answer
 
 ## Parse response data return answer Array[answer String, debug Dictionary]. 
+## If debug Dictionary has "error", 
 func get_response(response : Array) -> Array:
 	var parse = _get_debug_response(response)
 	if parse.get("error"):

@@ -16,6 +16,6 @@ func run_api_debug(prompt : String, history : Array = [],
 func run_api(prompt : String, history : Array = [], 
 			role : String = "user", char_name : String = ""):
 	var request_data = model.prepare_request(prompt, history, role, char_name)
-	var response = await _get_result(request_data["head"],request_data["body"],request_data["url"])
-	var result = model.get_response(response)
+	var get_response = await _get_result(request_data["head"],request_data["body"],request_data["url"])
+	var result = model.get_response(get_response)
 	response.emit(result[0], result[1])

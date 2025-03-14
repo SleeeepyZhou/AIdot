@@ -28,6 +28,6 @@ func run_api_debug(prompt : String, image : Texture2D = null, history : Array = 
 ## and receiving a response in the signal. 
 func run_api(prompt : String, image : Texture2D = null, history : Array = [], 
 			role : String = "user", char_name : String = ""):
-	var response = await _request(prompt, image, history, role, char_name)
-	var result = model.get_response(response)
+	var get_response = await _request(prompt, image, history, role, char_name)
+	var result = model.get_response(get_response)
 	response.emit(result[0], result[1])

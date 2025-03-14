@@ -1,5 +1,7 @@
+@tool
 extends Node
 
+# User env
 func _get_env_example(mod_type : String) -> Array:
 	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
 	var env_path = "user://.env"
@@ -11,13 +13,48 @@ func _get_env_example(mod_type : String) -> Array:
 			push_error("Unable to create 'res://.env' file, please copy the ENV_example.")
 	var env_data = json_tool.read_json(env_path)
 	return [env_data["url"].get(mod_type,""),env_data["key"].get(mod_type,"")] # url, key
-
 ## This is an example method that can directly override and modify the API key reading behavior 
 ## after exporting application.
 func get_user_env(mod_type : String) -> Array:
 	var env_set = _get_env_example(mod_type)
 	return env_set # url, key
 
+# Developer env
+func _update_gitignore():
+	var gitignore_path = "res://.gitignore"
+	var gitignore_content = []
+	if !FileAccess.file_exists(gitignore_path):
+		var file = FileAccess.open(gitignore_path, FileAccess.WRITE)
+		file.store_string(".env\n")
+		file.close()
+	else:
+		var file = FileAccess.open(gitignore_path, FileAccess.READ)
+		gitignore_content = file.get_as_text().split("\n")
+		file.close()
+		if !gitignore_content.has(".env"):
+			var Wfile = FileAccess.open(gitignore_path, FileAccess.WRITE)
+			gitignore_content.append(".env")
+			var ignore = "\n".join(gitignore_content)
+			Wfile.store_string(ignore)
+func _get_env(model_type : String) -> Array:
+	var type = get_type(model_type)
+	if !OS.is_debug_build():
+		return ModelLayer.get_user_env(type)
+	
+	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
+	var env_data
+	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
+	var env_path = "res://.env"
+	var file = FileAccess.open(env_path, FileAccess.READ)
+	if !file:
+		var dir := DirAccess.open("res://")
+		if dir.copy(EXAMPLE_PATH, env_path) != OK:
+			push_error("Unable to create 'res://.env' file, please copy the ENV_example.")
+		else:
+			_update_gitignore()
+	env_data = json_tool.read_json(env_path)
+	var env_set = [env_data["url"].get(type,""),env_data["key"].get(type,"")]
+	return env_set
 
 func creat_model(mod_type : String, url : String = "", key : String = "", config : Dictionary = {}):
 	var type = get_type(mod_type)
@@ -31,11 +68,6 @@ func creat_model(mod_type : String, url : String = "", key : String = "", config
 	else:
 		return BaseModel.new(mod_type, url, key, config)
 
-
-const VLM_MODEL = [OPENAI.GPT_4O, OPENAI.GPT_4O_MINI, OPENAI.O3_MINI,
-	OPENAI.O1, OPENAI.O1_MINI, OPENAI.O1_PREVIEW, 
-	QWEN.QWEN_2_5_VL_72B, QWEN.QWEN_VL_MAX, QWEN.QWEN_VL_PLUS]
-
 static func get_type(model_type : String):
 	if _oai.has(model_type):
 		return "OPENAI"
@@ -47,7 +79,13 @@ static func get_type(model_type : String):
 	else:
 		return DEFAULT
 
+
+# Type
 const DEFAULT = "basemodel"
+
+const VLM_MODEL = [OPENAI.GPT_4O, OPENAI.GPT_4O_MINI, OPENAI.O3_MINI,
+	OPENAI.O1, OPENAI.O1_MINI, OPENAI.O1_PREVIEW, 
+	QWEN.QWEN_2_5_VL_72B, QWEN.QWEN_VL_MAX, QWEN.QWEN_VL_PLUS]
 
 # GPT models
 const _oai = [OPENAI.GPT_3_5_TURBO, OPENAI.GPT_4, OPENAI.GPT_4_TURBO, OPENAI.GPT_4O, 
