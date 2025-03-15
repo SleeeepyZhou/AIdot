@@ -1,6 +1,8 @@
-class_name Perception2D
-extends Area2D
+extends Node2D
+class_name AgentSensor2D
 
+# Listener
+# AudioListener2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

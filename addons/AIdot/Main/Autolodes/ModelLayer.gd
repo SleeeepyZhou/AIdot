@@ -1,9 +1,9 @@
 @tool
 extends Node
 
+const EXAMPLE_PATH = "res://addons/AIdot/Res/Data/ENV_example.json"
 # User env
 func _get_env_example(mod_type : String) -> Array:
-	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
 	var env_path = "user://.env"
 	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
 	var file = FileAccess.open(env_path, FileAccess.READ)
@@ -41,7 +41,6 @@ func _get_env(model_type : String) -> Array:
 	if !OS.is_debug_build():
 		return ModelLayer.get_user_env(type)
 	
-	const EXAMPLE_PATH = "res://addons/AIdot/Lib/Model/ENV_example.json"
 	var env_data
 	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
 	var env_path = "res://.env"
@@ -56,24 +55,27 @@ func _get_env(model_type : String) -> Array:
 	var env_set = [env_data["url"].get(type,""),env_data["key"].get(type,"")]
 	return env_set
 
-func creat_model(mod_type : String, url : String = "", key : String = "", config : Dictionary = {}):
-	var type = get_type(mod_type)
+## Creat a model resource.
+func creat_model(model_name : String, url : String = "", key : String = "", config : Dictionary = {}):
+	var type = get_type(model_name)
 	if type == "OPENAI":
-		return OpenAIModel.new(mod_type, url, key, config)
+		return OpenAIModel.new(model_name, url, key, config)
 	elif type == "QWEN":
-		return QwenModel.new(mod_type, url, key, config)
+		return QwenModel.new(model_name, url, key, config)
 	elif type == "DEEPSEEK":
-		return DeepSeekModel.new(mod_type, url, key, config)
+		return DeepSeekModel.new(model_name, url, key, config)
 	
 	else:
-		return BaseModel.new(mod_type, url, key, config)
+		return BaseModel.new(model_name, url, key, config)
 
-static func get_type(model_type : String):
-	if _oai.has(model_type):
+
+## Get model type. 
+static func get_type(model_name : String):
+	if _oai.has(model_name):
 		return "OPENAI"
-	elif _qw.has(model_type):
+	elif _qw.has(model_name):
 		return "QWEN"
-	elif _ds.has(model_type):
+	elif _ds.has(model_name):
 		return "DEEPSEEK"
 	
 	else:

@@ -11,11 +11,12 @@ class_name ChatAgent
 signal response(answer : String, debug : Dictionary)
 
 ## Dialogue with Agent
-func chat(prompt : String, role : String = "user", chr_name : String = ""):
-	last_chat = AgentMemory.template_memory(prompt, role, chr_name)
+func chat(prompt : String, in_role : String = "user", chr_name : String = ""):
+	prompt = memory._get_long(prompt) + prompt
+	last_chat = AgentMemory.template_memory(prompt, in_role, chr_name)
 	var history = memory.read_memory()
-	_api.run_api(prompt, history, role, chr_name)
-	memory.add_memory(prompt, role, chr_name)
+	_api.run_api(prompt, history, in_role, chr_name)
+	memory.add_memory(prompt, in_role, chr_name)
 	if auto_save_memory:
 		_auto_save += 1
 
@@ -33,7 +34,7 @@ func _call_back(answer : String, debug : Dictionary):
 		push_error(agent_id + "'s response has an error.")
 	else:
 		last_chat = {}
-		memory.add_memory(debug["message"]["content"], debug["message"]["role"],character_name)
+		memory.add_memory(debug["message"]["content"], role, character_name)
 	response.emit(answer, debug)
 
 # Model
@@ -88,14 +89,23 @@ func save_memory() -> String:
 		sys_prompt = t
 		memory.set_sys(t)
 
-# Perception
-@export_group("Perception")
-@export var p : Node
-
-# Action
-@export_group("Action")
-@export var tool : Node
 
 # Planning
 @export_group("Planning")
-@export var re : Resource
+@export var planer : bool = false
+
+
+# Perception
+@export_group("Perception")
+@export var monitoring : bool = false
+@export var sensor2D : AgentSensor2D
+@export var sensor3D : AgentSensor3D
+
+# Action
+@export_group("Action")
+@export var tool_bag : ToolBag = ToolBag.new():
+	set(t):
+		if t:
+			tool_bag = t
+		else:
+			tool_bag = ToolBag.new()

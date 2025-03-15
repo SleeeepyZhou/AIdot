@@ -49,7 +49,7 @@ func save(memory_save_path: String = "", agent_id: String = "") -> String:
 	if !dir.is_absolute_path():
 		push_warning("Memory file storage location" + dir + \
 					" invalid, default location will be used.'user://'")
-		dir = "user://"
+		dir = "user://agent_memory"
 	var dir_open = DirAccess.open(dir)
 	if dir_open.get_open_error() != OK:
 		dir_open.make_dir_recursive(dir)
@@ -57,6 +57,7 @@ func save(memory_save_path: String = "", agent_id: String = "") -> String:
 	return dir + "/" + file_name
 func reset():
 	_history = []
+	_long.reset()
 
 
 
@@ -73,7 +74,7 @@ func add_memory(content : String, role : String, char_name : String = ""):
 		return
 	var block = template_memory(content, role, char_name)
 	_history.append(block)
-	
+	_long.add_history(content, role, char_name)
 	_out_memory_check()
 func read_memory(len : int = 0):
 	var m : Array = []
@@ -85,12 +86,18 @@ func read_memory(len : int = 0):
 		m.append(_history[-len+i])
 	return m
 func set_memory(memory : Array):
+	var his_content : PackedStringArray = []
+	var idx_role : PackedStringArray = []
+	var idx_name : PackedStringArray = []
 	for block in memory:
 		assert(block is Dictionary, "Incorrect memory format!!!")
 		assert(block.get("role"), "Incorrect memory format!!! Error: 'role'")
 		assert(block.get("content"), "Incorrect memory format!!! Error: 'content'")
+		his_content.append(block.get("content"))
+		idx_role.append(block.get("role"))
+		idx_name.append(block.get("name",""))
 	_history = memory
-	
+	_long.set_history(his_content, idx_role, idx_name)
 	_out_memory_check()
 func write_memory(idx : int, content : String, role : String, char_name : String = ""):
 	if idx >= len(_history):
@@ -98,7 +105,7 @@ func write_memory(idx : int, content : String, role : String, char_name : String
 		return
 	var block = template_memory(content, role, char_name)
 	_history[idx] = block
-	
+	_long.write_history(idx - len(_history), content, role, char_name)
 	_out_memory_check()
 
 @export var edit_memory : Array[MemoryBlock] = []
@@ -120,7 +127,19 @@ func _editor_set():
 
 
 # Long Memory
-var _long
+@export_storage var _long: LongMemory = LongMemory.new():
+	set(l):
+		return
+	get:
+		if !_long:
+			_long = LongMemory.new()
+		return _long
+
+func _get_long(prompt: String) -> String:
+	if memory_mod != MEMORY_MOD.AGENT:
+		return ""
+	var result = _long.retrieval(prompt)
+	return result
 
 func _out_memory_check():
 	if memory_mod == MEMORY_MOD.ONE_SHOT:
@@ -128,10 +147,13 @@ func _out_memory_check():
 		return
 	if short_memory_len() < max_character:
 		return
-	
-	match memory_mod:
-		MEMORY_MOD.CHAT:
-			#reverse()
-			pass
-		MEMORY_MOD.AGENT:
-			pass
+	var temp : Array = []
+	for i in range(int(len(_history)/3)):
+		temp.append(_history.pop_back())
+	temp.reverse()
+	_history = temp
+	if memory_mod == MEMORY_MOD.AGENT:
+		if RAG:
+			_long.rag_zip()
+		else:
+			_long.zip()

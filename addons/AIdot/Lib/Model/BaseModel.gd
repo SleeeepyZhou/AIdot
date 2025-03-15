@@ -4,9 +4,9 @@ extends Resource
 class_name BaseModel
 
 @export_group("Model informationf")
-@export var model_name : String = "BaseModel"
+@export var custom_name : String = "BaseModel"
 ## In [ModelLayer]
-@export var model_type : String = ModelLayer.DEFAULT
+@export var model_name : String
 @export var model_config_dict : Dictionary = {}
 
 @export_group("API information")
@@ -18,18 +18,18 @@ func _validate_property(property: Dictionary) -> void:
 		property.hint |= PROPERTY_HINT_PASSWORD
 
 func _default_model():
-	model_type = ModelLayer.DEFAULT
+	model_name = ModelLayer.DEFAULT
 
-func _init(mod_type : String = "", url : String = "", key : String = "", 
+func _init(mod_name : String = "", url : String = "", key : String = "", 
 			config : Dictionary = {}):
-	model_type = mod_type
-	if model_type.is_empty():
+	model_name = mod_name
+	if model_name.is_empty():
 		_default_model()
 	model_config_dict = config
 	api_url = url
 	api_key = key
 	if url.is_empty():
-		var base_url = ModelLayer._get_env(model_type)
+		var base_url = ModelLayer._get_env(model_name)
 		api_url = base_url[0]
 		if key.is_empty():
 			api_key = base_url[1]
@@ -51,7 +51,7 @@ func _generator_request(prompt : String, history, role : String = "user",
 	if !char_name.is_empty():
 		current[0]["content"][0]["name"] = char_name
 	var temp_data = {
-		"model": model_type,
+		"model": model_name,
 		"messages": history+current
 		}
 	var headers : PackedStringArray = ["Content-Type: application/json", 
@@ -100,7 +100,8 @@ func _parse_response(data : Dictionary):
 					"time": json_result.get("created",""),
 					"total_tokens": json_result.get("usage",{}).get("total_tokens",0)
 					},
-				"reasoning_content": json_result["choices"][0]["message"].get("reasoning_content",""),
+				"reasoning_content": 
+					json_result["choices"][0]["message"].get("reasoning_content",""),
 				"message":{
 					"role": json_result["choices"][0]["message"]["role"],
 					"content": json_result["choices"][0]["message"]["content"]

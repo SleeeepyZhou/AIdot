@@ -79,9 +79,10 @@ flowchart LR
 ```
 
 ### Support
-Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol).  
+Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol) through [OATP (Open Agent Tool Protocol)](https://github.com/SleeeepyZhou/OpenAgentToolProtocol).  
 
 ### Dependent
+[OATP](https://github.com/SleeeepyZhou/OpenAgentToolProtocol) by SleeeepyZhou MIT
 [Godot-AIUtils](https://github.com/SleeeepyZhou/Godot-AIUtils) by SleeeepyZhou Apache-2.0  
 [MatrixCalc](https://github.com/SleeeepyZhou/MatrixCalc) by SleeeepyZhou MIT
 
