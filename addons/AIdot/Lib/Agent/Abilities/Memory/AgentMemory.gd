@@ -41,8 +41,8 @@ static func template_memory(content : String, role : String, char_name : String 
 
 func save(memory_save_path: String = "", agent_id: String = "") -> String:
 	var file_name: String = agent_id
-	if file_name.is_empty():
-		push_warning("Has no agent name and will use a unix to name the memory.")
+	if file_name.is_empty() or !file_name.is_valid_filename():
+		push_warning("Has invalid agent name and will use a unix to name the memory.")
 		file_name = "Agent_" + str(Time.get_unix_time_from_system())
 	file_name += ".tres"
 	var dir = memory_save_path
