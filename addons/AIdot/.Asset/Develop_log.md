@@ -8,6 +8,11 @@
 ### Memory
 - [ ] RAG原生支持  
 
+## Perception
+- [ ] 默认支持更多感知能力  
+
+
+
 ```mermaid
 ---
 displayMode: compact
@@ -47,14 +52,16 @@ gantt
 	dateFormat  YYYY-MM-DD
 	总时长 :active, 2025-03-15, 16d
 	section Design
-		0 :active, 2025-03-15, 3d
+		休整 :done, 2025-03-15, 1d
+		Other :done, 2025-03-16, 5d
+		Perception :active, 2025-03-17, 2d
+		MCP Design :active, 2025-03-19, 3d
 	section Model Layer
-		0 :active, 2025-03-15, 2d
 	section Agent
 	section Memory
-		0 :active, 2025-03-15, 2d
 	section Action
 	section Perception
 	section Planning
 	section Tools
+		MCP :active, 2025-03-20, 2d
 ```

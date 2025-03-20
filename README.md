@@ -82,12 +82,14 @@ flowchart LR
 		subgraph Toolbox
 			direction LR
 			T0[Tools] --> t[Interpreter]
-			t --> OATP
-			subgraph OATP
+			t --> GMCP
+			subgraph GMCP
+				direction LR
 				MCP
-				T4[...]
+				T1[GodotMCP]
+				T2[...]
 			end
-			OATP --> T0
+			GMCP --> T0
 		end
 		T0 --> AgentTools
 
@@ -98,10 +100,10 @@ flowchart LR
 ```
 
 ### Support
-Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol) through [OATP (Open Agent Tool Protocol)](https://github.com/SleeeepyZhou/OpenAgentToolProtocol).  
+Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol) through [MCP-gdscript-SDK]().  
 
 ### Dependent
-[Open Agent Tool Protocol(OATP)](https://github.com/SleeeepyZhou/OpenAgentToolProtocol) by SleeeepyZhou MIT
+[MCP-gdscript-SDK]() by SleeeepyZhou MIT
 [Godot-AIUtils](https://github.com/SleeeepyZhou/Godot-AIUtils) by SleeeepyZhou Apache-2.0  
 [MatrixCalc](https://github.com/SleeeepyZhou/MatrixCalc) by SleeeepyZhou MIT
 
