@@ -29,9 +29,10 @@ func set_py_venv():
 	if OS.get_name() == "Windows":
 		python_path = venv_path + "/Scripts/python.exe"
 		
+		#env['PATH'] = os.path.join(venv_path, 'Scripts') + os.pathsep + env['PATH']
 	elif OS.get_name() == "Linux" or OS.get_name() == "macOS":
 		python_path = venv_path + "/bin/python"
-		
+		#env['PATH'] = os.path.join(venv_path, 'bin') + os.pathsep + env['PATH']
 	if !FileAccess.file_exists(python_path):
 		push_error("Python interpreter not found in virtual environment: " + python_path)
 	else:

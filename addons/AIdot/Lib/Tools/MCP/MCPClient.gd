@@ -45,6 +45,27 @@ func send_message(message: Dictionary) -> bool:
 	_stdio.store_line(json_str)
 	return _stdio.get_error() == OK
 
+# var _stdio : FileAccess
+
+# func _ready() -> void:
+# 	OS.set_environment("TestEnv","666666")
+# 	var result := OS.execute_with_pipe("python", ["D:/Godot/GitHub/AIdot/Test/test.py"], false)
+# 	_stdio = result["stdio"]
+# 	print(result)
+
+# func _process(_delta: float) -> void:
+# 	var _read_buffer : String = ""
+# 	while true:
+# 		var chunk := _stdio.get_as_text()
+# 		if chunk.is_empty():
+# 			break
+# 		_read_buffer += chunk
+# 		print(_read_buffer)
+# print("123123")
+
+# import os
+# print(os.getenv("TestEnv"))
+
 # 主循环处理IO
 func _process(delta: float) -> void:
 	if not _running:
