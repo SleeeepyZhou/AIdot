@@ -100,7 +100,8 @@ func _process(delta: float) -> void:
 	
 	if !OS.is_process_running(_pid):
 		stop()
-		_reconnect("Connect closed.")
+		if auto_reconnect:
+			_reconnect("Connect closed.")
 
 # Std Out
 func _process_stdout() -> void:
