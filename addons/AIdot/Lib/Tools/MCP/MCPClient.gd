@@ -9,11 +9,11 @@ class_name MCPClient
 @export var max_reconnect_attempts : int = 3
 var _retry : int = 0
 @export_tool_button("Connect server") var _connect = connect_to_server
+@export_tool_button("Close server") var _close = stop
 
 signal connection(is_connect: bool)
 signal message_received(message: Dictionary)
 signal log_record(log: String)
-
 
 var _rpc : JSONRPC = JSONRPC.new()
 
@@ -22,6 +22,7 @@ var _pid: int
 var _stdio: FileAccess
 var _stderr: FileAccess
 
+var _request_counter : int = 0
 var _stdout_buffer := ""
 var _stderr_buffer := ""
 
@@ -39,6 +40,7 @@ func _send_message(message: Dictionary) -> bool:
 		#push_error("Message contains invalid newline character")
 		#return false
 	_stdio.store_line(json_str)
+	_request_counter += 1
 	return _stdio.get_error() == OK
 # Reconnect
 func _reconnect(err_str : String):
@@ -68,6 +70,8 @@ func connect_to_server() -> bool:
 	_pid = result["pid"]
 	_retry = 0
 	_running = true
+	print("MCP server connect on pid: ", _pid)
+	#_send_message(_rpc.make_request("initialize", {}, _request_counter))
 	connection.emit(true)
 	return true
 
@@ -81,6 +85,7 @@ func stop() -> void:
 			_stderr.close()
 		if OS.is_process_running(_pid):
 			OS.kill(_pid)
+		print("MCP server closed on pid: ", _pid)
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		stop()
@@ -107,6 +112,10 @@ func _process_stdout() -> void:
 		chunk = _stdio.get_as_text()
 	
 	var newline_pos := _stdout_buffer.find("\n")
+	
+	if !_stdout_buffer.is_empty():
+		print("New out: ", _stdout_buffer)
+	
 	while newline_pos != -1:
 		var message_str := _stdout_buffer.substr(0, newline_pos)
 		_stdout_buffer = _stdout_buffer.substr(newline_pos + 1)
@@ -114,6 +123,7 @@ func _process_stdout() -> void:
 		var message = JSON.parse_string(message_str)
 		if message:
 			message_received.emit(message)
+			print(message)
 		else:
 			push_error("Failed to parse message: ", message_str)
 		
@@ -129,9 +139,20 @@ func _process_stderr() -> void:
 		_stderr_buffer += chunk
 		chunk = _stderr.get_as_text()
 	
+	if !_stderr_buffer.is_empty():
+		print("New err: ", _stdout_buffer)
+	
 	var newline_pos := _stderr_buffer.find("\n")
 	while newline_pos != -1:
 		var log_line := _stderr_buffer.substr(0, newline_pos)
 		_stderr_buffer = _stderr_buffer.substr(newline_pos + 1)
 		log_record.emit(log_line)
 		newline_pos = _stderr_buffer.find("\n")
+
+
+@export_tool_button("Test") var _test = test
+func test():
+	print(123)
+	_send_message(_rpc.make_request("initialize", {}, _request_counter))
+	
+	
