@@ -1,3 +1,4 @@
+@tool
 extends MCPServer
 class_name MCPStdioServer
 
@@ -5,12 +6,12 @@ class_name MCPStdioServer
 	set(c):
 		var type : String = c.get_extension()
 		match type:
-			".py":
+			"py":
 				server_path = c
 				_command = "python"
 				if venv_path:
 					_set_py_venv()
-			".js":
+			"js":
 				server_path = c
 				_command = "node"
 			_:
