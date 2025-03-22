@@ -1,16 +1,26 @@
 ## Future solutions:   
 
-### ModelLayer
+- [ ] 各级UI
+
+#### Agents  
+- [ ] 关系网系统
+
+#### ModelLayer  
 - [ ] 每个Model的UI图标  
 - [ ] 流式传输支持  
 - [ ] ModelLayer性能优化  
 
-### Memory
+#### Memory  
 - [ ] RAG原生支持  
 
-## Perception
-- [ ] 默认支持更多感知能力  
+#### Tools  
+- [ ] 支持Godot本地MCP服务  
 
+#### Perception  
+- [ ] 支持更多感知能力  
+
+#### Planning  
+- [ ] 任务管理  
 
 
 ```mermaid
@@ -59,7 +69,6 @@ gantt
 	section Model Layer
 	section Agent
 	section Memory
-	section Action
 	section Perception
 	section Planning
 	section Tools

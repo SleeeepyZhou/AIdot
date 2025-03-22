@@ -100,10 +100,10 @@ flowchart LR
 ```
 
 ### Support
-Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol) through [MCP-gdscript-SDK]().  
+Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol) through [MCP-Godot-sdk](https://github.com/SleeeepyZhou/MCP-Godot-sdk).  
 
 ### Dependent
-[MCP-gdscript-SDK]() by SleeeepyZhou MIT
+[MCP-Godot-sdk](https://github.com/SleeeepyZhou/MCP-Godot-sdk) by SleeeepyZhou MIT
 [Godot-AIUtils](https://github.com/SleeeepyZhou/Godot-AIUtils) by SleeeepyZhou Apache-2.0  
 [MatrixCalc](https://github.com/SleeeepyZhou/MatrixCalc) by SleeeepyZhou MIT
 
