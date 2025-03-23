@@ -1,5 +1,5 @@
 @tool
-@icon("res://addons/AIdot/Res/UI/mcp_node.png")
+@icon("res://addons/AIdot/Res/UI/Icon/mcp_node.png")
 extends Node
 class_name MCPClient
 

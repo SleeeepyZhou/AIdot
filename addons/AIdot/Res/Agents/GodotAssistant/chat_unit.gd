@@ -1,10 +1,11 @@
+@tool
 extends MarginContainer
 
-const MAODOT_HEAD = preload("res://addons/AIdot/Res/UI/MaodotHead.tres")
-const CAT = preload("res://addons/AIdot/Res/UI/cat.jpg")
+const MAO = preload("res://addons/AIdot/Res/UI/Chat/Mao.tres")
+const CAT = preload("res://addons/AIdot/Res/UI/Chat/Cat.jpg")
 
 const role = {
-	"assistant" : MAODOT_HEAD,
+	"assistant" : MAO,
 	"user" : CAT
 }
 
