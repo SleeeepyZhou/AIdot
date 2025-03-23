@@ -9,6 +9,7 @@ export_presets.cfg
 .note/
 .vscode/
 Test/
+venv/
 
 # Imported translations (automatically generated from CSV files)
 *.translation

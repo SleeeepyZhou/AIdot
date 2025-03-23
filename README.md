@@ -103,9 +103,9 @@ flowchart LR
 Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol) through [MCP-Godot-sdk](https://github.com/SleeeepyZhou/MCP-Godot-sdk).  
 
 ### Dependent
-[MCP-Godot-sdk](https://github.com/SleeeepyZhou/MCP-Godot-sdk) by SleeeepyZhou MIT
+[MCP-Godot-sdk](https://github.com/SleeeepyZhou/MCP-Godot-sdk) by SleeeepyZhou MIT  
 [Godot-AIUtils](https://github.com/SleeeepyZhou/Godot-AIUtils) by SleeeepyZhou Apache-2.0  
-[MatrixCalc](https://github.com/SleeeepyZhou/MatrixCalc) by SleeeepyZhou MIT
+[MatrixCalc](https://github.com/SleeeepyZhou/MatrixCalc) by SleeeepyZhou MIT  
 
 ### Thanks
 This project learns from the renowned Multi-Agent framework [Camel](https://www.camel-ai.org), and thanks to [Guohao Li](https://github.com/lightaime) and [Camel-AI](https://github.com/camel-ai) team.

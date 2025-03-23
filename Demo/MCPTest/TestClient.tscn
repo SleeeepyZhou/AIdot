@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbuudchdnqvw4"]
+
+[ext_resource type="Script" uid="uid://cuat54of2q4fd" path="res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd" id="1_26e16"]
+[ext_resource type="Resource" uid="uid://2g5n5odmwijk" path="res://Demo/MCPTest/test_server.tres" id="2_w7r8g"]
+
+[node name="MCPClient" type="Node"]
+script = ExtResource("1_26e16")
+server = ExtResource("2_w7r8g")
+metadata/_custom_type_script = "uid://cuat54of2q4fd"

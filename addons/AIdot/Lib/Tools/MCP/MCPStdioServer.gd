@@ -1,4 +1,5 @@
 @tool
+@icon("res://addons/AIdot/Res/UI/mcp.png")
 extends MCPServer
 class_name MCPStdioServer
 
@@ -20,9 +21,6 @@ class_name MCPStdioServer
 			_:
 				push_error("Server script must be a .py or .js file")
 				return
-		var temp : PackedStringArray = [server_path]
-		temp.append_array(args)
-		args = temp
 
 @export_global_dir var venv_path : String = "":
 	set(v):

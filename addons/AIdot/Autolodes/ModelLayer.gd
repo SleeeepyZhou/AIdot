@@ -5,7 +5,7 @@ const EXAMPLE_PATH = "res://addons/AIdot/Res/Data/ENV_example.json"
 # User env
 func _get_env_example(mod_type : String) -> Array:
 	var env_path = "user://.env"
-	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
+	var json_tool = JsonTool.new()
 	var file = FileAccess.open(env_path, FileAccess.READ)
 	if !file:
 		var dir := DirAccess.open("user://")
@@ -42,7 +42,7 @@ func _get_env(model_type : String) -> Array:
 		return ModelLayer.get_user_env(type)
 	
 	var env_data
-	var json_tool = preload("res://addons/AIdot/Utils/Json.gd").new()
+	var json_tool = JsonTool.new()
 	var env_path = "res://.env"
 	var file = FileAccess.open(env_path, FileAccess.READ)
 	if !file:

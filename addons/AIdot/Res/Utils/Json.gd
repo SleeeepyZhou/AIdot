@@ -1,3 +1,4 @@
+class_name JsonTool
 
 func read_json(path: String):
 	var file = FileAccess.open(path, FileAccess.READ)

@@ -19,7 +19,8 @@ config/icon="res://addons/AIdot/Res/UI/icon.png"
 [autoload]
 
 MatrixLib="*res://addons/matrix_calc/Lib.gd"
-ModelLayer="*res://addons/AIdot/Main/Autolodes/ModelLayer.gd"
+ModelLayer="*res://addons/AIdot/Autolodes/ModelLayer.gd"
+ToolBox="*res://addons/AIdot/Autolodes/ToolBox.gd"
 
 [editor_plugins]
 
