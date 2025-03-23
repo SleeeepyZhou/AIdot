@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0u1lhabrv1hu"]
+
+[ext_resource type="Script" uid="uid://bqf4prnwhibk" path="res://addons/AIdot/Res/Agents/GodotAssistant/chat_unit.gd" id="1_0af4s"]
+[ext_resource type="Texture2D" uid="uid://dim762m3px4cb" path="res://addons/AIdot/Res/UI/icon.png" id="1_b1t0h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1t0h"]
+resource_local_to_scene = true
+atlas = ExtResource("1_b1t0h")
+
+[node name="ChatUnit" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_0af4s")
+
+[node name="ChatUnit" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HeadBox" type="MarginContainer" parent="ChatUnit"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HeadContainer" type="VBoxContainer" parent="ChatUnit/HeadBox"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Head" type="TextureRect" parent="ChatUnit/HeadBox/HeadContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+texture = SubResource("AtlasTexture_b1t0h")
+expand_mode = 3
+
+[node name="Panel" type="PanelContainer" parent="ChatUnit"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Box" type="MarginContainer" parent="ChatUnit/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Chat" type="RichTextLabel" parent="ChatUnit/Panel/Box"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 2
+mouse_default_cursor_shape = 1
+bbcode_enabled = true
+text = "Hello, I am Godot Assistant."
+fit_content = true
+scroll_active = false
+autowrap_mode = 1
+context_menu_enabled = true
+selection_enabled = true

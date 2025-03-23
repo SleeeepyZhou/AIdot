@@ -48,10 +48,20 @@ func tool_box_exit():
 	remove_custom_type("MCPServer")
 	remove_custom_type("MCPStdioServer")
 
+var GODOT_ASSISTANT : Control
+func assistant_client():
+	GODOT_ASSISTANT = preload("res://addons/AIdot/Res/Agents/GodotAssistant/GodotAssistant.tscn").instantiate()
+	add_control_to_dock(DOCK_SLOT_RIGHT_UL,GODOT_ASSISTANT)
+func assistant_exit():
+	remove_control_from_bottom_panel(GODOT_ASSISTANT)
+	GODOT_ASSISTANT.queue_free()
+
 func _enter_tree() -> void:
 	model_layer_enter()
 	tool_box_enter()
+	assistant_client()
 
 func _exit_tree() -> void:
 	model_layer_exit()
 	tool_box_exit()
+	assistant_exit()

@@ -1,0 +1,112 @@
+[gd_scene load_steps=3 format=3 uid="uid://v6dhvujxcsh6"]
+
+[ext_resource type="PackedScene" uid="uid://c0u1lhabrv1hu" path="res://addons/AIdot/Res/Agents/GodotAssistant/ChatUnit.tscn" id="1_nvmlr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nvmlr"]
+
+[node name="Maodot" type="TabContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nvmlr")
+current_tab = 0
+
+[node name="MaoChat" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 15
+metadata/_tab_index = 0
+
+[node name="MaoChat" type="VBoxContainer" parent="MaoChat"]
+layout_mode = 2
+
+[node name="ChatList" type="VBoxContainer" parent="MaoChat/MaoChat"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ChatUnit" parent="MaoChat/MaoChat/ChatList" instance=ExtResource("1_nvmlr")]
+layout_mode = 2
+
+[node name="Input" type="HBoxContainer" parent="MaoChat/MaoChat"]
+layout_mode = 2
+
+[node name="InputBox" type="TextEdit" parent="MaoChat/MaoChat/Input"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+wrap_mode = 1
+autowrap_mode = 1
+scroll_smooth = true
+scroll_fit_content_width = true
+caret_blink = true
+draw_tabs = true
+draw_spaces = true
+
+[node name="Send" type="Button" parent="MaoChat/MaoChat/Input"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 8
+text = "Enter"
+
+[node name="APIConfig" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+metadata/_tab_index = 1
+
+[node name="APIConfig" type="VBoxContainer" parent="APIConfig"]
+layout_mode = 2
+
+[node name="APIUrl" type="HBoxContainer" parent="APIConfig/APIConfig"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="APIConfig/APIConfig/APIUrl"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "API Url: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Url" type="LineEdit" parent="APIConfig/APIConfig/APIUrl"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="APIKey" type="HBoxContainer" parent="APIConfig/APIConfig"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="APIConfig/APIConfig/APIKey"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "API Key: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Key" type="LineEdit" parent="APIConfig/APIConfig/APIKey"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonBox" type="HBoxContainer" parent="APIConfig/APIConfig"]
+layout_mode = 2
+alignment = 1
+
+[node name="Set" type="Button" parent="APIConfig/APIConfig/ButtonBox"]
+custom_minimum_size = Vector2(50, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Set"
+
+[node name="MCP" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2

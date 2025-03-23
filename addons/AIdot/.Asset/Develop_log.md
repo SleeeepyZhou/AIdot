@@ -1,6 +1,7 @@
 ## Future solutions:   
 
 - [ ] 各级UI
+- [ ] Godot助手
 
 #### Agents  
 - [ ] 关系网系统

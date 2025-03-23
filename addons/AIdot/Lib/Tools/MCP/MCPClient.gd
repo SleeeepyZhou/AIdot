@@ -15,7 +15,6 @@ class_name MCPClient
 @export_tool_button("Tool list") var _print_tools = tool_list
 
 signal connection(is_connect: bool)
-signal log_record(log: String)
 
 var _running := false
 var _pid: int
@@ -117,10 +116,10 @@ func connect_to_server() -> bool:
 			return false
 		var server_info : String = "[color=green][b]Connected to server:[/b][/color]" + \
 			server_name.substr(1,len(server_name)-2) + \
-			"\n[color=green][b]Protocol version: [/b][/color]" + \
-			protocol_version
+			"\n[color=green][b]Protocol version: [/b][/color]" + protocol_version
 		print_rich(str(server_info))
 		_mcp_notification("notifications/initialized")
+		_server_log = ""
 		_retry = 0
 		connection.emit(true)
 		return true
@@ -220,6 +219,13 @@ func _process_stdout() -> void:
 		newline_pos = _stdout_buffer.find("\n")
 
 # Std Err
+signal log_record(log: String)
+var _server_log : String = "":
+	set(log):
+		_server_log = log
+		log_record.emit(_server_log)
+func get_server_log():
+	return _server_log
 func _process_stderr() -> void:
 	if !_stderr:
 		return
@@ -236,7 +242,7 @@ func _process_stderr() -> void:
 	while newline_pos != -1:
 		var log_line := _stderr_buffer.substr(0, newline_pos)
 		_stderr_buffer = _stderr_buffer.substr(newline_pos + 1)
-		log_record.emit(log_line)
+		_server_log += log_line + "\n"
 		newline_pos = _stderr_buffer.find("\n")
 
 
