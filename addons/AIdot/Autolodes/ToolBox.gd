@@ -22,3 +22,9 @@ var mcp_initialize : Dictionary = {
 				"version": _MCP_VERSION
 			}
 	}
+
+## Registered MCP client.
+var _MCP_client : Array = []
+
+## Registered tools.
+var _tool_box : Array = []

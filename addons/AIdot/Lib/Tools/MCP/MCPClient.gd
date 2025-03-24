@@ -114,6 +114,8 @@ func connect_to_server() -> bool:
 			push_error("Unsupported protocol version.")
 			stop()
 			return false
+		
+		# Success connect
 		var server_info : String = "[color=green][b]Connected to server:[/b][/color]" + \
 			server_name.substr(1,len(server_name)-2) + \
 			"\n[color=green][b]Protocol version: [/b][/color]" + protocol_version
@@ -121,14 +123,24 @@ func connect_to_server() -> bool:
 		_mcp_notification("notifications/initialized")
 		_server_log = ""
 		_retry = 0
+		ToolBox._MCP_client.append(self)
+		tool_list()
 		connection.emit(true)
 		return true
+		
 	else:
 		push_error("Failed to initialize MCP server.")
 		stop()
 		return false
 
 ## Get tools list
+var _tools : Array = []:
+	set(l):
+		for tool in _tools:
+			if ToolBox._tool_box.has(tool):
+				ToolBox._tool_box.erase(tool)
+		ToolBox._tool_box.append_array(l)
+		_tools = l
 func tool_list():
 	var send = _mcp_request("tools/list")
 	if send[0]:
@@ -139,7 +151,17 @@ func tool_list():
 			push_error("Unable to retrieve the tools list.")
 			return []
 		var tools = tools_request[1]["tools"]
-		print(tools)
+		
+		# Update tools list
+		_tools = []
+		var temp_list : Array = []
+		for tool in tools:
+			var new_tool = MCPTool.new()
+			new_tool.client = self
+			new_tool._tool_data = tool
+			temp_list.append(new_tool)
+		_tools = temp_list
+		
 		return tools
 
 ## Use tool
@@ -155,10 +177,10 @@ func call_tool(tool_name : String, arguments : Dictionary = {}):
 			call_request = await response_received
 		if call_request[1].is_empty():
 			push_error("Unable to use tool: ", tool_name)
-			return []
+			return {}
 		elif call_request[1]["isError"]:
 			push_error("An error occurred while calling tool: ", tool_name)
-			return []
+			return {}
 		return call_request[1]["content"]
 
 ## Close server
@@ -172,6 +194,10 @@ func stop() -> void:
 			_stderr.close()
 		if OS.is_process_running(_pid):
 			OS.kill(_pid)
+		if ToolBox._MCP_client.has(self):
+			ToolBox._MCP_client.erase(self)
+		if !_tools.is_empty():
+			_tools = []
 		print("MCP server closed on pid: ", _pid)
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:

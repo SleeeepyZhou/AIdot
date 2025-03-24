@@ -1,6 +1,6 @@
 @tool
 @icon("res://addons/AIdot/Res/UI/AIResource.svg")
-extends Resource
+extends AIdotResource
 class_name BaseModel
 
 @export_group("Model informationf")

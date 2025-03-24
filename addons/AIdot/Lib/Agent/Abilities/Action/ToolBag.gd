@@ -1,4 +1,5 @@
-extends Resource
+@tool
+extends AIdotResource
 class_name ToolBag
 
 func get_tool_list():

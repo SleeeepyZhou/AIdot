@@ -32,6 +32,7 @@ func model_layer_exit():
 	remove_custom_type("OpenAIModel")
 	remove_custom_type("QwenModel")
 
+## Tools
 func tool_box_enter():
 	add_autoload_singleton("ToolBox", "res://addons/AIdot/Autolodes/ToolBox.gd")
 	# MCP
@@ -48,6 +49,7 @@ func tool_box_exit():
 	remove_custom_type("MCPServer")
 	remove_custom_type("MCPStdioServer")
 
+## Maodot Chat
 var GODOT_ASSISTANT : Control
 func assistant_client():
 	GODOT_ASSISTANT = preload("res://addons/AIdot/Res/Agents/GodotAssistant/GodotAssistant.tscn").instantiate()
@@ -57,11 +59,16 @@ func assistant_exit():
 	GODOT_ASSISTANT.queue_free()
 
 func _enter_tree() -> void:
+	add_custom_type("AIdotResource", "Resource", preload("res://addons/AIdot/Lib/AIResource.gd"), \
+					preload("res://addons/AIdot/Res/UI/icon.png"))
+	
 	model_layer_enter()
 	tool_box_enter()
 	assistant_client()
 
 func _exit_tree() -> void:
+	remove_custom_type("AIdotResource")
+	
 	model_layer_exit()
 	tool_box_exit()
 	assistant_exit()

@@ -15,7 +15,7 @@
 - [ ] RAG原生支持  
 
 #### Tools  
-- [ ] 支持Godot本地MCP服务  
+- [ ] 支持Godot本地MCP服务(GodotTool)  
 
 #### Perception  
 - [ ] 支持更多感知能力  
