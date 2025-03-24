@@ -1,5 +1,5 @@
 @tool
-@icon("res://addons/AIdot/Res/UI/AIResource.svg")
+@icon("res://addons/AIdot/Res/UI/Icon/Model.svg")
 extends AIdotResource
 class_name BaseModel
 

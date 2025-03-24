@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://dbecmitp0kfvg"]
+
+[ext_resource type="Texture2D" uid="uid://dwr5wofdwpwp1" path="res://addons/AIdot/Res/UI/Icon/icon.png" id="1_27f1o"]
+
+[resource]
+resource_local_to_scene = true
+atlas = ExtResource("1_27f1o")
