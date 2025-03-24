@@ -7,7 +7,7 @@
 - [ ] 关系网系统
 
 #### ModelLayer  
-- [ ] 每个Model的UI图标  
+- [x] 每个Model的UI图标  
 - [ ] 流式传输支持  
 - [ ] ModelLayer性能优化  
 

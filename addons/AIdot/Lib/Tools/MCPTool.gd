@@ -4,6 +4,6 @@ class_name MCPTool
 
 var client : MCPClient
 
-func _call(arguments : Dictionary = {}):
-	var result = await client.call_tool(tool_name, arguments)
+func _call(arguments : Dictionary = {}) -> Array:
+	var result = await client.call_tool(_tool_name, arguments)
 	return result

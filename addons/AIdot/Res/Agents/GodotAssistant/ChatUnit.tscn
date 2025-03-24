@@ -1,7 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://c0u1lhabrv1hu"]
 
 [ext_resource type="Script" uid="uid://bqf4prnwhibk" path="res://addons/AIdot/Res/Agents/GodotAssistant/chat_unit.gd" id="1_0af4s"]
-[ext_resource type="Texture2D" uid="uid://1q51girxvvln" path="res://addons/AIdot/Res/UI/Icon/icon.png" id="1_b1t0h"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_b1t0h"]
+resource_local_to_scene = true
+load_path = "res://.godot/imported/icon.png-e367fe8f0a92db14e6fba7e37683ac21.ctex"
 
 [node name="ChatUnit" type="MarginContainer"]
 anchors_preset = 15
@@ -35,7 +38,7 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
-texture = ExtResource("1_b1t0h")
+texture = SubResource("CompressedTexture2D_b1t0h")
 expand_mode = 3
 
 [node name="Panel" type="PanelContainer" parent="ChatUnit"]

@@ -41,7 +41,7 @@ func tool_box_enter():
 	add_custom_type("MCPTool", "Resource", preload("res://addons/AIdot/Lib/Tools/MCPTool.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
 	add_custom_type("GodotTool", "Resource", preload("res://addons/AIdot/Lib/Tools/GodotTool.gd"),\
-					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
+					preload("res://addons/AIdot/Res/UI/Icon/icon.png"))
 	# MCP
 	add_custom_type("MCPClient", "Node", preload("res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp_node.png"))
@@ -49,6 +49,9 @@ func tool_box_enter():
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
 	add_custom_type("MCPStdioServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/MCPStdioServer.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
+	# agent tool
+	add_custom_type("ToolBag", "Resource", preload("res://addons/AIdot/Lib/Agent/Abilities/Action/ToolBag.gd"),\
+					preload("res://addons/AIdot/Res/UI/Icon/Tool.png"))
 func tool_box_exit():
 	remove_autoload_singleton("ToolBox")
 	# tool
@@ -59,6 +62,8 @@ func tool_box_exit():
 	remove_custom_type("MCPClient")
 	remove_custom_type("MCPServer")
 	remove_custom_type("MCPStdioServer")
+	# agent tool
+	remove_custom_type("ToolBag")
 
 ## Maodot Chat
 var GODOT_ASSISTANT : Control

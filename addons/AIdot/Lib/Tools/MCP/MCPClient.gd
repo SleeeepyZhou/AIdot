@@ -123,7 +123,7 @@ func connect_to_server() -> bool:
 		_mcp_notification("notifications/initialized")
 		_server_log = ""
 		_retry = 0
-		ToolBox._MCP_client.append(self)
+		ToolBox._MCP_client[_pid] = self
 		tool_list()
 		connection.emit(true)
 		return true
@@ -165,7 +165,7 @@ func tool_list():
 		return tools
 
 ## Use tool
-func call_tool(tool_name : String, arguments : Dictionary = {}):
+func call_tool(tool_name : String, arguments : Dictionary = {}) -> Array:
 	var tool : Dictionary = {
 		"name" : tool_name,
 		"arguments" : arguments
@@ -177,11 +177,14 @@ func call_tool(tool_name : String, arguments : Dictionary = {}):
 			call_request = await response_received
 		if call_request[1].is_empty():
 			push_error("Unable to use tool: ", tool_name)
-			return {}
+			return []
 		elif call_request[1]["isError"]:
 			push_error("An error occurred while calling tool: ", tool_name)
-			return {}
+			return []
 		return call_request[1]["content"]
+	else:
+		return []
+	
 
 ## Close server
 func stop() -> void:
@@ -194,8 +197,8 @@ func stop() -> void:
 			_stderr.close()
 		if OS.is_process_running(_pid):
 			OS.kill(_pid)
-		if ToolBox._MCP_client.has(self):
-			ToolBox._MCP_client.erase(self)
+		if ToolBox._MCP_client.has(_pid):
+			ToolBox._MCP_client.erase(_pid)
 		if !_tools.is_empty():
 			_tools = {}
 		print("MCP server closed on pid: ", _pid)

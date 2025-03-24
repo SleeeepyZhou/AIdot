@@ -2,33 +2,33 @@
 extends AIdotResource
 class_name BaseTool
 
-var tool_name : String
-var description : String
-var input_schema : Dictionary
+var _tool_name : String
+var _description : String
+var _input_schema : Dictionary
 
 var _tool_data : Dictionary:
 	set(d):
 		if d.get("name"):
 			_tool_data = d
-			tool_name = d.get("name")
-			description = d.get("description","")
-			input_schema = d.get("input_schema",{})
+			_tool_name = d.get("name")
+			_description = d.get("_description","")
+			_input_schema = d.get("_input_schema",{})
 		else:
 			push_error("Invalid tool data.")
 
-func _call(arguments : Dictionary = {}):
-	var result = "This is the tool base class."
+func _call(arguments : Dictionary = {}) -> Array:
+	var result = ["This is the tool base class."]
 	return result
 
-func use_tool(arguments : Dictionary = {}):
-	if !input_schema.is_empty():
-		var required = input_schema.get("required",[])
+func use_tool(arguments : Dictionary = {}) -> Array:
+	if !_input_schema.is_empty():
+		var required = _input_schema.get("required",[])
 		assert(required is Array, "Invalid input schema.")
 		var in_arg = arguments.keys()
 		for arg in required:
 			if !in_arg.has(arg):
-				push_error("The necessary arg ", arg, " is missing when running ", tool_name,".")
-				return {}
+				push_error("The necessary arg ", arg, " is missing when running ", _tool_name,".")
+				return []
 	var result = await _call(arguments)
 	return result
 

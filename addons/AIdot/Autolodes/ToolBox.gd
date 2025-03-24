@@ -23,10 +23,14 @@ var mcp_initialize : Dictionary = {
 			}
 	}
 
-## Registered MCP client.
-var _MCP_client : Array = []
-## Registered tools.
+# Registered MCP client.
+var _MCP_client : Dictionary = {}
+# Registered tools.
 var _tool_box : Dictionary = {}
+## Get registered tools name in Box.
+func get_box_tool():
+	var list = _tool_box.keys()
+	return list
 
 var _creating : bool = false
 signal create_mcp(is_ok : bool)
