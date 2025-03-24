@@ -1,11 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c0u1lhabrv1hu"]
+[gd_scene load_steps=3 format=3 uid="uid://c0u1lhabrv1hu"]
 
 [ext_resource type="Script" uid="uid://bqf4prnwhibk" path="res://addons/AIdot/Res/Agents/GodotAssistant/chat_unit.gd" id="1_0af4s"]
-[ext_resource type="Texture2D" uid="uid://dwr5wofdwpwp1" path="res://addons/AIdot/Res/UI/Icon/icon.png" id="1_b1t0h"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_b1t0h"]
-resource_local_to_scene = true
-atlas = ExtResource("1_b1t0h")
+[ext_resource type="Texture2D" uid="uid://1q51girxvvln" path="res://addons/AIdot/Res/UI/Icon/icon.png" id="1_b1t0h"]
 
 [node name="ChatUnit" type="MarginContainer"]
 anchors_preset = 15
@@ -39,7 +35,7 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
-texture = SubResource("AtlasTexture_b1t0h")
+texture = ExtResource("1_b1t0h")
 expand_mode = 3
 
 [node name="Panel" type="PanelContainer" parent="ChatUnit"]

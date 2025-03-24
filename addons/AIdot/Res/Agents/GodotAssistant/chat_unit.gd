@@ -1,7 +1,7 @@
 @tool
 extends MarginContainer
 
-const MAO = preload("res://addons/AIdot/Res/UI/Chat/Mao.tres")
+const MAO = preload("res://addons/AIdot/Res/UI/Icon/icon.png")
 const CAT = preload("res://addons/AIdot/Res/UI/Chat/Cat.jpg")
 
 const role = {

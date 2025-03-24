@@ -60,7 +60,7 @@ func assistant_exit():
 
 func _enter_tree() -> void:
 	add_custom_type("AIdotResource", "Resource", preload("res://addons/AIdot/Lib/AIResource.gd"), \
-					preload("res://addons/AIdot/Res/UI/icon.png"))
+					preload("res://addons/AIdot/Res/UI/Icon/icon.png"))
 	
 	model_layer_enter()
 	tool_box_enter()
