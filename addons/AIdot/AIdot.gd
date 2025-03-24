@@ -4,7 +4,7 @@ extends EditorPlugin
 ## Model Layer
 func model_layer_enter():
 	add_autoload_singleton("ModelLayer", "res://addons/AIdot/Autolodes/ModelLayer.gd")
-	
+	# API
 	add_custom_type("AIAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/API.gd"), \
 					preload("res://addons/AIdot/Res/UI/Icon/API.png"))
 	add_custom_type("LLMAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/LLM.gd"), \
@@ -22,7 +22,7 @@ func model_layer_enter():
 					preload("res://addons/AIdot/Res/UI/Model/qwen.png"))
 func model_layer_exit():
 	remove_autoload_singleton("ModelLayer")
-	
+	# API
 	remove_custom_type("AIAPI")
 	remove_custom_type("LLMAPI")
 	remove_custom_type("VLMAPI")
@@ -35,6 +35,13 @@ func model_layer_exit():
 ## Tools
 func tool_box_enter():
 	add_autoload_singleton("ToolBox", "res://addons/AIdot/Autolodes/ToolBox.gd")
+	# tool
+	add_custom_type("BaseTool", "Resource", preload("res://addons/AIdot/Lib/Tools/ToolMeta.gd"),\
+					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
+	add_custom_type("MCPTool", "Resource", preload("res://addons/AIdot/Lib/Tools/MCPTool.gd"),\
+					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
+	add_custom_type("GodotTool", "Resource", preload("res://addons/AIdot/Lib/Tools/GodotTool.gd"),\
+					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
 	# MCP
 	add_custom_type("MCPClient", "Node", preload("res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp_node.png"))
@@ -44,6 +51,10 @@ func tool_box_enter():
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
 func tool_box_exit():
 	remove_autoload_singleton("ToolBox")
+	# tool
+	remove_custom_type("BaseTool")
+	remove_custom_type("MCPTool")
+	remove_custom_type("GodotTool")
 	# MCP
 	remove_custom_type("MCPClient")
 	remove_custom_type("MCPServer")
@@ -51,10 +62,10 @@ func tool_box_exit():
 
 ## Maodot Chat
 var GODOT_ASSISTANT : Control
-func assistant_client():
+func maochat_client():
 	GODOT_ASSISTANT = preload("res://addons/AIdot/Res/Agents/GodotAssistant/GodotAssistant.tscn").instantiate()
 	add_control_to_dock(DOCK_SLOT_RIGHT_UL,GODOT_ASSISTANT)
-func assistant_exit():
+func maochat_exit():
 	remove_control_from_bottom_panel(GODOT_ASSISTANT)
 	GODOT_ASSISTANT.queue_free()
 
@@ -64,11 +75,11 @@ func _enter_tree() -> void:
 	
 	model_layer_enter()
 	tool_box_enter()
-	assistant_client()
+	maochat_client()
 
 func _exit_tree() -> void:
 	remove_custom_type("AIdotResource")
 	
 	model_layer_exit()
 	tool_box_exit()
-	assistant_exit()
+	maochat_exit()

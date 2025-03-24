@@ -134,12 +134,12 @@ func connect_to_server() -> bool:
 		return false
 
 ## Get tools list
-var _tools : Array = []:
+var _tools : Dictionary = {}:
 	set(l):
-		for tool in _tools:
+		for tool in _tools.keys():
 			if ToolBox._tool_box.has(tool):
 				ToolBox._tool_box.erase(tool)
-		ToolBox._tool_box.append_array(l)
+		ToolBox._tool_box.merge(l, true)
 		_tools = l
 func tool_list():
 	var send = _mcp_request("tools/list")
@@ -153,13 +153,13 @@ func tool_list():
 		var tools = tools_request[1]["tools"]
 		
 		# Update tools list
-		_tools = []
-		var temp_list : Array = []
+		_tools = {}
+		var temp_list : Dictionary = {}
 		for tool in tools:
 			var new_tool = MCPTool.new()
 			new_tool.client = self
 			new_tool._tool_data = tool
-			temp_list.append(new_tool)
+			temp_list[tool["name"]] = new_tool
 		_tools = temp_list
 		
 		return tools
@@ -197,7 +197,7 @@ func stop() -> void:
 		if ToolBox._MCP_client.has(self):
 			ToolBox._MCP_client.erase(self)
 		if !_tools.is_empty():
-			_tools = []
+			_tools = {}
 		print("MCP server closed on pid: ", _pid)
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
@@ -275,4 +275,3 @@ func _process_stderr() -> void:
 #@export_tool_button("Test") var _test = test
 #func test():
 	#print(await call_tool("example_func",{"example_arg": "testtest"}))
-	
