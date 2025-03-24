@@ -35,7 +35,7 @@ gantt
 		休整 :done, 2025-03-01, 2d
 		架构设计 :done, 2025-03-03, 2d
 		记忆模块设计 :done, 2025-03-07, 4d
-		MCP兼容设计 :active, 2025-03-12, 3d
+		MCP兼容设计 :done, 2025-03-12, 3d
 	section Model Layer
 		工具重构 :done, 2025-03-04, 2d
 		示例API集成 :done, 2025-03-06, 3d
@@ -44,13 +44,10 @@ gantt
 		ChatAgent :active, 2025-03-09, 4d
 	section Memory
 		记忆类 :active, 2025-03-06, 3d
-		短记忆 :active, 2025-03-09, 3d
+		短记忆 :done, 2025-03-09, 3d
 		长记忆 :active, 2025-03-12, 3d
-	section Action
-	section Perception
-	section Planning
 	section Tools
-		MCP :active, 2025-03-12, 1d
+		MCP :done, 2025-03-12, 1d
 		ToolBox :active, 2025-03-13, 2d
 ```
 
@@ -66,13 +63,14 @@ gantt
 		休整 :done, 2025-03-15, 1d
 		Other :done, 2025-03-16, 5d
 		Perception :active, 2025-03-17, 2d
-		MCP Design :active, 2025-03-19, 3d
+		MCP Design :done, 2025-03-19, 3d
+		Planning :active, 2025-03-24, 2d
 	section Model Layer
 	section Agent
 	section Memory
 	section Perception
 	section Planning
 	section Tools
-		MCP :active, 2025-03-20, 3d
+		MCPClient :active, 2025-03-20, 3d
 		ToolBag :active, 2025-03-23, 2d
 ```
