@@ -8,6 +8,7 @@ class_name BaseModel
 ## In [ModelLayer]
 @export var model_name : String
 @export var model_config_dict : Dictionary = {}
+var tools : Dictionary = {"tools":[]}
 
 @export_group("API information")
 @export var api_url : String = ""
@@ -78,7 +79,8 @@ func prepare_request(prompt : String, memory : Array = [], role : String = "user
 	var mod_memory = format_memory(memory)
 	var requset_data = _generator_request(prompt, mod_memory, role, char_name, base64url)
 	requset_data.merge(model_config_dict, true)
-	
+	if !tools["tools"].is_empty():
+		requset_data.merge(tools, true)
 	## Currently not supporting stream.
 	requset_data.merge({"stream": false}, true)
 	
@@ -105,15 +107,22 @@ func _parse_response(data : Dictionary):
 				"message":{
 					"role": json_result["choices"][0]["message"]["role"],
 					"content": json_result["choices"][0]["message"]["content"]
-					},
-				#"tool":{
-					#
-					#}
+					}
 				}
+			if json_result["choices"][0]["message"].has("tool_calls") and \
+					json_result["choices"][0]["message"]["tool_calls"] is Array:
+				var call_list = json_result["choices"][0]["message"]["tool_calls"]
+				var tool_list = []
+				for call in call_list:
+					if call is Dictionary and call.has("function") and \
+							call["function"] is Dictionary and call["function"].has("name"):
+						tool_list.append(call["function"])
+				if !tool_list.is_empty():
+					answer["tool_calls"] = tool_list
 		else:
 			answer = str(json_result)
 	return answer
-## Parse response data for debug.
+# Parse response data for debug.
 func _get_debug_response(response : Array) -> Dictionary:
 	var answer : Dictionary = {}
 	if response.is_empty():
@@ -133,7 +142,7 @@ func get_response(response : Array) -> Array:
 		return ["Error: " + parse["error"], parse]
 	var answer = ""
 	if parse.get("reasoning_content") and !parse["reasoning_content"].is_empty():
-		answer = "<think>" + parse["reasoning_content"] + "</think>"
+		answer = "<think>\n" + parse["reasoning_content"] + "\n</think>\n"
 	answer += parse["message"]["content"]
 	return [answer, parse]
 

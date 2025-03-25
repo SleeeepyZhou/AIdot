@@ -12,7 +12,10 @@ signal response(answer : String, debug : Dictionary)
 
 ## Dialogue with Agent
 func chat(prompt : String, in_role : String = "user", chr_name : String = ""):
-	prompt = memory._get_long(prompt) + prompt
+	if in_role == "user" or in_role == "assistant":
+		prompt = memory._get_long(prompt) + prompt
+	if tool_user:
+		model.tools["tools"] = _get_tools()
 	last_chat = AgentMemory.template_memory(prompt, in_role, chr_name)
 	var history = memory.read_memory()
 	_api.run_api(prompt, history, in_role, chr_name)
@@ -28,13 +31,22 @@ func retry_last_chat():
 		return
 	chat(last_chat["content"], last_chat["role"], last_chat.get("name",""))
 
-func _call_back(answer : String, debug : Dictionary):
+func _call_back(answer : String, debug : Dictionary): # handle memory and callbacks
 	if debug.get("error"):
-		memory._history.pop_back()
-		push_error(agent_id + "'s response has an error.")
+		var templast = memory._history.pop_back()
+		push_error(agent_id + "'s response has an error. Prompt: " + templast["content"])
 	else:
 		last_chat = {}
-		memory.add_memory(debug["message"]["content"], role, character_name)
+		# callback handle
+		var callbacks = str(debug["message"]["content"])
+		# planning
+		if planer:
+			
+			pass
+		memory.add_memory(callbacks, role, character_name)
+		# tools
+		if tool_user and debug.has("tool_calls"):
+			_handle_toolcall(debug["tool_calls"])
 	response.emit(answer, debug)
 
 # Model
@@ -103,9 +115,34 @@ func save_memory() -> String:
 
 # Action
 @export_group("Action")
+@export var tool_user : bool = true:
+	set(b):
+		if b:
+			if !tool_chat.is_connected(chat):
+				tool_chat.connect(chat)
+		else:
+			tool_bag = null
+			if tool_chat.is_connected(chat):
+				tool_chat.disconnect(chat)
 @export var tool_bag : ToolBag = ToolBag.new():
 	set(t):
 		if t:
 			tool_bag = t
 		else:
 			tool_bag = ToolBag.new()
+
+signal tool_chat(prompt : String, in_role : String, chr_name : String)
+func _get_tools():
+	return tool_bag._agent_tools
+func call_tool(tool_name : String, input : Dictionary = {}):
+	var tool_result = await tool_bag.use_tool(tool_name, input)
+	return tool_result
+
+func _handle_toolcall(tool_calls : Array):
+	var final_result : PackedStringArray = []
+	var call_tip : String = "[Calling tool {0} with args {1}]"
+	for call in tool_calls:
+		final_result.append(call_tip.format([call["name"],str(call.get("arguments",{}))]))
+		var result = await call_tool(call["name"], call.get("arguments",{}))
+		final_result.append(str(result))
+	tool_chat.emit("\n".join(final_result),"tool","")

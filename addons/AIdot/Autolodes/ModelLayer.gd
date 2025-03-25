@@ -16,8 +16,9 @@ func _get_env_example(mod_type : String) -> Array:
 			push_error("Unable to create 'res://.env' file, please copy the ENV_example.")
 	var env_data = json_tool.read_json(env_path)
 	return [env_data["url"].get(mod_type,""),env_data["key"].get(mod_type,"")] # url, key
-## This is an example method that can directly override and modify the API key 
-## reading behavior after exporting application.
+## This is the method to obtain the user ".env" default URL and key. Please 
+## modify the Callable variable user_getenv in ModelLayer and specify a new 
+## method to automatically obtain the user default URL and key.
 func get_user_env(mod_type : String) -> Array:
 	var env_set = user_getenv.call(mod_type)
 	return env_set # url, key

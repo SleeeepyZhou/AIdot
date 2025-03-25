@@ -27,12 +27,13 @@ var mcp_initialize : Dictionary = {
 var _MCP_client : Dictionary = {}
 # Registered tools.
 var _tool_box : Dictionary = {}
-## Get registered tools name in Box.
+## Get registered tools name in ToolBox.
 func get_box_tool():
 	var list = _tool_box.keys()
 	return list
 
 var _creating : bool = false
+## After the MCP client is successfully created, it will be emit.
 signal create_mcp(is_ok : bool)
 func _connect_ok(is_ok : bool):
 	if is_connected("connection",_connect_ok):
