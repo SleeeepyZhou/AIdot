@@ -9,4 +9,7 @@ class_name BaseAgent
 			return "Agent_" + to_string()
 		return agent_id
 
+## Agent's name. The conversation will be based on this name.
+@export var character_name: String = ""
+
 @export_enum("user","assistant","tool") var role : String = "assistant"

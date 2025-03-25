@@ -3,9 +3,6 @@ extends BaseAgent
 class_name ChatAgent
 
 # Agent
-## Agent's name. The conversation will be based on this name.
-@export var character_name: String = ""
-
 ## If there is an 'error' in the debug Dictionary, 
 ## then this response only contains the error text.
 signal response(answer : String, debug : Dictionary)
@@ -41,8 +38,8 @@ func _call_back(answer : String, debug : Dictionary): # handle memory and callba
 		var callbacks = str(debug["message"]["content"])
 		# planning
 		if planer:
-			
 			pass
+		
 		memory.add_memory(callbacks, role, character_name)
 		# tools
 		if tool_user and debug.has("tool_calls"):
@@ -110,8 +107,9 @@ func save_memory() -> String:
 # Perception
 @export_group("Perception")
 @export var monitoring : bool = false
-@export var sensor2D : AgentSensor2D
-@export var sensor3D : AgentSensor3D
+#@export var sensor2D : AgentSensor2D
+#@export var sensor3D : AgentSensor3D
+
 
 # Action
 @export_group("Action")

@@ -1,8 +1,9 @@
-extends Node
+@tool
+extends ChatAgent
 
 # AgentFactory
 
-# Agent Relationship Network ?
+# Agent Relationship Network
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
