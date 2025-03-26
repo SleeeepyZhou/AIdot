@@ -43,7 +43,7 @@ func _update_gitignore():
 func _get_env(model_type : String) -> Array:
 	var type = get_type(model_type)
 	if !OS.is_debug_build():
-		return ModelLayer.get_user_env(type)
+		return get_user_env(type)
 	
 	var env_data
 	var json_tool = JsonTool.new()

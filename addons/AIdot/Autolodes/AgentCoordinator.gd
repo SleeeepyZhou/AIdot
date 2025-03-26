@@ -1,14 +1,17 @@
 @tool
 extends ChatAgent
 
+var user : UserAgent
+func _ready() -> void:
+	user = UserAgent.new()
+	add_child(user)
+
+var agent_list
+var net
+
 # AgentFactory
 
 # Agent Relationship Network
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

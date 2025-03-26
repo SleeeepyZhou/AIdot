@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="86.683197"
+   height="80.814827"
+   viewBox="0 0 86.683197 80.814827"
+   version="1.1"
+   id="svg9"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <!-- 背景层 -->
+  <!-- 主体轮廓 -->
+  <!-- 猫耳天线 -->
+  <!-- 核心芯片 -->
+  <g
+     id="cat_ears"
+     transform="translate(79.196844,65.960023)">
+    <!-- 左耳天线 -->
+    <!-- 右耳天线（左耳镜像） -->
+    <path
+       d="m -62.293799,-65.960024 c 3.5,6 7.205234,20.063361 7.205234,20.063361 l -6.021562,0.242978 c 0,0 -1.791789,-0.03046 -3.622667,2.369776 l -4.061005,5.323885 c -1.212976,1.590185 0,2 0,0 v -3 c 0,-10 3,-19 6.5,-25 z"
+       fill="#7df9ff"
+       opacity="0.8"
+       id="path2-9" />
+    <path
+       d="m 90.131112,18.825646 c -3.5,6 -7.205234,20.063361 -7.205234,20.063361 l 6.021562,0.242978 c 0,0 1.791789,-0.03046 3.622667,2.369776 l 4.061005,5.323885 c 1.212976,1.590185 0,2 0,0 v -3 c 0,-10 -3,-19 -6.5,-25 z"
+       fill="#7df9ff"
+       opacity="0.8"
+       id="path2-9-4"
+       transform="translate(-99.547804,-84.78567)" />
+    <!-- 天线尖端增强 -->
+  </g>
+  <g
+     transform="translate(43.341594,42.322213)"
+     id="g3">
+    <path
+       d="m 5.28e-6,-27.523098 c -28.56887628,0 -39.99642828,13.926788 -39.99642828,31.3352711 0,17.4084829 11.427552,31.3352709 39.99642828,31.3352709 C 28.568882,35.147444 39.996434,21.220656 39.996434,3.8121731 39.996434,-13.59631 28.568882,-27.523098 5.28e-6,-27.523098 Z"
+       fill="none"
+       stroke="url(#mainGradient)"
+       stroke-width="6.69034"
+       id="path1"
+       style="fill:url(#radialGradient11);fill-opacity:0.315663;stroke:url(#mainGradient)" />
+    <rect
+       x="-21.920723"
+       y="0.28600219"
+       width="43.841457"
+       height="13.351377"
+       rx="8.220273"
+       fill="url(#coreGradient)"
+       id="rect2"
+       style="fill:url(#coreGradient);stroke-width:0.756059" />
+  </g>
+  <path
+     d="m 19.114215,6.0991231 16.15843,-15.425141 16.158429,15.425141 m -32.316859,0 C 11.035002,11.240837 2.9557875,21.524262 2.9557875,31.807689 M 67.589502,6.0991231 C 75.668718,11.240837 83.747929,21.524262 83.747929,31.807689"
+     stroke="#7df9ff"
+     stroke-width="4.16599"
+     stroke-linecap="round"
+     id="path2"
+     style="display:none" />
+  <!-- 动态粒子 -->
+  <!-- 渐变定义 -->
+  <defs
+     id="defs9">
+    <linearGradient
+       id="linearGradient9">
+      <stop
+         style="stop-color:#24439a;stop-opacity:0.36873156;"
+         offset="0.16061184"
+         id="stop10" />
+      <stop
+         style="stop-color:#000035;stop-opacity:0;"
+         offset="1"
+         id="stop11" />
+    </linearGradient>
+    <!-- 背景渐变 -->
+    <!-- 主轮廓渐变 -->
+    <linearGradient
+       id="mainGradient"
+       x1="37.013947"
+       y1="22.288897"
+       x2="106.5553"
+       y2="91.830254"
+       gradientTransform="matrix(1.2735374,0,0,0.97629807,-91.420399,-51.894975)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0%"
+         stop-color="#7DF9FF"
+         id="stop6" />
+      <stop
+         offset="100%"
+         stop-color="#4B0082"
+         id="stop7" />
+    </linearGradient>
+    <!-- 核心渐变 -->
+    <radialGradient
+       id="coreGradient"
+       cx="0"
+       cy="0"
+       fx="0"
+       fy="0"
+       r="16"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.3700455,0,0,0.41723051,2.9131165e-6,6.9616886)">
+      <stop
+         offset="0"
+         stop-color="#6a11cb"
+         id="stop8"
+         style="stop-color:#3f47c4;stop-opacity:0.46312684;" />
+      <stop
+         offset="1"
+         stop-color="#2575fc"
+         id="stop9"
+         style="stop-color:#2575fc;stop-opacity:0.59882003;" />
+    </radialGradient>
+    <radialGradient
+       xlink:href="#linearGradient9"
+       id="radialGradient11"
+       cx="5.5e-06"
+       cy="3.8121729"
+       fx="5.5e-06"
+       fy="3.8121729"
+       r="43.341599"
+       gradientTransform="matrix(1,0,0,0.80016525,0,0.76180464)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+</svg>

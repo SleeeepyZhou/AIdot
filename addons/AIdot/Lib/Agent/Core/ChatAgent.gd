@@ -3,37 +3,52 @@ extends BaseAgent
 class_name ChatAgent
 
 # Agent
+@export var auto_retry : bool = false
 ## If there is an 'error' in the debug Dictionary, 
 ## then this response only contains the error text.
 signal response(answer : String, debug : Dictionary)
 
+var _wait_you : BaseAgent
 ## Dialogue with Agent
-func chat(prompt : String, in_role : String = "user", chr_name : String = ""):
-	if in_role == "user" or in_role == "assistant":
-		prompt = memory._get_long(prompt) + prompt
+func chat(prompt : String, source : BaseAgent = AgentCoordinator.user):
+	# Identity of the interlocutor
+	var in_role : String = "user"
+	var chr_name : String = ""
+	if source:
+		in_role = source.role
+		chr_name = source.character_name
+	if !(source is ToolAgent):
+		_wait_you = source
+	
+	# Construct a complete prompt.
+	prompt = memory._get_long(prompt) + prompt
 	if tool_user:
 		model.tools["tools"] = _get_tools()
-	last_chat = AgentMemory.template_memory(prompt, in_role, chr_name)
 	var history = memory.read_memory()
-	_api.run_api(prompt, history, in_role, chr_name)
+	
+	var id : int = int(Time.get_unix_time_from_system())
+	_chat_list[id] = {"source":source, "prompt":prompt}
+	_api.run_api(prompt, history, in_role, id, chr_name)
 	memory.add_memory(prompt, in_role, chr_name)
 	if auto_save_memory:
 		_auto_save += 1
+	return id
 
-## The last conversation initiated with the Agent.
-var last_chat : Dictionary = {}
-## Try the last conversation before the error Again.
-func retry_last_chat():
-	if last_chat.is_empty():
+var _chat_list : Dictionary = {}
+## Try conversation before the error Again.
+func retry_last_chat(chat_id : int):
+	if !_chat_list.has(chat_id):
 		return
-	chat(last_chat["content"], last_chat["role"], last_chat.get("name",""))
+	chat(_chat_list[chat_id]["prompt"], _chat_list[chat_id]["source"])
 
-func _call_back(answer : String, debug : Dictionary): # handle memory and callbacks
+func _call_back(answer : String, debug : Dictionary, requset_id : int):
+	# handle memory and callbacks
+	var callback_taget = _chat_list[requset_id]
+	_chat_list.erase(requset_id)
 	if debug.get("error"):
-		var templast = memory._history.pop_back()
-		push_error(agent_id + "'s response has an error. Prompt: " + templast["content"])
+		memory._history.pop_back()
+		push_error(agent_id + "'s response has an error. Prompt: " + callback_taget["prompt"])
 	else:
-		last_chat = {}
 		# callback handle
 		var callbacks = str(debug["message"]["content"])
 		# planning
@@ -41,6 +56,7 @@ func _call_back(answer : String, debug : Dictionary): # handle memory and callba
 			pass
 		
 		memory.add_memory(callbacks, role, character_name)
+		
 		# tools
 		if tool_user and debug.has("tool_calls"):
 			_handle_toolcall(debug["tool_calls"])
@@ -66,7 +82,7 @@ var _api : LLMAPI = null:
 	get:
 		assert(_api, "No Model!!!")
 		return _api
-var _set_api : bool = false
+var _set_api : bool = false # Indicates whether an API node has been set.
 
 
 # Memory
@@ -143,4 +159,4 @@ func _handle_toolcall(tool_calls : Array):
 		final_result.append(call_tip.format([call["name"],str(call.get("arguments",{}))]))
 		var result = await call_tool(call["name"], call.get("arguments",{}))
 		final_result.append(str(result))
-	tool_chat.emit("\n".join(final_result),"tool","")
+	tool_chat.emit("\n".join(final_result),ToolBox)

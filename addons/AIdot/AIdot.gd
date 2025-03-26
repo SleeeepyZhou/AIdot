@@ -32,6 +32,24 @@ func model_layer_exit():
 	remove_custom_type("OpenAIModel")
 	remove_custom_type("QwenModel")
 
+## Memory
+func memory_enter():
+	add_custom_type("AIMemory", "Resource", preload("res://addons/AIdot/Lib/Agent/Abilities/Memory/Memory.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Agent.svg"))
+	
+	add_custom_type("MemoryBlock", "Resource", preload("res://addons/AIdot/Lib/Agent/Abilities/Memory/MemoryBlock.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Agent.svg"))
+	add_custom_type("AgentMemory", "Resource", preload("res://addons/AIdot/Lib/Agent/Abilities/Memory/AgentMemory.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Agent.svg"))
+	add_custom_type("LongMemory", "Resource", preload("res://addons/AIdot/Lib/Agent/Abilities/Memory/LongMemory.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Agent.svg"))
+func memory_exit():
+	remove_custom_type("AIMemory")
+	
+	remove_custom_type("MemoryBlock")
+	remove_custom_type("AgentMemory")
+	remove_custom_type("LongMemory")
+
 ## Tools
 func tool_box_enter():
 	add_autoload_singleton("ToolBox", "res://addons/AIdot/Autolodes/ToolBox.gd")
@@ -65,6 +83,33 @@ func tool_box_exit():
 	# agent tool
 	remove_custom_type("ToolBag")
 
+## Agent
+func agent_enter():
+	## Abilities
+	# Memory
+	memory_enter()
+	# Tools
+	tool_box_enter()
+	
+	add_autoload_singleton("AgentCoordinator", "res://addons/AIdot/Autolodes/AgentCoordinator.gd")
+	add_custom_type("BaseAgent", "Node", preload("res://addons/AIdot/Lib/Agent/Core/BaseAgent.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Agent.svg"))
+	add_custom_type("ChatAgent", "Node", preload("res://addons/AIdot/Lib/Agent/Core/ChatAgent.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Agent.svg"))
+	add_custom_type("UserAgent", "Node", preload("res://addons/AIdot/Lib/Agent/Core/UserAgent.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Agent.svg"))
+func agent_exit():
+	## Abilities
+	# Memory
+	memory_exit()
+	# Tools
+	tool_box_exit()
+	
+	remove_autoload_singleton("AgentCoordinator")
+	remove_custom_type("BaseAgent")
+	remove_custom_type("ChatAgent")
+	remove_custom_type("UserAgent")
+
 ## Maodot Chat
 var GODOT_ASSISTANT : Control
 func maochat_client():
@@ -79,12 +124,12 @@ func _enter_tree() -> void:
 					preload("res://addons/AIdot/Res/UI/Icon/icon.png"))
 	
 	model_layer_enter()
-	tool_box_enter()
+	agent_enter()
 	maochat_client()
 
 func _exit_tree() -> void:
 	remove_custom_type("AIdotResource")
 	
 	model_layer_exit()
-	tool_box_exit()
+	agent_exit()
 	maochat_exit()

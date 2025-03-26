@@ -21,6 +21,7 @@ config/icon="res://addons/AIdot/Res/UI/Icon/icon.png"
 MatrixLib="*res://addons/matrix_calc/Lib.gd"
 ModelLayer="*res://addons/AIdot/Autolodes/ModelLayer.gd"
 ToolBox="*res://addons/AIdot/Autolodes/ToolBox.gd"
+AgentCoordinator="*res://addons/AIdot/Autolodes/AgentCoordinator.gd"
 
 [editor_plugins]
 

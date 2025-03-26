@@ -1,8 +1,10 @@
 @tool
-extends ChatAgent
+extends ToolAgent
+
+func _ready() -> void:
+	role = "tool"
 
 ## This singleton integrates MCP and allows realtime registration of tools.
-## MCP - Model Context Protocol
 
 # MCP
 const _LATEST_PROTOCOL_VERSION = "2024-11-05"
@@ -34,6 +36,7 @@ func get_box_tool():
 
 var _creating : bool = false
 ## After the MCP client is successfully created, it will be emit.
+## MCP - Model Context Protocol
 signal create_mcp(is_ok : bool)
 func _connect_ok(is_ok : bool):
 	if is_connected("connection",_connect_ok):

@@ -9,9 +9,9 @@ class_name AIAPI
 @export var model : BaseModel = null
 
 ## Reply signal contains a parsed reply string or error message Dictionary for debug. 
-signal response_debug(debug : Dictionary)
+signal response_debug(debug : Dictionary, requset_id : int)
 ## Reply signal contains a parsed reply string or error String and debug Dictionary.
-signal response(answer : String, debug : Dictionary)
+signal response(answer : String, debug : Dictionary, requset_id : int)
 
 func _init(mod : BaseModel = null, time_out : int = 10):
 	model = mod
