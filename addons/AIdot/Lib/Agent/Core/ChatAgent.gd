@@ -6,48 +6,53 @@ class_name ChatAgent
 @export var auto_retry : bool = false
 ## If there is an 'error' in the debug Dictionary, 
 ## then this response only contains the error text.
-signal response(answer : String, debug : Dictionary)
+signal response(answer : String, debug : Dictionary, requset_id : int)
+
+## >>>>>> need fix <<<<<<
 
 var _wait_you : BaseAgent
-## Dialogue with Agent
-func chat(prompt : String, source : BaseAgent = AgentCoordinator.user):
-	# Identity of the interlocutor
-	var in_role : String = "user"
-	var chr_name : String = ""
-	if source:
-		in_role = source.role
-		chr_name = source.character_name
-	if !(source is ToolAgent):
-		_wait_you = source
-	
+var _chat_list : Dictionary = {}
+func _request_chat(prompt : String, in_role : String = "user", chr_name : String = ""):
 	# Construct a complete prompt.
-	prompt = memory._get_long(prompt) + prompt
 	if tool_user:
 		model.tools["tools"] = _get_tools()
 	var history = memory.read_memory()
 	
 	var id : int = int(Time.get_unix_time_from_system())
-	_chat_list[id] = {"source":source, "prompt":prompt}
+	_chat_list[id] = AgentMemory.template_memory(prompt, in_role, chr_name)
 	_api.run_api(prompt, history, in_role, id, chr_name)
 	memory.add_memory(prompt, in_role, chr_name)
 	if auto_save_memory:
 		_auto_save += 1
 	return id
+## Dialogue with Agent
+func chat(prompt : String, source : BaseAgent = AgentCoordinator.user):
+	# Identity of the interlocutor
+	var in_role : String = source.role
+	var chr_name : String = source.character_name
+	_wait_you = source
+	if in_role != "tool":
+		prompt = memory._get_long(prompt) + prompt
+	return _request_chat(prompt, in_role, chr_name)
 
-var _chat_list : Dictionary = {}
 ## Try conversation before the error Again.
-func retry_last_chat(chat_id : int):
+func retry_chat(chat_id : int):
 	if !_chat_list.has(chat_id):
 		return
-	chat(_chat_list[chat_id]["prompt"], _chat_list[chat_id]["source"])
+	var target = _chat_list[chat_id]
+	var newid = _request_chat(target["content"], target["role"], target.get("name",""))
+	_chat_list.erase(chat_id)
+	_chat_list[newid] = target
+	return newid
 
 func _call_back(answer : String, debug : Dictionary, requset_id : int):
 	# handle memory and callbacks
-	var callback_taget = _chat_list[requset_id]
-	_chat_list.erase(requset_id)
+	var callback_taget = _wait_you
 	if debug.get("error"):
 		memory._history.pop_back()
 		push_error(agent_id + "'s response has an error. Prompt: " + callback_taget["prompt"])
+		if auto_retry:
+			retry_chat(requset_id)
 	else:
 		# callback handle
 		var callbacks = str(debug["message"]["content"])
@@ -60,7 +65,14 @@ func _call_back(answer : String, debug : Dictionary, requset_id : int):
 		# tools
 		if tool_user and debug.has("tool_calls"):
 			_handle_toolcall(debug["tool_calls"])
-	response.emit(answer, debug)
+	
+	_chat_list.erase(requset_id)
+	response.emit(answer, debug, requset_id)
+
+## >>>>>> need fix <<<<<<
+
+
+
 
 # Model
 @export var model : BaseModel = null:
@@ -103,10 +115,10 @@ var _auto_save : int = 0:
 			save_memory()
 		else:
 			_auto_save = i
+## Save path
 @export_global_dir var memory_save_dir : String = ""
 func save_memory() -> String:
 	var path = memory.save(memory_save_dir, agent_id)
-	## Save path
 	return path
 
 @export_multiline var sys_prompt : String = "":
@@ -132,12 +144,12 @@ func save_memory() -> String:
 @export var tool_user : bool = true:
 	set(b):
 		if b:
-			if !tool_chat.is_connected(chat):
-				tool_chat.connect(chat)
+			if !tool_chat.is_connected(_request_chat):
+				tool_chat.connect(_request_chat)
 		else:
 			tool_bag = null
-			if tool_chat.is_connected(chat):
-				tool_chat.disconnect(chat)
+			if tool_chat.is_connected(_request_chat):
+				tool_chat.disconnect(_request_chat)
 @export var tool_bag : ToolBag = ToolBag.new():
 	set(t):
 		if t:
@@ -159,4 +171,4 @@ func _handle_toolcall(tool_calls : Array):
 		final_result.append(call_tip.format([call["name"],str(call.get("arguments",{}))]))
 		var result = await call_tool(call["name"], call.get("arguments",{}))
 		final_result.append(str(result))
-	tool_chat.emit("\n".join(final_result),ToolBox)
+	tool_chat.emit("\n".join(final_result),"tool","")

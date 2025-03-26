@@ -3,7 +3,7 @@ extends BaseAgent
 class_name UserAgent
 
 func _init() -> void:
-	role = "role"
+	role = "user"
 
 func chat():
 	pass
