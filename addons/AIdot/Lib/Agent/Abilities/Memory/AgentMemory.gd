@@ -26,7 +26,9 @@ func reset_sys():
 	sys_prompt = {}
 const _Role = ["user","assistant","tool","system"]
 ## Used to generate template memory blocks. 
-static func template_memory(content : String, role : String, char_name : String = "") -> Dictionary:
+## Return {role,content,?name}
+static func template_memory(content : String, role : String, 
+							char_name : String = "") -> Dictionary:
 	assert(_Role.has(role), "Wrong message role " + role +"!!!")
 	if char_name.is_empty():
 		return {
@@ -113,15 +115,14 @@ func write_memory(idx : int, content : String, role : String, char_name : String
 func _editor_read():
 	var e_m : Array[MemoryBlock] = []
 	for block in _history:
-		var temp_b = MemoryBlock.new()
-		temp_b._h_data = block
+		var temp_b = MemoryBlock.new(block)
 		e_m.append(temp_b)
 	edit_memory = e_m
 @export_tool_button("Set Memory") var _editorset = _editor_set
 func _editor_set():
 	var r_h : Array = []
 	for block in edit_memory:
-		r_h.append(block._h_data)
+		r_h.append(block.get_data())
 	_history = r_h
 
 

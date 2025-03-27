@@ -3,6 +3,8 @@
 extends AIdotResource
 class_name BaseModel
 
+#@export var max_token : int
+
 @export_group("Model informationf")
 @export var custom_name : String = "BaseModel"
 ## In [ModelLayer]

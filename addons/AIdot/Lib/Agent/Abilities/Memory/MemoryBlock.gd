@@ -22,3 +22,11 @@ var _h_data : Dictionary:
 			"name": character_name,
 			"content": content
 		}
+
+func _init(chat_data: Dictionary) -> void:
+	assert(chat_data.get("role"),"Invalid chat data, missing 'role'!")
+	assert(chat_data.get("content","Invalid chat data, missing 'content'!"))
+	_h_data = chat_data
+
+func get_data() -> Dictionary:
+	return _h_data

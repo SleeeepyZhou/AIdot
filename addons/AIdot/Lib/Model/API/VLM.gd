@@ -19,15 +19,17 @@ func _request(prompt : String, image : Texture2D = null, history : Array = [],
 ## VLM's request method involves entering prompt words and image, 
 ## and receiving a response in the signal. It return a Dictionary for debug.
 func run_api_debug(prompt : String, image : Texture2D = null, history : Array = [], 
-		requset_id : int = 0, role : String = "user", char_name : String = ""):
+		requset_id : int = 0, role : String = "user", char_name : String = "") -> Array:
 	var response = await _request(prompt, image, history, role, char_name)
 	var result = model._get_debug_response(response)
 	response_debug.emit(result, requset_id)
+	return [result, requset_id]
 
 ## VLM's request method involves entering prompt words and image, 
 ## and receiving a response in the signal. 
 func run_api(prompt : String, image : Texture2D = null, history : Array = [], 
-		requset_id : int = 0, role : String = "user", char_name : String = ""):
+		requset_id : int = 0, role : String = "user", char_name : String = "") -> Array:
 	var get_response = await _request(prompt, image, history, role, char_name)
 	var result = model.get_response(get_response)
 	response.emit(result[0], result[1], requset_id)
+	return [result[0], result[1], requset_id]
