@@ -131,7 +131,10 @@ func _call_chat(id : int):
 		_task_clear(id)
 		
 		# Callback
-		if auto_callback or (task.target is UserAgent):
+		if task.target is UserAgent:
+			task.target.record_prompt(chat_data.content,self)
+			task.target.chat(final_answer, self)
+		elif auto_callback:
 			task.target.chat(final_answer, self)
 func get_task_info(chat_id : int) -> Dictionary:
 	var task : ChatTask = _chat_list[chat_id]
@@ -145,7 +148,7 @@ func get_task_info(chat_id : int) -> Dictionary:
 		"result": task.result
 	}
 	return info
-func _chat(prompt : String, source : BaseAgent = AgentCoordinator.user) -> int:
+func _chat(prompt : String, source : BaseAgent = AgentCoordinator) -> int:
 	# Identity of the interlocutor
 	var in_role : String = source.role
 	var chr_name : String = source.character_name
@@ -168,7 +171,6 @@ func retry_chat(chat_id : int):
 	task.status = ChatStatus.PENDING
 	task.retry += 1
 	_call_chat(chat_id)
-
 
 # Model
 @export var model : BaseModel = null:

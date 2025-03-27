@@ -2,8 +2,7 @@
 extends AIdotResource
 class_name ToolBag
 
-@export_custom(PROPERTY_HINT_NONE,"Only show",PROPERTY_USAGE_READ_ONLY) var bag_show : \
-		PackedStringArray = []
+@export var bag_show : PackedStringArray = []
 @export var add : String = ""
 @export_tool_button("Add tool") var _edit_add = _add_for_editor
 func _add_for_editor():
@@ -24,6 +23,10 @@ func _remove_for_edit():
 		print(">>>Can not remove tool ", remove, ".<<<")
 		return
 	print(">>>", remove, "has been removed.<<<")
+
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "bag_show":
+		property.usage |= PROPERTY_USAGE_READ_ONLY
 
 var _tool_list : Dictionary = {}:
 	set(l):

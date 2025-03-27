@@ -1,18 +1,11 @@
 @tool
-extends ChatAgent
-
-var user : UserAgent
-func _ready() -> void:
-	user = UserAgent.new()
-	add_child(user)
-
-var agent_list
-var net
+extends UserAgent
 
 # AgentFactory
+#var agent_list
 
 # Agent Relationship Network
+#var net
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+#func _process(delta: float) -> void:
+	#pass

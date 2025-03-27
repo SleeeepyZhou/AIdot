@@ -14,9 +14,10 @@ class_name BaseAgent
 
 @export_enum("user","assistant","tool") var role : String = "assistant"
 
-func _chat(prompt : String, source : BaseAgent = AgentCoordinator.user) -> int:
+func _chat(prompt : String, source : BaseAgent) -> int:
 	return 0
 
 ## Dialogue with Agent
-func chat(prompt : String, source : BaseAgent = AgentCoordinator.user):
-	_chat(prompt, source)
+func chat(prompt : String, source : BaseAgent):
+	var id = _chat(prompt, source)
+	return id

@@ -1,8 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://v6dhvujxcsh6"]
+[gd_scene load_steps=13 format=3 uid="uid://v6dhvujxcsh6"]
 
+[ext_resource type="Script" uid="uid://drvxjtyrbe6cl" path="res://addons/AIdot/Res/Agents/GodotAssistant/ChatBot.gd" id="1_i1kan"]
+[ext_resource type="Theme" uid="uid://ctit5j25ljd8l" path="res://addons/AIdot/Res/Agents/GodotAssistant/MaoChat.tres" id="1_nrm83"]
 [ext_resource type="PackedScene" uid="uid://c0u1lhabrv1hu" path="res://addons/AIdot/Res/Agents/GodotAssistant/ChatUnit.tscn" id="1_nvmlr"]
+[ext_resource type="Script" uid="uid://fnl1bv1fqvkc" path="res://addons/AIdot/Lib/Agent/Abilities/Memory/LongMemory.gd" id="3_o0enq"]
+[ext_resource type="Script" uid="uid://qt4eqo8xnqgx" path="res://addons/AIdot/Res/Agents/GodotAssistant/User.gd" id="3_ocwus"]
+[ext_resource type="Script" uid="uid://c2s3b16r1y8k1" path="res://addons/AIdot/Lib/Agent/Abilities/Memory/AgentMemory.gd" id="4_fular"]
+[ext_resource type="Script" uid="uid://4foy4md0lrl6" path="res://addons/AIdot/Lib/Agent/Abilities/Action/ToolBag.gd" id="4_o0enq"]
+[ext_resource type="PackedScene" uid="uid://dyjydh0m6oxq5" path="res://addons/AIdot/Res/Agents/GodotAssistant/ServerUnit.tscn" id="8_o0enq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nvmlr"]
+
+[sub_resource type="Resource" id="Resource_o0enq"]
+script = ExtResource("3_o0enq")
+
+[sub_resource type="Resource" id="Resource_fular"]
+script = ExtResource("4_fular")
+memory_mod = 0
+RAG = false
+sys_prompt = {}
+_history = []
+max_character = 10000
+_long = SubResource("Resource_o0enq")
+
+[sub_resource type="Resource" id="Resource_nrm83"]
+script = ExtResource("4_o0enq")
+bag_show = PackedStringArray()
+add = ""
+remove = ""
 
 [node name="Maodot" type="TabContainer"]
 anchors_preset = 15
@@ -12,29 +37,41 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("1_nrm83")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_nvmlr")
 current_tab = 0
 
 [node name="MaoChat" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 15
 metadata/_tab_index = 0
 
 [node name="MaoChat" type="VBoxContainer" parent="MaoChat"]
 layout_mode = 2
 
-[node name="ChatList" type="VBoxContainer" parent="MaoChat/MaoChat"]
+[node name="ChatBox" type="ScrollContainer" parent="MaoChat/MaoChat"]
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
+script = ExtResource("1_i1kan")
+memory = SubResource("Resource_fular")
+auto_save_memory = true
+tool_bag = SubResource("Resource_nrm83")
+agent_id = "MaoChatBot"
+character_name = "MaoBot"
 
-[node name="ChatUnit" parent="MaoChat/MaoChat/ChatList" instance=ExtResource("1_nvmlr")]
+[node name="ChatList" type="VBoxContainer" parent="MaoChat/MaoChat/ChatBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ChatUnit" parent="MaoChat/MaoChat/ChatBox/ChatList" instance=ExtResource("1_nvmlr")]
 layout_mode = 2
 
 [node name="Input" type="HBoxContainer" parent="MaoChat/MaoChat"]
 layout_mode = 2
+script = ExtResource("3_ocwus")
+agent_id = "MaodotUser"
+role = "user"
 
 [node name="InputBox" type="TextEdit" parent="MaoChat/MaoChat/Input"]
 custom_minimum_size = Vector2(0, 150)
@@ -54,59 +91,147 @@ layout_mode = 2
 size_flags_vertical = 8
 text = "Enter"
 
-[node name="APIConfig" type="MarginContainer" parent="."]
+[node name="Config" type="MarginContainer" parent="."]
 visible = false
 layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 10
 metadata/_tab_index = 1
 
-[node name="APIConfig" type="VBoxContainer" parent="APIConfig"]
+[node name="APIConfig" type="VBoxContainer" parent="Config"]
 layout_mode = 2
 
-[node name="APIUrl" type="HBoxContainer" parent="APIConfig/APIConfig"]
+[node name="Select" type="HBoxContainer" parent="Config/APIConfig"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="APIConfig/APIConfig/APIUrl"]
+[node name="Label" type="Label" parent="Config/APIConfig/Select"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Model: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Type" type="OptionButton" parent="Config/APIConfig/Select"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+fit_to_longest_item = false
+
+[node name="LLM" type="OptionButton" parent="Config/APIConfig/Select"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+fit_to_longest_item = false
+
+[node name="APIUrl" type="HBoxContainer" parent="Config/APIConfig"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Config/APIConfig/APIUrl"]
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "API Url: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Url" type="LineEdit" parent="APIConfig/APIConfig/APIUrl"]
+[node name="Url" type="LineEdit" parent="Config/APIConfig/APIUrl"]
 layout_mode = 2
 size_flags_horizontal = 3
+clear_button_enabled = true
+caret_blink = true
 
-[node name="APIKey" type="HBoxContainer" parent="APIConfig/APIConfig"]
+[node name="APIKey" type="HBoxContainer" parent="Config/APIConfig"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="APIConfig/APIConfig/APIKey"]
+[node name="Label" type="Label" parent="Config/APIConfig/APIKey"]
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "API Key: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Key" type="LineEdit" parent="APIConfig/APIConfig/APIKey"]
+[node name="Key" type="LineEdit" parent="Config/APIConfig/APIKey"]
 layout_mode = 2
 size_flags_horizontal = 3
+clear_button_enabled = true
+caret_blink = true
+secret = true
 
-[node name="ButtonBox" type="HBoxContainer" parent="APIConfig/APIConfig"]
+[node name="ButtonBox" type="HBoxContainer" parent="Config/APIConfig"]
 layout_mode = 2
 alignment = 1
 
-[node name="Set" type="Button" parent="APIConfig/APIConfig/ButtonBox"]
+[node name="Save" type="Button" parent="Config/APIConfig/ButtonBox"]
+custom_minimum_size = Vector2(50, 40)
+layout_mode = 2
+text = "Save"
+
+[node name="Set" type="Button" parent="Config/APIConfig/ButtonBox"]
 custom_minimum_size = Vector2(50, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Set"
 
-[node name="MCP" type="VBoxContainer" parent="."]
+[node name="MCP" type="MarginContainer" parent="."]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="MCP" type="VBoxContainer" parent="MCP"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MCP/MCP"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "⚠Attention⚠: The MCP is not yet fully developed and is currently under testing."
+autowrap_mode = 1
+
+[node name="InputBox" type="HBoxContainer" parent="MCP/MCP"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MCP/MCP/InputBox"]
+layout_mode = 2
+text = "Server path: "
+
+[node name="Path" type="LineEdit" parent="MCP/MCP/InputBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+clear_button_enabled = true
+
+[node name="Label2" type="Label" parent="MCP/MCP/InputBox"]
+layout_mode = 2
+text = "Venv path: "
+
+[node name="Venv" type="LineEdit" parent="MCP/MCP/InputBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+clear_button_enabled = true
+
+[node name="Label2" type="Label" parent="MCP/MCP"]
+layout_mode = 2
+text = "Env: "
+
+[node name="CodeEdit" type="CodeEdit" parent="MCP/MCP"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "{}"
+scroll_smooth = true
+scroll_fit_content_width = true
+caret_blink = true
+caret_multiple = false
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="ServerBox" type="ScrollContainer" parent="MCP/MCP"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ServerList" type="VBoxContainer" parent="MCP/MCP/ServerBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ServerUnit" parent="MCP/MCP/ServerBox/ServerList" instance=ExtResource("8_o0enq")]
+layout_mode = 2
