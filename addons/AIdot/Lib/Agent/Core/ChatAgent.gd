@@ -261,7 +261,6 @@ func _get_tools():
 func call_tool(tool_name : String, input : Dictionary = {}):
 	var tool_result = await tool_bag.use_tool(tool_name, input)
 	return tool_result
-
 func _handle_toolcall(tool_calls : Array, chat_id : int) -> Dictionary:
 	var result_list : Dictionary = {}
 	var call_tip : String = "[Calling tool {0} with args {1}]"

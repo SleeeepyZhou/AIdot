@@ -1,21 +1,23 @@
 ## Future solutions:   
 
 - [ ] 各级UI
-- [ ] Godot助手
 
 #### Agents  
-- [ ] 关系网系统
+- [ ] 关系网
+- [ ] Godot助手
 
 #### ModelLayer  
 - [x] 每个Model的UI图标  
 - [ ] 流式传输支持  
-- [ ] ModelLayer性能优化  
+- [x] ModelLayer性能优化  
 
 #### Memory  
 - [ ] RAG原生支持  
 
 #### Tools  
+- [x] MCP接入
 - [ ] 支持Godot本地MCP服务(GodotTool)  
+- [ ] CallTool性能优化
 
 #### Perception  
 - [ ] 支持更多感知能力  
@@ -29,23 +31,23 @@
 displayMode: compact
 ---
 gantt
-	title 开发日志 2025-03上(整体框架简单实现)
+	title 开发日志 2025-03(整体框架简单实现)
 	dateFormat  YYYY-MM-DD
 	section Design
-		休整 :done, 2025-03-01, 2d
-		架构设计 :done, 2025-03-03, 2d
-		记忆模块设计 :done, 2025-03-07, 4d
-		MCP兼容设计 :done, 2025-03-12, 3d
+		Rest :done, 2025-03-01, 2d
+		Design :done, 2025-03-03, 2d
+		Memory :done, 2025-03-07, 4d
+		MCP Compatible :done, 2025-03-12, 3d
 	section Model Layer
-		工具重构 :done, 2025-03-04, 2d
-		示例API集成 :done, 2025-03-06, 3d
+		Rebuilt :done, 2025-03-04, 2d
+		Example API :done, 2025-03-06, 3d
 		VLM :done, 2025-03-09, 1d
 	section Agent
 		ChatAgent :active, 2025-03-09, 4d
 	section Memory
-		记忆类 :active, 2025-03-06, 3d
-		短记忆 :done, 2025-03-09, 3d
-		长记忆 :active, 2025-03-12, 3d
+		Agent Memory :active, 2025-03-06, 3d
+		Short :done, 2025-03-09, 3d
+		Long :active, 2025-03-12, 3d
 	section Tools
 		MCP :done, 2025-03-12, 1d
 		ToolBox :active, 2025-03-13, 2d
@@ -56,21 +58,26 @@ gantt
 displayMode: compact
 ---
 gantt
-	title 开发日志 2025-03下(整体框架简单实现)
+	title 开发日志 2025-03(整体框架简单实现)
 	dateFormat  YYYY-MM-DD
-	总时长 :active, 2025-03-15, 16d
 	section Design
-		休整 :done, 2025-03-15, 1d
-		Other :done, 2025-03-16, 5d
+		Rest :done, 2025-03-15, 1d
+		Other work :done, 2025-03-16, 7d
 		Perception :active, 2025-03-17, 2d
 		MCP Design :done, 2025-03-19, 3d
 		Planning :active, 2025-03-24, 2d
+		Maodot :active, 2025-03-22, 4d
+		Doc :active, 2025-03-28, 3d
 	section Model Layer
+		NewModel :active, 2025-03-28, 2d
 	section Agent
+		MultiAgent :active, 2025-03-24, 6d
+		Maodot :active, 2025-03-27, 4d
 	section Memory
 	section Perception
 	section Planning
 	section Tools
 		MCPClient :active, 2025-03-20, 3d
-		ToolBag :active, 2025-03-23, 2d
+		ToolBag :done, 2025-03-23, 2d
+		Tool Support :done, 2025-03-25, 3d
 ```
