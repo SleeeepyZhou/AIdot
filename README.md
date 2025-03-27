@@ -1,7 +1,7 @@
 # <center>AIdot</center>
 <p align="center">
   <a href="https://github.com/SleeeepyZhou/AIdot">
-	<img src="/addons/AIdot/Res/UI/icon/icon.png" width="150" alt="AIdot logo">
+	<img src="addons/AIdot/Res/UI/Icon/icon.png" width="150" alt="AIdot logo">
   </a>
 </p>
 
@@ -20,7 +20,7 @@
 
 <div align="center">
 
-[![](https://badge.mcpx.dev)](https://modelcontextprotocol.io/introduction) [![Made with Godot](https://img.shields.io/badge/Made%20with-Godot-478CBF?style=flat&logo=godot%20engine&logoColor=white)](https://godotengine.org) [![](https://img.shields.io/badge/License-MIT-red.svg 'MIT License')](https://opensource.org/licenses/MIT)
+[![](https://badge.mcpx.dev)](https://modelcontextprotocol.io/introduction) [![Made with Godot](https://img.shields.io/badge/Made%20with-Godot-478CBF?style=flat&logo=godot%20engine&logoColor=white)](https://godotengine.org) [![](https://img.shields.io/badge/License-MIT-red.svg 'MIT License')](https://opensource.org/licenses/MIT)  
 [![](https://img.shields.io/github/last-commit/SleeeepyZhou/AIdot 'Last Commit')](https://github.com/SleeeepyZhou/AIdot) [![](https://img.shields.io/github/stars/SleeeepyZhou/AIdot 'Stars')](https://github.com/SleeeepyZhou/AIdot/stargazers) [![](https://img.shields.io/github/forks/SleeeepyZhou/AIdot 'Forks')](https://github.com/SleeeepyZhou/AIdot/network/members)
 
 </div>
