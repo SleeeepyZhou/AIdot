@@ -88,7 +88,7 @@ func _on_send_pressed() -> void:
 	chat_bot.chat(input_box.text, user_agent)
 
 
-func call_back(chat_id : int, chat_info : Dictionary):
+func call_back(chat_id : int, _final_answer : String, chat_info : Dictionary):
 	if chat_info.get("status") == "failed":
 		idle.text = "Chat failed, Please check errors in the console output."
 		push_error(chat_info.get("result"))

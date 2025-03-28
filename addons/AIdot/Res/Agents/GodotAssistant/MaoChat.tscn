@@ -1,10 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://v6dhvujxcsh6"]
+[gd_scene load_steps=14 format=3 uid="uid://v6dhvujxcsh6"]
 
 [ext_resource type="Theme" uid="uid://ctit5j25ljd8l" path="res://addons/AIdot/Res/Agents/GodotAssistant/MaoChat.tres" id="1_iyo4l"]
 [ext_resource type="Script" uid="uid://uu3gvhx7muwl" path="res://addons/AIdot/Lib/Agent/Core/ChatAgent.gd" id="2_iyo4l"]
 [ext_resource type="Script" uid="uid://c3ih05162xtgp" path="res://addons/AIdot/Res/Agents/GodotAssistant/mao_chat.gd" id="2_u66ub"]
 [ext_resource type="Script" uid="uid://fnl1bv1fqvkc" path="res://addons/AIdot/Lib/Agent/Abilities/Memory/LongMemory.gd" id="3_72awx"]
-[ext_resource type="Resource" path="user://maochat/maochat.tres" id="4_72awx"]
 [ext_resource type="Script" uid="uid://c2s3b16r1y8k1" path="res://addons/AIdot/Lib/Agent/Abilities/Memory/AgentMemory.gd" id="4_mh0w6"]
 [ext_resource type="Script" uid="uid://4foy4md0lrl6" path="res://addons/AIdot/Lib/Agent/Abilities/Action/ToolBag.gd" id="5_et82f"]
 [ext_resource type="PackedScene" uid="uid://c0u1lhabrv1hu" path="res://addons/AIdot/Res/Agents/GodotAssistant/ChatUnit.tscn" id="6_ms0qc"]
@@ -13,17 +12,17 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nvmlr"]
 
-[sub_resource type="Resource" id="Resource_et82f"]
+[sub_resource type="Resource" id="Resource_u66ub"]
 script = ExtResource("3_72awx")
 
-[sub_resource type="Resource" id="Resource_ms0qc"]
+[sub_resource type="Resource" id="Resource_72awx"]
 script = ExtResource("4_mh0w6")
 memory_mod = 0
 RAG = false
 sys_prompt = {}
 _history = []
 max_character = 10000
-_long = SubResource("Resource_et82f")
+_long = SubResource("Resource_u66ub")
 
 [sub_resource type="Resource" id="Resource_mh0w6"]
 script = ExtResource("5_et82f")
@@ -58,8 +57,7 @@ horizontal_scroll_mode = 0
 
 [node name="ChatBot" type="Node" parent="MaoChat/MaoChat/ScrollContainer"]
 script = ExtResource("2_iyo4l")
-model = ExtResource("4_72awx")
-memory = SubResource("Resource_ms0qc")
+memory = SubResource("Resource_72awx")
 auto_save_memory = true
 memory_save_dir = "user://maochat"
 tool_bag = SubResource("Resource_mh0w6")

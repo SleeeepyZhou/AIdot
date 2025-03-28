@@ -11,7 +11,7 @@ const _max_retry = 5
 ## If there is an 'error' in the debug Dictionary, 
 ## then this response only contains the error text.
 signal response(answer : String, debug : Dictionary, chat_id : int)
-signal chat_completed(chat_id : int, chat_info : Dictionary)
+signal chat_completed(chat_id : int, final_answer : String, chat_info : Dictionary)
 
 var _chat_list : Dictionary = {}
 enum ChatStatus {
@@ -74,7 +74,7 @@ func _call_chat(id : int):
 			task.status = ChatStatus.WAITING
 			retry_chat(id)
 		else:
-			chat_completed.emit(id, get_task_info(id))
+			chat_completed.emit(id, debug["error"], get_task_info(id))
 			_task_clear(id)
 		return
 	
@@ -129,7 +129,7 @@ func _call_chat(id : int):
 		debug["message"] = AgentMemory.template_memory(final_answer, role, character_name)
 		task.result = debug
 		task.status = ChatStatus.SUCCESS
-		chat_completed.emit(id, get_task_info(id))
+		chat_completed.emit(id, final_answer, get_task_info(id))
 		_task_clear(id)
 		
 		# Callback
