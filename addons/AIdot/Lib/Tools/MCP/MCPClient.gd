@@ -133,7 +133,6 @@ func connect_to_server() -> bool:
 		stop()
 		return false
 
-## Get tools list
 var _tools : Dictionary = {}:
 	set(l):
 		for tool in _tools.keys():
@@ -141,6 +140,14 @@ var _tools : Dictionary = {}:
 				ToolBox._tool_box.erase(tool)
 		ToolBox._tool_box.merge(l, true)
 		_tools = l
+## Get tools list
+## Return the currently stored tool list without requesting the server.
+func get_list():
+	var list : Array = []
+	for tool in _tools.keys():
+		list.append(_tools[tool]._tool_data)
+	return list
+## Request MCP server get tools list.
 func tool_list():
 	var send = _mcp_request("tools/list")
 	if send[0]:
@@ -190,7 +197,6 @@ func call_tool(tool_name : String, arguments : Dictionary = {}) -> Array:
 func stop() -> void:
 	if _running:
 		_running = false
-		connection.emit(false)
 		if _stdio:
 			_stdio.close()
 		if _stderr:
@@ -202,6 +208,7 @@ func stop() -> void:
 		if !_tools.is_empty():
 			_tools = {}
 		print("MCP server closed on pid: ", _pid)
+	connection.emit(false)
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		stop()

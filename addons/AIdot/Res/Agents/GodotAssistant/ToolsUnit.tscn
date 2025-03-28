@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk4rtgtkt5h6v"]
+
+[ext_resource type="Script" uid="uid://ynuahyysbcxj" path="res://addons/AIdot/Res/Agents/GodotAssistant/tools_unit.gd" id="1_mghay"]
+
+[node name="ToolsUnit" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_mghay")
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Info" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Box/Info"]
+layout_mode = 2
+
+[node name="Args" type="HBoxContainer" parent="Box/Info"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Arg" type="Label" parent="Box/Info/Args"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+autowrap_mode = 1
+
+[node name="Description" type="LineEdit" parent="Box"]
+layout_mode = 2
+editable = false

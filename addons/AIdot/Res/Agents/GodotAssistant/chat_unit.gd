@@ -14,8 +14,6 @@ var _chat_text : String:
 	set(t):
 		_chat_text = t
 		_chat.text = _chat_text
-	get:
-		return _chat.text
 
 @onready var _head: TextureRect = $ChatUnit/HeadBox/HeadContainer/Head
 var _chater : String = "assistant":
@@ -26,7 +24,7 @@ var _chater : String = "assistant":
 var chat_data : Dictionary:
 	set(d):
 		if !d.get("content") or !d.get("role"):
-			push_error("Invalid _chat data.")
+			push_error("Invalid chat data.")
 			return
 		if !role.keys().has(d.get("role")):
 			push_error("Invalid identity.")

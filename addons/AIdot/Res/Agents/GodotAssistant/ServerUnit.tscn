@@ -1,4 +1,15 @@
-[gd_scene format=3 uid="uid://dyjydh0m6oxq5"]
+[gd_scene load_steps=5 format=3 uid="uid://dyjydh0m6oxq5"]
+
+[ext_resource type="Script" uid="uid://cuat54of2q4fd" path="res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd" id="1_4n7jk"]
+[ext_resource type="Script" uid="uid://docdpwyv7hgth" path="res://addons/AIdot/Res/Agents/GodotAssistant/server_unit.gd" id="1_ga62a"]
+[ext_resource type="Script" uid="uid://c7rpcsadkcypv" path="res://addons/AIdot/Lib/Tools/MCP/MCPStdioServer.gd" id="2_ga62a"]
+
+[sub_resource type="Resource" id="Resource_lyqai"]
+script = ExtResource("2_ga62a")
+server_path = ""
+venv_path = ""
+args = PackedStringArray()
+env = {}
 
 [node name="ServerUnit" type="MarginContainer"]
 anchors_preset = 15
@@ -6,3 +17,101 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ga62a")
+
+[node name="MCPClient" type="Node" parent="."]
+script = ExtResource("1_4n7jk")
+server = SubResource("Resource_lyqai")
+metadata/_custom_type_script = "uid://cuat54of2q4fd"
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PathBox" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Box/PathBox"]
+layout_mode = 2
+text = "Server path: "
+
+[node name="Path" type="LineEdit" parent="Box/PathBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+clear_button_enabled = true
+
+[node name="Label2" type="Label" parent="Box/PathBox"]
+layout_mode = 2
+text = "Venv path: "
+
+[node name="Venv" type="LineEdit" parent="Box/PathBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+clear_button_enabled = true
+
+[node name="ButtonBox" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="ShowEnv" type="CheckBox" parent="Box/ButtonBox"]
+layout_mode = 2
+text = "Environment Show"
+
+[node name="ShowTools" type="CheckBox" parent="Box/ButtonBox"]
+layout_mode = 2
+text = "Tools Show"
+
+[node name="ButtonBox" type="HBoxContainer" parent="Box/ButtonBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Label" type="Label" parent="Box/ButtonBox/ButtonBox"]
+layout_mode = 2
+text = "Status: "
+
+[node name="Status" type="LineEdit" parent="Box/ButtonBox/ButtonBox"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Disconnected"
+alignment = 1
+editable = false
+
+[node name="Delete" type="Button" parent="Box/ButtonBox/ButtonBox"]
+layout_mode = 2
+text = "Delete"
+
+[node name="Connect" type="Button" parent="Box/ButtonBox/ButtonBox"]
+layout_mode = 2
+text = "Connect"
+
+[node name="Disconnect" type="Button" parent="Box/ButtonBox/ButtonBox"]
+layout_mode = 2
+text = "Disconnect"
+
+[node name="Env" type="CodeEdit" parent="Box"]
+visible = false
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "{}"
+scroll_smooth = true
+scroll_fit_content_width = true
+caret_blink = true
+caret_multiple = false
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="ToolShow" type="ScrollContainer" parent="Box"]
+visible = false
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Box" type="VBoxContainer" parent="Box/ToolShow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="toggled" from="Box/ButtonBox/ShowEnv" to="." method="_on_show_env_toggled"]
+[connection signal="toggled" from="Box/ButtonBox/ShowTools" to="." method="_on_show_tools_toggled"]
+[connection signal="pressed" from="Box/ButtonBox/ButtonBox/Delete" to="." method="_on_delete_pressed"]
+[connection signal="pressed" from="Box/ButtonBox/ButtonBox/Connect" to="." method="_on_connect_pressed"]
+[connection signal="pressed" from="Box/ButtonBox/ButtonBox/Disconnect" to="." method="_on_disconnect_pressed"]

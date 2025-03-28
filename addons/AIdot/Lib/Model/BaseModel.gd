@@ -32,7 +32,7 @@ func _init(mod_name : String = "", url : String = "", key : String = "",
 	api_url = url
 	api_key = key
 	if url.is_empty():
-		var base_url = ModelLayer._get_env(model_name)
+		var base_url = ModelLayer.get_env(model_name)
 		api_url = base_url[0]
 		if key.is_empty():
 			api_key = base_url[1]
@@ -149,6 +149,7 @@ func get_response(response : Array) -> Array:
 	return [answer, parse]
 
 func save_model(path : String):
+	DirAccess.make_dir_absolute(path.get_base_dir())
 	var saved = ResourceSaver.save(self,path)
 	if saved == OK:
 		print(model_name, get_rid(), " saved successfully.")

@@ -113,7 +113,7 @@ func agent_exit():
 ## Maodot Chat
 var GODOT_ASSISTANT : Control
 func maochat_client():
-	GODOT_ASSISTANT = preload("res://addons/AIdot/Res/Agents/GodotAssistant/GodotAssistant.tscn").instantiate()
+	GODOT_ASSISTANT = preload("res://addons/AIdot/Res/Agents/GodotAssistant/MaoChat.tscn").instantiate()
 	add_control_to_dock(DOCK_SLOT_RIGHT_UL,GODOT_ASSISTANT)
 func maochat_exit():
 	remove_control_from_bottom_panel(GODOT_ASSISTANT)

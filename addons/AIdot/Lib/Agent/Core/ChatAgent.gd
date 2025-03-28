@@ -24,9 +24,11 @@ func _str_status(chat_status : ChatStatus):
 	var status : String
 	match chat_status:
 		ChatStatus.PENDING: status = "pending"
-		ChatStatus.WAITING: status = "waiting"
 		ChatStatus.RUNNING: status = "running"
+		ChatStatus.SUCCESS: status = "success"
+		ChatStatus.WAITING: status = "waiting"
 		ChatStatus.FAILED: status = "failed"
+	return status
 func _task_clear(chat_id : int):
 	await get_tree().create_timer(auto_task_clear).timeout
 	_chat_list.erase(chat_id)
@@ -193,9 +195,9 @@ var _api : LLMAPI = null:
 		else:
 			add_child(_api)
 			_api.response.connect(_call_back)
-	get:
-		assert(_api, "No Model!!!")
-		return _api
+	#get:
+		#assert(!_set_api or _api, "No Model!!!")
+		#return _api
 var _set_api : bool = false # Indicates whether an API node has been set.
 func _call_back(answer : String, debug : Dictionary, requset_id : int):
 	response.emit(answer, debug, requset_id)

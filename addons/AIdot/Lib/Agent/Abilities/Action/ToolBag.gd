@@ -53,10 +53,13 @@ func get_tool_list() -> Array:
 	var list := _tool_list.keys()
 	return list
 
+## Add tool from toolname list.
 func add_tool(tools : Array[String]) -> Array:
 	var list : Array = []
 	for tool in tools:
 		if ToolBox._tool_box.has(tool):
+			if _tool_list.has(tool) and _tool_list[tool] == ToolBox._tool_box[tool]:
+				push_warning("The tool "+tool+" already exists.")
 			_tool_list[tool] = ToolBox._tool_box[tool]
 			list.append(tool)
 		else:

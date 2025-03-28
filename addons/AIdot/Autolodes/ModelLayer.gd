@@ -40,7 +40,7 @@ func _update_gitignore():
 			gitignore_content.append(".env")
 			var ignore = "\n".join(gitignore_content)
 			Wfile.store_string(ignore)
-func _get_env(model_type : String) -> Array:
+func get_env(model_type : String) -> Array:
 	var type = get_type(model_type)
 	if !OS.is_debug_build():
 		return get_user_env(type)
@@ -94,7 +94,7 @@ const VLM_MODEL = [OPENAI.GPT_4O, OPENAI.GPT_4O_MINI, OPENAI.O3_MINI,
 	OPENAI.O1, OPENAI.O1_MINI, OPENAI.O1_PREVIEW, 
 	QWEN.QWEN_2_5_VL_72B, QWEN.QWEN_VL_MAX, QWEN.QWEN_VL_PLUS]
 
-const _model_list = {
+const model_list = {
 	"DEFAULT": [],
 	"GPT": _oai,
 	"DEEPSEEK": _ds,
