@@ -1,4 +1,10 @@
-# <center>AIdot</center>
+<p align="center">
+
+# AIdot
+
+</p>
+
+
 <p align="center">
   <a href="https://github.com/SleeeepyZhou/AIdot">
 	<img src="addons/AIdot/Res/UI/Icon/icon.png" width="150" alt="AIdot logo">
@@ -111,7 +117,10 @@ flowchart LR
 	
 ```
 
-### Support
+
+
+
+### MCP support
 Native support [MCP (Model Context Protocol)](https://github.com/modelcontextprotocol) through [MCP-Godot-sdk](https://github.com/SleeeepyZhou/MCP-Godot-sdk).  
 
 ### Dependent
