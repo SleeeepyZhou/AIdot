@@ -13,6 +13,10 @@ func _ready() -> void:
 		type.text = ModelLayer.get_type(chat_bot.model.model_name)
 		llm.text = chat_bot.model.model_name
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_EDITOR_PRE_SAVE:
+		url.text = ""
+		key.text = ""
 
 # MaoChat
 @onready var chat_bot: ChatAgent = $MaoChat/MaoChat/ScrollContainer/ChatBot
@@ -194,8 +198,3 @@ func _on_add_server_pressed() -> void:
 	var unit = SERVER_UNIT.instantiate()
 	server_list.add_child(unit)
 	unit.server_change.connect(get_tools)
-
-
-func _on_key_tree_exiting() -> void:
-	url.text = ""
-	key.text = ""

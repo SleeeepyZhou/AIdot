@@ -10,28 +10,42 @@
 [ext_resource type="PackedScene" uid="uid://c0u1lhabrv1hu" path="res://addons/AIdot/Res/Agents/GodotAssistant/ChatUnit.tscn" id="6_ms0qc"]
 [ext_resource type="Script" uid="uid://c4o1c1coxagsu" path="res://addons/AIdot/Lib/Agent/Core/UserAgent.gd" id="7_u66ub"]
 [ext_resource type="PackedScene" uid="uid://dyjydh0m6oxq5" path="res://addons/AIdot/Res/Agents/GodotAssistant/ServerUnit.tscn" id="8_6hfhg"]
-[ext_resource type="Script" uid="uid://b176xg854onby" path="res://addons/AIdot/Res/Agents/GodotAssistant/url.gd" id="10_mh0w6"]
-[ext_resource type="Script" uid="uid://ti7v0x03c4dl" path="res://addons/AIdot/Res/Agents/GodotAssistant/key.gd" id="11_et82f"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nvmlr"]
 
-[sub_resource type="Resource" id="Resource_et82f"]
+[sub_resource type="Resource" id="Resource_72awx"]
 script = ExtResource("3_72awx")
 
-[sub_resource type="Resource" id="Resource_ms0qc"]
+[sub_resource type="Resource" id="Resource_et82f"]
 script = ExtResource("4_mh0w6")
 memory_mod = 0
 RAG = false
 sys_prompt = {}
 _history = []
 max_character = 10000
-_long = SubResource("Resource_et82f")
+_long = SubResource("Resource_72awx")
 
 [sub_resource type="Resource" id="Resource_mh0w6"]
 script = ExtResource("5_et82f")
 bag_show = PackedStringArray()
 add = ""
 remove = ""
+
+[sub_resource type="GDScript" id="GDScript_ms0qc"]
+script/source = "extends LineEdit
+
+func _validate_property(property: Dictionary) -> void:
+	if property.name == \"text\":
+		property.usage |= PROPERTY_USAGE_SECRET
+"
+
+[sub_resource type="GDScript" id="GDScript_a3yao"]
+script/source = "extends LineEdit
+
+func _validate_property(property: Dictionary) -> void:
+	if property.name == \"text\":
+		property.usage |= PROPERTY_USAGE_SECRET
+"
 
 [node name="Maodot" type="TabContainer"]
 anchors_preset = 15
@@ -61,7 +75,7 @@ horizontal_scroll_mode = 0
 [node name="ChatBot" type="Node" parent="MaoChat/MaoChat/ScrollContainer"]
 script = ExtResource("2_iyo4l")
 model = ExtResource("4_72awx")
-memory = SubResource("Resource_ms0qc")
+memory = SubResource("Resource_et82f")
 auto_save_memory = true
 memory_save_dir = "user://maochat"
 tool_bag = SubResource("Resource_mh0w6")
@@ -184,7 +198,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 clear_button_enabled = true
 caret_blink = true
-script = ExtResource("10_mh0w6")
+script = SubResource("GDScript_ms0qc")
 
 [node name="APIKey" type="HBoxContainer" parent="Config/APIConfig"]
 custom_minimum_size = Vector2(0, 50)
@@ -203,7 +217,7 @@ size_flags_horizontal = 3
 clear_button_enabled = true
 caret_blink = true
 secret = true
-script = ExtResource("11_et82f")
+script = SubResource("GDScript_a3yao")
 
 [node name="Path" type="HBoxContainer" parent="Config/APIConfig"]
 custom_minimum_size = Vector2(0, 50)
@@ -272,7 +286,6 @@ layout_mode = 2
 [connection signal="pressed" from="MaoChat/MaoChat/Input/Input/Send" to="." method="_on_send_pressed"]
 [connection signal="item_selected" from="Config/APIConfig/Select/Type" to="." method="_on_type_item_selected"]
 [connection signal="pressed" from="Config/APIConfig/Select/Type" to="." method="_on_type_pressed"]
-[connection signal="tree_exiting" from="Config/APIConfig/APIKey/Key" to="." method="_on_key_tree_exiting"]
 [connection signal="toggled" from="Config/APIConfig/Path/UseRes" to="." method="_on_use_res_toggled"]
 [connection signal="pressed" from="Config/APIConfig/ButtonBox/Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Config/APIConfig/ButtonBox/Set" to="." method="_on_set_pressed"]

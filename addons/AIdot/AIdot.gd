@@ -4,13 +4,6 @@ extends EditorPlugin
 ## Model Layer
 func model_layer_enter():
 	add_autoload_singleton("ModelLayer", "res://addons/AIdot/Autolodes/ModelLayer.gd")
-	# API
-	add_custom_type("AIAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/API.gd"), \
-					preload("res://addons/AIdot/Res/UI/Icon/API.png"))
-	add_custom_type("LLMAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/LLM.gd"), \
-					preload("res://addons/AIdot/Res/UI/Icon/API_node.png"))
-	add_custom_type("VLMAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/VLM.gd"), \
-					preload("res://addons/AIdot/Res/UI/Icon/API_node.png"))
 	# Model
 	add_custom_type("BaseModel", "Resource", preload("res://addons/AIdot/Lib/Model/BaseModel.gd"), \
 					preload("res://addons/AIdot/Res/UI/Model/Model.svg"))
@@ -20,6 +13,13 @@ func model_layer_enter():
 					preload("res://addons/AIdot/Res/UI/Model/openai.png"))
 	add_custom_type("QwenModel", "Resource", preload("res://addons/AIdot/Lib/Model/API_Adapter/Qwen.gd"), \
 					preload("res://addons/AIdot/Res/UI/Model/qwen.png"))
+	# API
+	add_custom_type("AIAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/API.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/API.png"))
+	add_custom_type("LLMAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/LLM.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/API_node.png"))
+	add_custom_type("VLMAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/VLM.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/API_node.png"))
 func model_layer_exit():
 	remove_autoload_singleton("ModelLayer")
 	# API
@@ -130,6 +130,6 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	remove_custom_type("AIdotResource")
 	
-	model_layer_exit()
-	agent_exit()
 	maochat_exit()
+	agent_exit()
+	model_layer_exit()

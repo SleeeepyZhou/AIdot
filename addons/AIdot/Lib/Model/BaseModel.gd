@@ -16,6 +16,9 @@ var tools : Dictionary = {"tools":[]}
 @export var api_url : String = ""
 @export var api_key : String = ""
 
+
+# Config
+
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "api_key":
 		property.hint |= PROPERTY_HINT_PASSWORD
@@ -37,11 +40,17 @@ func _init(mod_name : String = "", url : String = "", key : String = "",
 		if key.is_empty():
 			api_key = base_url[1]
 
+
+# History
+
 func _parse_memory(agent_memory : Array = []):
 	return agent_memory
 ## Format the historical records into the historical record format used by the model.
 func format_memory(agent_memory : Array):
 	return _parse_memory(agent_memory)
+
+
+# Request
 
 # Compatible with OAI
 func _generator_request(prompt : String, history, role : String = "user", 
@@ -88,6 +97,9 @@ func prepare_request(prompt : String, memory : Array = [], role : String = "user
 	
 	return requset_data
 
+
+# Response
+
 func _parse_response(data : Dictionary):
 	var answer
 	var json_result = data
@@ -118,7 +130,11 @@ func _parse_response(data : Dictionary):
 				for call in call_list:
 					if call is Dictionary and call.has("function") and \
 							call["function"] is Dictionary and call["function"].has("name"):
-						tool_list.append(call["function"])
+						var tool : Dictionary = {
+							"name": call["function"]["name"],
+							"arguments": JSON.parse_string(call["function"].get("arguments","{}"))
+						}
+						tool_list.append(tool)
 				if !tool_list.is_empty():
 					answer["tool_calls"] = tool_list
 		else:
@@ -135,7 +151,6 @@ func _get_debug_response(response : Array) -> Dictionary:
 	else:
 		answer = {"error": response[1]}
 	return answer
-
 ## Parse response data return answer Array[answer String, debug Dictionary]. 
 ## If debug Dictionary has "error", 
 func get_response(response : Array) -> Array:
