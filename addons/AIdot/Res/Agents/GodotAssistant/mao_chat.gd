@@ -194,3 +194,8 @@ func _on_add_server_pressed() -> void:
 	var unit = SERVER_UNIT.instantiate()
 	server_list.add_child(unit)
 	unit.server_change.connect(get_tools)
+
+
+func _on_key_tree_exiting() -> void:
+	url.text = ""
+	key.text = ""

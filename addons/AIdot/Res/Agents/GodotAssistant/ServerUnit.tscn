@@ -27,27 +27,6 @@ metadata/_custom_type_script = "uid://cuat54of2q4fd"
 [node name="Box" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="PathBox" type="HBoxContainer" parent="Box"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Box/PathBox"]
-layout_mode = 2
-text = "Server path: "
-
-[node name="Path" type="LineEdit" parent="Box/PathBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-clear_button_enabled = true
-
-[node name="Label2" type="Label" parent="Box/PathBox"]
-layout_mode = 2
-text = "Venv path: "
-
-[node name="Venv" type="LineEdit" parent="Box/PathBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-clear_button_enabled = true
-
 [node name="ButtonBox" type="HBoxContainer" parent="Box"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -74,6 +53,27 @@ text = "Connect"
 [node name="Disconnect" type="Button" parent="Box/ButtonBox"]
 layout_mode = 2
 text = "Disconnect"
+
+[node name="PathBox" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Box/PathBox"]
+layout_mode = 2
+text = "Server path: "
+
+[node name="Path" type="LineEdit" parent="Box/PathBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+clear_button_enabled = true
+
+[node name="Label2" type="Label" parent="Box/PathBox"]
+layout_mode = 2
+text = "Venv path: "
+
+[node name="Venv" type="LineEdit" parent="Box/PathBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+clear_button_enabled = true
 
 [node name="ShowBox" type="HBoxContainer" parent="Box"]
 layout_mode = 2

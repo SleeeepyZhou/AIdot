@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://v6dhvujxcsh6"]
+[gd_scene load_steps=17 format=3 uid="uid://v6dhvujxcsh6"]
 
 [ext_resource type="Theme" uid="uid://ctit5j25ljd8l" path="res://addons/AIdot/Res/Agents/GodotAssistant/MaoChat.tres" id="1_iyo4l"]
 [ext_resource type="Script" uid="uid://uu3gvhx7muwl" path="res://addons/AIdot/Lib/Agent/Core/ChatAgent.gd" id="2_iyo4l"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://c0u1lhabrv1hu" path="res://addons/AIdot/Res/Agents/GodotAssistant/ChatUnit.tscn" id="6_ms0qc"]
 [ext_resource type="Script" uid="uid://c4o1c1coxagsu" path="res://addons/AIdot/Lib/Agent/Core/UserAgent.gd" id="7_u66ub"]
 [ext_resource type="PackedScene" uid="uid://dyjydh0m6oxq5" path="res://addons/AIdot/Res/Agents/GodotAssistant/ServerUnit.tscn" id="8_6hfhg"]
+[ext_resource type="Script" uid="uid://b176xg854onby" path="res://addons/AIdot/Res/Agents/GodotAssistant/url.gd" id="10_mh0w6"]
+[ext_resource type="Script" uid="uid://ti7v0x03c4dl" path="res://addons/AIdot/Res/Agents/GodotAssistant/key.gd" id="11_et82f"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nvmlr"]
 
@@ -180,9 +182,9 @@ vertical_alignment = 1
 [node name="Url" type="LineEdit" parent="Config/APIConfig/APIUrl"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "http://47.88.65.188:8405/v1"
 clear_button_enabled = true
 caret_blink = true
+script = ExtResource("10_mh0w6")
 
 [node name="APIKey" type="HBoxContainer" parent="Config/APIConfig"]
 custom_minimum_size = Vector2(0, 50)
@@ -198,10 +200,10 @@ vertical_alignment = 1
 [node name="Key" type="LineEdit" parent="Config/APIConfig/APIKey"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "***REMOVED***"
 clear_button_enabled = true
 caret_blink = true
 secret = true
+script = ExtResource("11_et82f")
 
 [node name="Path" type="HBoxContainer" parent="Config/APIConfig"]
 custom_minimum_size = Vector2(0, 50)
@@ -270,6 +272,7 @@ layout_mode = 2
 [connection signal="pressed" from="MaoChat/MaoChat/Input/Input/Send" to="." method="_on_send_pressed"]
 [connection signal="item_selected" from="Config/APIConfig/Select/Type" to="." method="_on_type_item_selected"]
 [connection signal="pressed" from="Config/APIConfig/Select/Type" to="." method="_on_type_pressed"]
+[connection signal="tree_exiting" from="Config/APIConfig/APIKey/Key" to="." method="_on_key_tree_exiting"]
 [connection signal="toggled" from="Config/APIConfig/Path/UseRes" to="." method="_on_use_res_toggled"]
 [connection signal="pressed" from="Config/APIConfig/ButtonBox/Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Config/APIConfig/ButtonBox/Set" to="." method="_on_set_pressed"]
