@@ -61,7 +61,7 @@ func tool_box_enter():
 	add_custom_type("GodotTool", "Resource", preload("res://addons/AIdot/Lib/Tools/GodotTool.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/icon.png"))
 	# MCP
-	add_custom_type("MCPClient", "Node", preload("res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd"),\
+	add_custom_type("MCPClient", "HTTPRequest", preload("res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp_node.png"))
 	add_custom_type("MCPServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/MCPServer.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
@@ -120,7 +120,7 @@ func maochat_exit():
 	GODOT_ASSISTANT.queue_free()
 
 func _enter_tree() -> void:
-	add_custom_type("AIdotResource", "Resource", preload("res://addons/AIdot/Lib/AIResource.gd"), \
+	add_custom_type("AIdotResource", "Resource", preload("res://addons/AIdot/Res/Data/AIResource.gd"), \
 					preload("res://addons/AIdot/Res/UI/Icon/icon.png"))
 	
 	model_layer_enter()

@@ -12,6 +12,7 @@ class_name BaseAgent
 ## Agent's name. The conversation will be based on this name.
 @export var character_name: String = ""
 
+
 @export_enum("user","assistant","tool") var role : String = "assistant"
 
 func _chat(prompt : String, source : BaseAgent) -> int:

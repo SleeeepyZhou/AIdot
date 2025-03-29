@@ -1,6 +1,6 @@
 @tool
 @icon("res://addons/AIdot/Res/UI/Icon/mcp_node.png")
-extends Node
+extends HTTPRequest
 class_name MCPClient
 
 # Config

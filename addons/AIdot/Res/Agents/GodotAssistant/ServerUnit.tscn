@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://docdpwyv7hgth" path="res://addons/AIdot/Res/Agents/GodotAssistant/server_unit.gd" id="1_ga62a"]
 [ext_resource type="Script" uid="uid://c7rpcsadkcypv" path="res://addons/AIdot/Lib/Tools/MCP/MCPStdioServer.gd" id="2_ga62a"]
 
-[sub_resource type="Resource" id="Resource_lyqai"]
+[sub_resource type="Resource" id="Resource_ga62a"]
 script = ExtResource("2_ga62a")
 server_path = ""
 venv_path = ""
@@ -19,9 +19,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ga62a")
 
-[node name="MCPClient" type="Node" parent="."]
+[node name="MCPClient" type="HTTPRequest" parent="."]
 script = ExtResource("1_4n7jk")
-server = SubResource("Resource_lyqai")
+server = SubResource("Resource_ga62a")
 metadata/_custom_type_script = "uid://cuat54of2q4fd"
 
 [node name="Box" type="VBoxContainer" parent="."]

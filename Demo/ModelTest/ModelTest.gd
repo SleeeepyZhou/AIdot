@@ -5,5 +5,5 @@ func _ready():
 	var api = LLMAPI.new(testmod, 15)
 	add_child(api)
 	api.run_llm("Test call...")
-	var received = await api.llm_response
+	var received = await api.response
 	print(received[0])
