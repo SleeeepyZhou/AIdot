@@ -5,7 +5,7 @@ extends MarginContainer
 @onready var venv_path: LineEdit = $Box/PathBox/Venv
 @onready var env_input: CodeEdit = $Box/Env
 
-@onready var status_show: LineEdit = $Box/ButtonBox/ButtonBox/Status
+@onready var status_show: LineEdit = $Box/ButtonBox/Status
 @onready var tool_show: VBoxContainer = $Box/ToolShow/Box
 
 @onready var mcp_client: MCPClient = $MCPClient

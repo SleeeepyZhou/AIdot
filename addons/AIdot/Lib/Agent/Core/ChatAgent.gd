@@ -174,6 +174,11 @@ func retry_chat(chat_id : int):
 	task.retry += 1
 	_call_chat(chat_id)
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		if auto_save_memory:
+			save_memory()
+
 # Model
 @export var model : BaseModel = null:
 	set(m):
@@ -232,7 +237,6 @@ func save_memory() -> String:
 	set(t):
 		sys_prompt = t
 		memory.set_sys(t)
-
 
 # Planning
 @export_group("Planning")
