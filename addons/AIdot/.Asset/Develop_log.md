@@ -1,10 +1,11 @@
 ## Future solutions:   
 
-- [ ] 各级UI
+- [ ] Godot特化LLMAPI  
+- [ ] 各级UI  
 
 #### Agents  
-- [ ] 关系网
-- [ ] Godot助手
+- [ ] 关系网  
+- [ ] Godot助手  
 
 #### ModelLayer  
 - [x] 每个Model的UI图标  
@@ -17,7 +18,7 @@
 #### Tools  
 - [x] MCP接入
 - [ ] 支持Godot本地MCP服务(GodotTool)  
-- [ ] CallTool性能优化
+- [ ] CallTool性能优化  
 
 #### Perception  
 - [ ] 支持更多感知能力  
@@ -25,6 +26,9 @@
 #### Planning  
 - [ ] 任务管理  
 
+#### Video
+- [ ] Godot自己在做游戏  
+- [ ] 智能NPC用例  
 
 ```mermaid
 ---
