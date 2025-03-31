@@ -1,16 +1,39 @@
 @tool
 extends BaseAgent
 class_name ChatAgent
+## [b][i]Chat with your Agent![/i][/b]
+## @experimental
 
 # Agent
 const _max_retry = 5
 @export var auto_retry : bool = false
+## The maximum number of retries is 5.
 @export_range(0, _max_retry) var retry_times : int = 3
+## @experimental
+## Will it automatically initiate a conversation with the initiator of the other 
+## party for callback.
 @export var auto_callback : bool = false
+## The time for automatic cleaning of dialogue tasks, in seconds. Before automatic 
+## cleaning, you can use [method ChatAgent.get_task_info] to query conversation information.
 @export var auto_task_clear : int = 300
-## If there is an 'error' in the debug Dictionary, 
-## then this response only contains the error text.
+## This signal is triggered every time the API is called. If there is an 'error' 
+## in the debug Dictionary, then this response only contains the error text.
 signal response(answer : String, debug : Dictionary, chat_id : int)
+
+## After each conversation is completed, this signal will be triggered, corresponding 
+## to the conversation ID, final answer, and information about this conversation.
+## The chat information is a dictionary in the following format:
+## [codeblock]
+## {
+## 		"id": int,
+## 		"status": ChatStatus, 
+## 		"agent": BaseAgent, # Respondent
+## 		"target": BaseAgent, # Requester
+## 		"input": Dictionary, # request info
+## 		"result": Dictionary, # complete standard return
+## }
+## [/codeblock]
+## "status" [enum ChatAgent.ChatStatus]
 signal chat_completed(chat_id : int, final_answer : String, chat_info : Dictionary)
 
 var _chat_list : Dictionary = {}
@@ -18,7 +41,7 @@ enum ChatStatus {
 	PENDING,
 	RUNNING,
 	SUCCESS,
-	WAITING,
+	WAITING, ## Waiting for Retry
 	FAILED} 
 func _str_status(chat_status : ChatStatus):
 	var status : String
@@ -66,10 +89,10 @@ func _call_chat(id : int):
 	var debug : Dictionary = result[1]
 	
 	# Error handle
-	var handle_error = func(error_tip : String = ""):
+	var handle_error = func(error_tip : String = "", error_data : Dictionary = {}):
 		push_error(agent_id + "'s response has an error. " + error_tip)
 		task.status = ChatStatus.FAILED
-		task.result = debug
+		task.result = error_data
 		if auto_retry and task.retry < min(retry_times, _max_retry):
 			task.status = ChatStatus.WAITING
 			retry_chat(id)
@@ -80,7 +103,7 @@ func _call_chat(id : int):
 	
 	# Handle result
 	if debug.get("error"):
-		handle_error.call("Prompt: " + chat_data.content)
+		handle_error.call("Prompt: " + chat_data.content, debug)
 		return
 	else:
 		var message : Array = []
@@ -111,10 +134,11 @@ func _call_chat(id : int):
 			var tool_chat = await _api.run_api(tool_memory, message, "tool")
 			var tool_debug : Dictionary = tool_chat[1]
 			if tool_debug.get("error"):
-				handle_error.call("Tool call failed.")
+				push_error(tool_debug["error"])
+				handle_error.call("Tool call failed.", tool_debug)
 				return
 			else:
-				var toolbacks = "[Received the result of calling the tool!]\n" + \
+				var toolbacks = "[Received the result of calling the tool]\n" + \
 								str(tool_debug["message"]["content"])
 				final.append(toolbacks)
 		var final_answer : String = "\n".join(final)
@@ -138,6 +162,7 @@ func _call_chat(id : int):
 			task.target.chat(final_answer, self)
 		elif auto_callback:
 			task.target.chat(final_answer, self)
+## Chat information is a dictionary. See [signal ChatAgent.chat_completed]
 func get_task_info(chat_id : int) -> Dictionary:
 	var task : ChatTask = _chat_list[chat_id]
 	var status : String = _str_status(task.status)
@@ -166,13 +191,14 @@ func _chat(prompt : String, source : BaseAgent = AgentCoordinator) -> int:
 	_call_chat(id)
 	return id
 ## Try conversation before the error Again.
-func retry_chat(chat_id : int):
+func retry_chat(chat_id : int) -> int:
 	if !_chat_list.has(chat_id) or _chat_list[chat_id].status != ChatStatus.WAITING:
-		return
+		return 0
 	var task : ChatTask = _chat_list[chat_id]
 	task.status = ChatStatus.PENDING
 	task.retry += 1
 	_call_chat(chat_id)
+	return chat_id
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
@@ -263,14 +289,17 @@ func save_memory() -> String:
 		else:
 			tool_bag = ToolBag.new()
 
-signal tool_call(result_list : Dictionary, chat_id : int)
+## This signal will be triggered every time the tool is called during a conversation. 
+## The signal returns a tool result dictionary and the ID of the conversation.
+signal tool_call(result_list : Dictionary[String,Dictionary], chat_id : int)
 func _get_tools():
 	return tool_bag._agent_tools
-func call_tool(tool_name : String, input : Dictionary = {}):
+## Use tool which in agent's tool bag.
+func call_tool(tool_name : String, input : Dictionary = {}) -> Array:
 	var tool_result = await tool_bag.use_tool(tool_name, input)
 	return tool_result
 func _handle_toolcall(tool_calls : Array, chat_id : int) -> Dictionary:
-	var result_list : Dictionary = {}
+	var result_list : Dictionary[String,Dictionary] = {}
 	var call_tip : String = "[Calling tool {0} with args {1}]"
 	for call in tool_calls:
 		var result = await call_tool(call["name"], call.get("arguments",{}))

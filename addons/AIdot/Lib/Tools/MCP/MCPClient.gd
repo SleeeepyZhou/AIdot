@@ -72,8 +72,8 @@ func _mcp_request(method: String, params: Dictionary = {}) -> Array: # [success:
 func _mcp_notification(method: String, params: Dictionary = {}):
 	_send_message(_rpc.make_notification(method,params))
 
-## Run server
 var _retry : int = 0
+## Run server
 func connect_to_server() -> bool:
 	# run server
 	var server_run : String = server._command

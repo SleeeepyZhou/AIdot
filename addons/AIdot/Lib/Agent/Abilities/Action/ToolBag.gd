@@ -28,7 +28,7 @@ func _validate_property(property: Dictionary) -> void:
 	if property.name == "bag_show":
 		property.usage |= PROPERTY_USAGE_READ_ONLY
 
-var _tool_list : Dictionary = {}:
+var _tool_list : Dictionary[String, BaseTool] = {}:
 	set(l):
 		_tool_list = l
 		var tools : Array = []

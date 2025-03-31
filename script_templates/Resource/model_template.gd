@@ -29,7 +29,8 @@ func _parse_memory(agent_memory : Array = []):
 # Request
 # Format the request data into the request data dictionary required by the model.
 func _generator_request(prompt : String, history, role : String = "user", 
-				char_name : String = "", base64url : Array = ["",""]): # base64url [type,url]
+				char_name : String = "", base64url : Array = ["",""]): 
+										# base64url [type,url]
 	var current = [{
 		"role": role,
 		"content":
@@ -53,7 +54,8 @@ func _parse_response(data : Dictionary):
 		"debug":{
 			"model": "",
 			"id": "response id",
-			"finish_reason": "", # [stop, length, content_filter, insufficient_system_resource]
+			"finish_reason": "", 
+			# [stop, length, content_filter, insufficient_system_resource]
 			"time": Time.get_unix_time_from_system(),
 			"total_tokens": 0
 			},
@@ -67,8 +69,8 @@ func _parse_response(data : Dictionary):
 		var call_list = data["tool_calls"]
 		var tool_list = []
 		for call in call_list:
-			if call is Dictionary and call.has("function") and \
-					call["function"] is Dictionary and call["function"].has("name"):
+			if call is Dictionary and call.has("function") and call["function"] is \
+					Dictionary and call["function"].has("name"):
 				var tool : Dictionary = {
 					"name": call["function"]["name"],
 					"arguments": JSON.parse_string(call["function"].get("arguments","{}"))

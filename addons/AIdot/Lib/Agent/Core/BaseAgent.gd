@@ -13,12 +13,14 @@ class_name BaseAgent
 @export var character_name: String = ""
 
 
+## Agent's role. The conversation will be based on this. 
+## It will only be one of ["user", "assistant", "tool"].
 @export_enum("user","assistant","tool") var role : String = "assistant"
 
 func _chat(prompt : String, source : BaseAgent) -> int:
 	return 0
 
 ## Dialogue with Agent
-func chat(prompt : String, source : BaseAgent):
+func chat(prompt : String, source : BaseAgent) -> int:
 	var id = _chat(prompt, source)
 	return id
