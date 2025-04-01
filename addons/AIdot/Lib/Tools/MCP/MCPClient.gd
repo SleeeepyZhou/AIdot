@@ -271,17 +271,9 @@ func _process_stderr() -> void:
 		_stderr_buffer += chunk
 		chunk = _stderr.get_as_text()
 	
-	#if !_stderr_buffer.is_empty():
-		#print("New err: ", _stdout_buffer)
-	
 	var newline_pos := _stderr_buffer.find("\n")
 	while newline_pos != -1:
 		var log_line := _stderr_buffer.substr(0, newline_pos)
 		_stderr_buffer = _stderr_buffer.substr(newline_pos + 1)
 		_server_log += log_line + "\n"
 		newline_pos = _stderr_buffer.find("\n")
-
-
-#@export_tool_button("Test") var _test = test
-#func test():
-	#print(await call_tool("example_func",{"example_arg": "testtest"}))
