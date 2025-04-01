@@ -12,6 +12,8 @@ func _ready() -> void:
 		key.text = chat_bot.model.api_key
 		type.text = ModelLayer.get_type(chat_bot.model.model_name)
 		llm.text = chat_bot.model.model_name
+	else:
+		chat_bot.model = null
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_EDITOR_PRE_SAVE:
