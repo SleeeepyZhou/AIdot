@@ -56,16 +56,12 @@ func tool_box_enter():
 	# tool
 	add_custom_type("BaseTool", "Resource", preload("res://addons/AIdot/Lib/Tools/ToolMeta.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
-	add_custom_type("MCPTool", "Resource", preload("res://addons/AIdot/Lib/Tools/MCPTool.gd"),\
-					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
-	add_custom_type("GodotTool", "Resource", preload("res://addons/AIdot/Lib/Tools/GodotTool.gd"),\
-					preload("res://addons/AIdot/Res/UI/Icon/icon.png"))
 	# MCP
 	add_custom_type("MCPClient", "HTTPRequest", preload("res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp_node.png"))
 	add_custom_type("MCPServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/MCPServer.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
-	add_custom_type("MCPStdioServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/MCPStdioServer.gd"),\
+	add_custom_type("StdioServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/StdioServer.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
 	# agent tool
 	add_custom_type("ToolBag", "Resource", preload("res://addons/AIdot/Lib/Agent/Abilities/Action/ToolBag.gd"),\

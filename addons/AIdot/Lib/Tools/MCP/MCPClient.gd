@@ -4,7 +4,13 @@ extends HTTPRequest
 class_name MCPClient
 
 # Config
-@export var server : MCPStdioServer = MCPStdioServer.new()
+@export var server : MCPServer = StdioServer.new():
+	set(s):
+		if s == null or s.get_script() != MCPServer:
+			server = s
+		else:
+			push_warning("Cannot use MCPServer base class directly")
+			server = null
 @export var auto_connect : bool = false
 @export var auto_reconnect : bool = false
 @export var max_reconnect_attempts : int = 3
@@ -14,19 +20,65 @@ class_name MCPClient
 @export_tool_button("Close server") var _close = stop
 @export_tool_button("Tool list") var _print_tools = tool_list
 
-signal connection(is_connect: bool)
-
-var _running := false
-var _pid: int
-var _stdio: FileAccess
-var _stderr: FileAccess
-
-var _stdout_buffer := ""
-var _stderr_buffer := ""
-
 func _ready() -> void:
 	if auto_connect:
 		connect_to_server()
+
+# Stdio
+var _pid: int
+var _stdio: FileAccess
+var _stderr: FileAccess
+var _stdout_buffer := ""
+var _stderr_buffer := ""
+
+# Std Out
+signal _message_received(message: Dictionary)
+func _process_stdout() -> void:
+	if !_stdio and !_wait_response:
+		return
+	var chunk := _stdio.get_as_text()
+	while chunk != "":
+		_stdout_buffer += chunk
+		chunk = _stdio.get_as_text()
+	
+	#if !_stdout_buffer.is_empty():
+		#print("New out: ", _stdout_buffer)
+	
+	var newline_pos := _stdout_buffer.find("\n")
+	while newline_pos != -1:
+		var message_str := _stdout_buffer.substr(0, newline_pos)
+		_stdout_buffer = _stdout_buffer.substr(newline_pos + 1)
+		
+		var message = JSON.parse_string(message_str)
+		if message:
+			_message_received.emit(message)
+		else:
+			push_error("Failed to parse message: ", message_str)
+		
+		newline_pos = _stdout_buffer.find("\n")
+# Std Err
+signal log_record(log: String)
+var _server_log : String = "":
+	set(log):
+		_server_log = log
+		log_record.emit(_server_log)
+func get_server_log():
+	return _server_log
+func _process_stderr() -> void:
+	if !_stderr:
+		return
+	
+	var chunk := _stderr.get_as_text()
+	while chunk != "":
+		_stderr_buffer += chunk
+		chunk = _stderr.get_as_text()
+	
+	var newline_pos := _stderr_buffer.find("\n")
+	while newline_pos != -1:
+		var log_line := _stderr_buffer.substr(0, newline_pos)
+		_stderr_buffer = _stderr_buffer.substr(newline_pos + 1)
+		_server_log += log_line + "\n"
+		newline_pos = _stderr_buffer.find("\n")
 
 # Send JSON-RPC
 var _rpc : JSONRPC = JSONRPC.new()
@@ -70,9 +122,11 @@ func _mcp_request(method: String, params: Dictionary = {}) -> Array: # [success:
 		return [false, 0]
 
 func _mcp_notification(method: String, params: Dictionary = {}):
-	_send_message(_rpc.make_notification(method,params))
+	_send_message(_rpc.make_notification(method, params))
 
 var _retry : int = 0
+var _running := false
+signal connection(is_connect: bool)
 ## Run server
 func connect_to_server() -> bool:
 	# run server
@@ -133,11 +187,13 @@ func connect_to_server() -> bool:
 		stop()
 		return false
 
-var _tools : Dictionary = {}:
+# Tools
+var _tools : Dictionary[String, BaseTool] = {}:
 	set(l):
-		for tool in _tools.keys():
-			if ToolBox._tool_box.has(tool):
-				ToolBox._tool_box.erase(tool)
+		if !l.has_all(_tools.keys()):
+			for tool in _tools.keys():
+				if ToolBox._tool_box.has(tool):
+					ToolBox._tool_box.erase(tool)
 		ToolBox._tool_box.merge(l, true)
 		_tools = l
 ## Get tools list
@@ -163,7 +219,7 @@ func tool_list():
 		_tools = {}
 		var temp_list : Dictionary = {}
 		for tool in tools:
-			var new_tool = MCPTool.new()
+			var new_tool = BaseTool.new()
 			new_tool.client = self
 			new_tool._tool_data = tool
 			temp_list[tool["name"]] = new_tool
@@ -196,19 +252,21 @@ func call_tool(tool_name : String, arguments : Dictionary = {}) -> Array:
 ## Close server
 func stop() -> void:
 	if _running:
-		_running = false
+		if !_tools.is_empty():
+			_tools = {}
+		
 		if _stdio:
 			_stdio.close()
 		if _stderr:
 			_stderr.close()
-		if OS.is_process_running(_pid):
-			OS.kill(_pid)
 		if ToolBox._MCP_client.has(_pid):
 			ToolBox._MCP_client.erase(_pid)
-		if !_tools.is_empty():
-			_tools = {}
-		print("MCP server closed on pid: ", _pid)
+		if OS.is_process_running(_pid):
+			OS.kill(_pid)
+			print("MCP server closed on pid: ", _pid)
+		_running = false
 	connection.emit(false)
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		stop()
@@ -227,53 +285,3 @@ func _process(delta: float) -> void:
 			_retry = 0
 			push_warning("Connect closed. Wait retry.")
 			connect_to_server()
-
-# Std Out
-signal _message_received(message: Dictionary)
-func _process_stdout() -> void:
-	if !_stdio and !_wait_response:
-		return
-	var chunk := _stdio.get_as_text()
-	while chunk != "":
-		_stdout_buffer += chunk
-		chunk = _stdio.get_as_text()
-	
-	#if !_stdout_buffer.is_empty():
-		#print("New out: ", _stdout_buffer)
-	
-	var newline_pos := _stdout_buffer.find("\n")
-	while newline_pos != -1:
-		var message_str := _stdout_buffer.substr(0, newline_pos)
-		_stdout_buffer = _stdout_buffer.substr(newline_pos + 1)
-		
-		var message = JSON.parse_string(message_str)
-		if message:
-			_message_received.emit(message)
-		else:
-			push_error("Failed to parse message: ", message_str)
-		
-		newline_pos = _stdout_buffer.find("\n")
-
-# Std Err
-signal log_record(log: String)
-var _server_log : String = "":
-	set(log):
-		_server_log = log
-		log_record.emit(_server_log)
-func get_server_log():
-	return _server_log
-func _process_stderr() -> void:
-	if !_stderr:
-		return
-	
-	var chunk := _stderr.get_as_text()
-	while chunk != "":
-		_stderr_buffer += chunk
-		chunk = _stderr.get_as_text()
-	
-	var newline_pos := _stderr_buffer.find("\n")
-	while newline_pos != -1:
-		var log_line := _stderr_buffer.substr(0, newline_pos)
-		_stderr_buffer = _stderr_buffer.substr(newline_pos + 1)
-		_server_log += log_line + "\n"
-		newline_pos = _stderr_buffer.find("\n")

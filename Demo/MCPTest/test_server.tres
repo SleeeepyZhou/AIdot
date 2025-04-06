@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MCPStdioServer" load_steps=2 format=3 uid="uid://2g5n5odmwijk"]
 
-[ext_resource type="Script" uid="uid://c7rpcsadkcypv" path="res://addons/AIdot/Lib/Tools/MCP/MCPStdioServer.gd" id="1_2l8y6"]
+[ext_resource type="Script" uid="uid://c7rpcsadkcypv" path="res://addons/AIdot/Lib/Tools/MCP/StdioServer.gd" id="1_2l8y6"]
 
 [resource]
 script = ExtResource("1_2l8y6")

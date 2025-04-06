@@ -1,26 +1,24 @@
 @tool
-@icon("res://addons/AIdot/Res/UI/Icon/mcp.png")
 extends MCPServer
-class_name MCPStdioServer
+class_name StdioServer
 
-@export_global_file var server_path : String = "":
-	set(c):
-		if c.is_empty():
-			server_path = c
+func _set_server_path(path: String):
+	if path.is_empty():
+		server_path = path
+		return
+	var type : String = path.get_extension()
+	match type:
+		"py":
+			server_path = path.simplify_path()
+			_command = "python"
+			if venv_path:
+				_set_py_venv()
+		"js":
+			server_path = path.simplify_path()
+			_command = "node"
+		_:
+			push_error("Server script must be a .py or .js file")
 			return
-		var type : String = c.get_extension()
-		match type:
-			"py":
-				server_path = c.simplify_path()
-				_command = "python"
-				if venv_path:
-					_set_py_venv()
-			"js":
-				server_path = c.simplify_path()
-				_command = "node"
-			_:
-				push_error("Server script must be a .py or .js file")
-				return
 
 @export_global_dir var venv_path : String = "":
 	set(v):

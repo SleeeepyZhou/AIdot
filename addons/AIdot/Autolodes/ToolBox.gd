@@ -1,5 +1,5 @@
 @tool
-extends ToolAgent
+extends BaseAgent
 
 func _ready() -> void:
 	role = "tool"
@@ -26,9 +26,9 @@ var mcp_initialize : Dictionary = {
 	}
 
 # Registered MCP client.
-var _MCP_client : Dictionary = {}
+var _MCP_client : Dictionary[int, MCPClient] = {}
 # Registered tools.
-var _tool_box : Dictionary = {}
+var _tool_box : Dictionary[String, BaseTool] = {}
 ## Get registered tools name in ToolBox.
 func get_box_tool():
 	var list = _tool_box.keys()

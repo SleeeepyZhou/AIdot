@@ -6,6 +6,8 @@ var _tool_name : String
 var _description : String
 var _input_schema : Dictionary
 
+var client : MCPClient
+
 #{
 	#"name": name,
 	#"description": str
@@ -24,7 +26,7 @@ var _tool_data : Dictionary:
 ## The specific calling method of the tool can be inherited and overridden to 
 ## implement custom tool processing. Return to Array type.
 func _call(arguments : Dictionary = {}) -> Array:
-	var result = ["This is the tool base class."]
+	var result = await client.call_tool(_tool_name, arguments)
 	return result
 
 ## Use this tool.

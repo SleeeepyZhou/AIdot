@@ -293,7 +293,7 @@ func save_memory() -> String:
 ## The signal returns a tool result dictionary and the ID of the conversation.
 signal tool_call(result_list : Dictionary[String,Dictionary], chat_id : int)
 func _get_tools():
-	return tool_bag._agent_tools
+	return tool_bag.get_chat_tools()
 ## Use tool which in agent's tool bag.
 func call_tool(tool_name : String, input : Dictionary = {}) -> Array:
 	var tool_result = await tool_bag.use_tool(tool_name, input)

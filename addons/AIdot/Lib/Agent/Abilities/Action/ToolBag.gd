@@ -48,6 +48,9 @@ var _tool_list : Dictionary[String, BaseTool] = {}:
 		bag_show = show
 		_agent_tools = tools
 var _agent_tools : Array = []
+func get_chat_tools():
+	return _agent_tools
+
 
 func get_tool_list() -> Array:
 	var list := _tool_list.keys()

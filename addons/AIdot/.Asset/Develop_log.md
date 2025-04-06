@@ -85,3 +85,24 @@ gantt
 		ToolBag :done, 2025-03-23, 2d
 		Tool Support :done, 2025-03-25, 3d
 ```
+
+```mermaid
+---
+displayMode: compact
+---
+gantt
+	title 开发日志 2025-04(更多功能实现)
+	dateFormat  YYYY-MM-DD
+	section Design
+		Rest, ill :done, 2025-04-1, 4d
+		MCP Redesign :active, 2025-04-5, 5d
+	section Model Layer
+		NewModel :active, 2025-04-07, 2d
+	section Agent
+	section Memory
+	section Perception
+	section Planning
+	section Tools
+		MCPClient :active, 2025-04-06, 2d
+		GodotServer :active, 2025-04-08, 1d
+```

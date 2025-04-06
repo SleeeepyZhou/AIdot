@@ -9,7 +9,7 @@ extends MarginContainer
 @onready var tool_show: VBoxContainer = $Box/ToolShow/Box
 
 @onready var mcp_client: MCPClient = $MCPClient
-var mcp_server: MCPStdioServer
+var mcp_server: StdioServer 
 
 const TOOLS_UNIT = preload("res://addons/AIdot/Res/Agents/GodotAssistant/ToolsUnit.tscn")
 
@@ -42,13 +42,14 @@ func _on_connect_pressed() -> void:
 	server_path.editable = false
 	venv_path.editable = false
 	env_input.editable = false
-	mcp_server.server_path = server_path.text
-	mcp_server.venv_path = venv_path.text
-	var env = JSON.parse_string(env_input.text)
-	if env:
-		mcp_server.env = JSON.parse_string(env_input.text)
-	else:
-		push_warning("Environment parse failed.")
+	mcp_server.set_server_path(server_path.text)
+	if mcp_server is StdioServer:
+		mcp_server.venv_path = venv_path.text
+		var env = JSON.parse_string(env_input.text)
+		if env:
+			mcp_server.env = JSON.parse_string(env_input.text)
+		else:
+			push_warning("Environment parse failed.")
 	mcp_client.connect_to_server()
 	server_change.emit()
 
