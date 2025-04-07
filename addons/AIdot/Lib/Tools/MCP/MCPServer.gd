@@ -8,9 +8,13 @@ class_name MCPServer
 @export_file var server_path : String = "":
 	set(path):
 		_set_server_path(path)
+	get:
+		return _server_path
+
+var _server_path: String = ""
 
 func _set_server_path(path: String):
-	server_path = path
+	_server_path = path
 
 func set_server_path(path: String):
 	_set_server_path(path)

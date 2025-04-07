@@ -4,17 +4,16 @@ class_name StdioServer
 
 func _set_server_path(path: String):
 	if path.is_empty():
-		server_path = path
+		_server_path = path
 		return
-	var type : String = path.get_extension()
-	match type:
+	match path.get_extension():
 		"py":
-			server_path = path.simplify_path()
+			_server_path = path.simplify_path()
 			_command = "python"
 			if venv_path:
 				_set_py_venv()
 		"js":
-			server_path = path.simplify_path()
+			_server_path = path.simplify_path()
 			_command = "node"
 		_:
 			push_error("Server script must be a .py or .js file")
