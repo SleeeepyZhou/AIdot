@@ -59,8 +59,8 @@ func get_env(model_type : String) -> Array:
 	var env_set = [env_data["url"].get(type,""),env_data["key"].get(type,"")]
 	return env_set
 
-## Creat a model resource.
-func creat_model(model_name : String, url : String = "", key : String = "", 
+## Create a model resource.
+func create_model(model_name : String, url : String = "", key : String = "",
 					config : Dictionary = {}):
 	var type = get_type(model_name)
 	if type == "OPENAI":
@@ -74,7 +74,7 @@ func creat_model(model_name : String, url : String = "", key : String = "",
 		return BaseModel.new(model_name, url, key, config)
 
 
-## Get model type. 
+## Get model type.
 static func get_type(model_name : String):
 	if _oai.has(model_name):
 		return "OPENAI"

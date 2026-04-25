@@ -76,9 +76,14 @@ func _call_chat(id : int):
 	# Construct a complete prompt.
 	var task : ChatTask = _chat_list[id]
 	var chat_data = task.data
-	if tool_user:
-		model.tools["tools"] = _get_tools()
+	if tool_user and skill_book and !skill_book.skills.is_empty():
+		model.tools["tools"] = skill_book.get_chat_tools()
 	var history = memory.read_memory()
+	# Inject skill instructions right after the system prompt (index 1).
+	var skill_context := skill_book.get_system_injection() if skill_book else ""
+	if !skill_context.is_empty():
+		history = history.duplicate()
+		history.insert(1, AgentMemory.template_memory(skill_context, "system"))
 	task.status = ChatStatus.RUNNING
 	
 	# Request
@@ -120,8 +125,14 @@ func _call_chat(id : int):
 		final.append(callbacks)
 		
 		# planning
-		if planer:
-			pass
+		if planer and _planner:
+			var plan := await _planner.plan(history, chat_data.content)
+			if !plan.is_empty():
+				# Inject the plan as a temporary system context for this request only.
+				# It is NOT saved to memory — it guides the LLM without polluting history.
+				history = history.duplicate()
+				history.append(AgentMemory.template_memory(
+					"[Internal plan]\n" + plan, "system"))
 		
 		# tools
 		var tool_memory : String = ""
@@ -200,6 +211,24 @@ func retry_chat(chat_id : int) -> int:
 	_call_chat(chat_id)
 	return chat_id
 
+func _ready() -> void:
+	_setup_planner()
+	if skill_book:
+		skill_book.register_tools()
+
+func _setup_planner() -> void:
+	if planer:
+		if !_planner:
+			_planner = Planner.new()
+			_planner.name = "_Planner"
+			add_child(_planner)
+			if model:
+				_planner.setup(model)
+	else:
+		if _planner:
+			_planner.queue_free()
+			_planner = null
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		if auto_save_memory:
@@ -214,6 +243,8 @@ func _notification(what: int) -> void:
 		else:
 			_set_api = true
 			_api = LLMAPI.new(model)
+		if _planner:
+			_planner.setup(model)
 var _api : LLMAPI = null:
 	set(n):
 		if _api:
@@ -266,7 +297,12 @@ func save_memory() -> String:
 
 # Planning
 @export_group("Planning")
-@export var planer : bool = false
+@export var planer : bool = false:
+	set(b):
+		planer = b
+		if is_node_ready():
+			_setup_planner()
+var _planner: Planner = null
 
 
 # Perception
@@ -278,26 +314,26 @@ func save_memory() -> String:
 
 # Action
 @export_group("Action")
-@export var tool_user : bool = true:
-	set(b):
-		if !b:
-			tool_bag = null
-@export var tool_bag : ToolBag = ToolBag.new():
-	set(t):
-		if t:
-			tool_bag = t
-		else:
-			tool_bag = ToolBag.new()
+## When false, no tool schemas are sent to the LLM. Skill instructions still inject.
+@export var tool_user : bool = true
+## The agent's skill bag. Aggregates all [Skill] resources used by this agent.
+## Tools are registered to [ToolBox] on [code]_ready()[/code].
+@export var skill_book : SkillBook = null:
+	set(sb):
+		if skill_book and is_node_ready():
+			skill_book.unregister_tools()
+		skill_book = sb
+		if skill_book and is_node_ready():
+			skill_book.register_tools()
 
-## This signal will be triggered every time the tool is called during a conversation. 
-## The signal returns a tool result dictionary and the ID of the conversation.
+## Emitted every time a tool is called during a conversation.
 signal tool_call(result_list : Dictionary[String,Dictionary], chat_id : int)
-func _get_tools():
-	return tool_bag.get_chat_tools()
-## Use tool which in agent's tool bag.
+## Calls a tool by name via [member skill_book]. Use [code]await[/code].
 func call_tool(tool_name : String, input : Dictionary = {}) -> Array:
-	var tool_result = await tool_bag.use_tool(tool_name, input)
-	return tool_result
+	if skill_book:
+		return await skill_book.use_tool(tool_name, input)
+	push_error(agent_id + ": No skill_book assigned.")
+	return []
 func _handle_toolcall(tool_calls : Array, chat_id : int) -> Dictionary:
 	var result_list : Dictionary[String,Dictionary] = {}
 	var call_tip : String = "[Calling tool {0} with args {1}]"

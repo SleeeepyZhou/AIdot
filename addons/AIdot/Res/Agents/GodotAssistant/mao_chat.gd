@@ -175,14 +175,14 @@ func _on_set_pressed() -> void:
 	else:
 		if type.text == "DEFAULT":
 			if url.text.is_empty() or key.text.is_empty():
-				model = ModelLayer.creat_model(cllm.text)
+				model = ModelLayer.create_model(cllm.text)
 			else:
-				model = ModelLayer.creat_model(cllm.text, url.text, key.text)
+				model = ModelLayer.create_model(cllm.text, url.text, key.text)
 		else:
 			if url.text.is_empty() or key.text.is_empty():
-				model = ModelLayer.creat_model(llm.text)
+				model = ModelLayer.create_model(llm.text)
 			else:
-				model = ModelLayer.creat_model(llm.text, url.text, key.text)
+				model = ModelLayer.create_model(llm.text, url.text, key.text)
 		url.text = model.api_url
 		key.text = model.api_key
 	chat_bot.model = model

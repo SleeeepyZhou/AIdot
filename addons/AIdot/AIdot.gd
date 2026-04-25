@@ -18,14 +18,11 @@ func model_layer_enter():
 					preload("res://addons/AIdot/Res/UI/Icon/API.png"))
 	add_custom_type("LLMAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/LLM.gd"), \
 					preload("res://addons/AIdot/Res/UI/Icon/API_node.png"))
-	add_custom_type("VLMAPI", "HTTPRequest", preload("res://addons/AIdot/Lib/Model/API/VLM.gd"), \
-					preload("res://addons/AIdot/Res/UI/Icon/API_node.png"))
 func model_layer_exit():
 	remove_autoload_singleton("ModelLayer")
 	# API
 	remove_custom_type("AIAPI")
 	remove_custom_type("LLMAPI")
-	remove_custom_type("VLMAPI")
 	# Model
 	remove_custom_type("BaseModel")
 	remove_custom_type("DeepSeekModel")
@@ -57,27 +54,26 @@ func tool_box_enter():
 	add_custom_type("BaseTool", "Resource", preload("res://addons/AIdot/Lib/Tools/ToolMeta.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
 	# MCP
-	add_custom_type("MCPClient", "HTTPRequest", preload("res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd"),\
+	add_custom_type("MCPClient", "Node", preload("res://addons/AIdot/Lib/Tools/MCP/MCPClient.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp_node.png"))
 	add_custom_type("MCPServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/MCPServer.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
 	add_custom_type("StdioServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/StdioServer.gd"),\
 					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
-	# agent tool
-	add_custom_type("ToolBag", "Resource", preload("res://addons/AIdot/Lib/Agent/Abilities/Action/ToolBag.gd"),\
-					preload("res://addons/AIdot/Res/UI/Icon/Tool.png"))
+	add_custom_type("HTTPServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/HTTPServer.gd"),\
+					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
+	add_custom_type("GodotServer", "Resource", preload("res://addons/AIdot/Lib/Tools/MCP/GodotServer.gd"),\
+					preload("res://addons/AIdot/Res/UI/Icon/mcp.png"))
 func tool_box_exit():
 	remove_autoload_singleton("ToolBox")
 	# tool
 	remove_custom_type("BaseTool")
-	remove_custom_type("MCPTool")
-	remove_custom_type("GodotTool")
 	# MCP
 	remove_custom_type("MCPClient")
 	remove_custom_type("MCPServer")
-	remove_custom_type("MCPStdioServer")
-	# agent tool
-	remove_custom_type("ToolBag")
+	remove_custom_type("StdioServer")
+	remove_custom_type("HTTPServer")
+	remove_custom_type("GodotServer")
 
 ## Agent
 func agent_enter():
@@ -86,7 +82,15 @@ func agent_enter():
 	memory_enter()
 	# Tools
 	tool_box_enter()
-	
+	# Action (Skill + SkillBook have class_name so Godot auto-registers them;
+	#         add_custom_type here gives them editor icons)
+	add_custom_type("Skill", "Resource", \
+					preload("res://addons/AIdot/Lib/Agent/Abilities/Action/Skill.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Tool.png"))
+	add_custom_type("SkillBook", "Resource", \
+					preload("res://addons/AIdot/Lib/Agent/Abilities/Action/SkillBook.gd"), \
+					preload("res://addons/AIdot/Res/UI/Icon/Tool.png"))
+
 	add_autoload_singleton("AgentCoordinator", "res://addons/AIdot/Autolodes/AgentCoordinator.gd")
 	add_custom_type("BaseAgent", "Node", preload("res://addons/AIdot/Lib/Agent/Core/BaseAgent.gd"), \
 					preload("res://addons/AIdot/Res/UI/Icon/Agent.svg"))
@@ -100,7 +104,10 @@ func agent_exit():
 	memory_exit()
 	# Tools
 	tool_box_exit()
-	
+	# Action
+	remove_custom_type("Skill")
+	remove_custom_type("SkillBook")
+
 	remove_autoload_singleton("AgentCoordinator")
 	remove_custom_type("BaseAgent")
 	remove_custom_type("ChatAgent")

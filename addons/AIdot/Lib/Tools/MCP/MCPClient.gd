@@ -1,6 +1,6 @@
 @tool
 @icon("res://addons/AIdot/Res/UI/Icon/mcp_node.png")
-extends HTTPRequest
+extends Node
 class_name MCPClient
 
 # Config
@@ -99,14 +99,15 @@ func _get_response(request_id : int):
 			_is_timeout = true
 		timer.call(request_timeout)
 	var response = await _message_received
-	while int(response["id"]) != request_id:
-		response = await _message_received
+	# Skip notifications (no "id" field) and responses for other requests
+	while !response.has("id") or int(response["id"]) != request_id:
 		if _is_timeout:
 			push_error("MCP server timeout, use ", request_timeout, "s.")
-			response["result"] = {}
+			response = {"id": request_id, "result": {}}
 			break
+		response = await _message_received
 	_wait_response = false
-	response_received.emit(request_id, response["result"])
+	response_received.emit(request_id, response.get("result", {}))
 func _mcp_request(method: String, params: Dictionary = {}) -> Array: # [success:bool,id:int]
 	if !_running or !_stdio:
 		push_error("MCP server has not been started yet.")

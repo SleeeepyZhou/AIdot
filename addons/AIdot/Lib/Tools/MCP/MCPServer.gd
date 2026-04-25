@@ -12,6 +12,12 @@ class_name MCPServer
 		return _server_path
 
 var _server_path: String = ""
+## The executable command used to launch the server. Set by subclasses.
+var _command: String = ""
+## Additional arguments passed to the server process.
+@export var args: PackedStringArray = []
+## Environment variables injected into the server process.
+@export var env: Dictionary = {}
 
 func _set_server_path(path: String):
 	_server_path = path

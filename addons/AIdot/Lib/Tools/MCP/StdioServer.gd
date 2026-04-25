@@ -28,11 +28,6 @@ func _set_server_path(path: String):
 		venv_path = v.trim_suffix("/")
 		_set_py_venv()
 
-var _command : String
-@export var args : PackedStringArray
-
-@export var env : Dictionary = {}
-
 func _set_py_venv():
 	if server_path.is_empty() or server_path.get_extension() != "py":
 		return

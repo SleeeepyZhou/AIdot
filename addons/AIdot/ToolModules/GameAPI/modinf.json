@@ -1,3 +1,19 @@
 {
-	
+	"script": "Key.gd",
+	"name": "game_key_input",
+	"description": "Simulates keyboard input in the game world.",
+	"input_schema": {
+		"type": "object",
+		"properties": {
+			"key": {
+				"type": "string",
+				"description": "The key action name (as defined in Project Settings > Input Map)"
+			},
+			"pressed": {
+				"type": "boolean",
+				"description": "true to press, false to release"
+			}
+		},
+		"required": ["key", "pressed"]
+	}
 }

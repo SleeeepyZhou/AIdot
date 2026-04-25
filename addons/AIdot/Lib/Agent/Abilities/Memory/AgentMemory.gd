@@ -130,7 +130,7 @@ func _editor_set():
 # Long Memory
 @export_storage var _long: LongMemory = LongMemory.new():
 	set(l):
-		return
+		_long = l if l else LongMemory.new()
 	get:
 		if !_long:
 			_long = LongMemory.new()

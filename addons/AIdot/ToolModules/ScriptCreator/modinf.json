@@ -1,0 +1,31 @@
+{
+	"script": "ScriptCreator.gd",
+	"name": "create_tool_module",
+	"description": "Creates a new GDScript-based tool in ToolModules/ and hot-registers it to ToolBox. The script must extend BaseTool and override _call(arguments).",
+	"input_schema": {
+		"type": "object",
+		"properties": {
+			"module_name": {
+				"type": "string",
+				"description": "Folder name for the new module (plain name, no slashes)."
+			},
+			"tool_name": {
+				"type": "string",
+				"description": "Unique tool identifier shown to the LLM (snake_case recommended)."
+			},
+			"description": {
+				"type": "string",
+				"description": "One-sentence description of what the tool does."
+			},
+			"script_code": {
+				"type": "string",
+				"description": "Full GDScript source. Must start with 'extends BaseTool' and override '_call(arguments: Dictionary) -> Array'."
+			},
+			"input_schema_json": {
+				"type": "string",
+				"description": "JSON string for the tool's parameter schema (OpenAI/JSON Schema format)."
+			}
+		},
+		"required": ["module_name", "tool_name", "description", "script_code", "input_schema_json"]
+	}
+}

@@ -1,3 +1,15 @@
 {
-	
+	"script": "WebSearch.gd",
+	"name": "web_search",
+	"description": "Searches the web and returns relevant results.",
+	"input_schema": {
+		"type": "object",
+		"properties": {
+			"query": {
+				"type": "string",
+				"description": "The search query"
+			}
+		},
+		"required": ["query"]
+	}
 }
